@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 公共的 -->
+    <color name="tab_main_text_1">#818181</color>
+    <color name="tab_main_text_2">#74b5f7</color>
+    <color name="tab_top_text_1">#212121</color>
+    <color name="tab_top_text_2">#74B5F7</color>
+    <color name="white">#fff</color>
+</resources>

@@ -1,0 +1,1 @@
+将 pageadapter 改成使用  自己 模仿 ViewPagerStateAdapter 写的 FragmentListPageAdapter。去掉ViewPagerStateAdapter 中的 saveState 和 restoreState，避免 activity 重新创建的时候，fragment 却是通过fagmentmanager 中恢复出来的而不会 通过 adapter getFragment 的方法去获取。
