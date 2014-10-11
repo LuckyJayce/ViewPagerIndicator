@@ -82,10 +82,10 @@ ViewPagerIndicator
 
 # 效果图 #
 有了该类库你可以实现以下布局
-![](http://huaban.com/pins/253494527/)
-![](http://huaban.com/pins/253494461/)
-![](http://huaban.com/pins/253494399/)
-![](http://huaban.com/pins/253494338/)
+![image](http://huaban.com/pins/253494527/)
+![image](http://huaban.com/pins/253494461/)
+![image](http://huaban.com/pins/253494399/)
+![image](http://huaban.com/pins/253494338/)
 # 主要的类 #
 ## 1.ViewPager ##
 support-v4 里面的viewpager被重新改写了。  
