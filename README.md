@@ -82,10 +82,10 @@ ViewPagerIndicator
 
 # 效果图 #
 有了该类库你可以实现以下布局
-![image](http://huaban.com/pins/253494527/)
-![image](http://huaban.com/pins/253494461/)
-![image](http://huaban.com/pins/253494399/)
-![image](http://huaban.com/pins/253494338/)
+![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/1.png)
+![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/2.png)
+![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
+![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
 # 主要的类 #
 ## 1.ViewPager ##
 support-v4 里面的viewpager被重新改写了。  
