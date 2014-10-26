@@ -1,8 +1,8 @@
 <resources>
 
-
     <!-- slidemenu -->
     <dimen name="ap_base_menu_shadow_offset">80dp</dimen>
-    <dimen name="ap_base_menu_shadow_width">15dp</dimen>
+    <dimen name="ap_base_menu_shadow_width">16dp</dimen>
+    <dimen name="tab_top_fontsize">15sp</dimen>
 
 </resources>

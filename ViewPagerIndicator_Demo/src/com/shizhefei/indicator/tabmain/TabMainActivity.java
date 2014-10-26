@@ -66,6 +66,7 @@ public class TabMainActivity extends FragmentActivity {
 			MainFragment mainFragment = new MainFragment();
 			Bundle bundle = new Bundle();
 			bundle.putString(MainFragment.INTENT_STRING_TABNAME, tabNames[position]);
+			bundle.putInt(MainFragment.INTENT_INT_INDEX, position);
 			mainFragment.setArguments(bundle);
 			return mainFragment;
 		}

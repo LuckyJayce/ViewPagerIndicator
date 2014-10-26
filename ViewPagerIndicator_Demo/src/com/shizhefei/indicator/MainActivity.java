@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.shizhefei.indicator.guide.GuideActivity;
 import com.shizhefei.indicator.moretab.MoreTabActivity;
+import com.shizhefei.indicator.setting.SettingActivity;
 import com.shizhefei.indicator.slide.SlideMainActivity;
 import com.shizhefei.indicator.tabmain.TabMainActivity;
 
@@ -54,4 +55,14 @@ public class MainActivity extends FragmentActivity {
 	public void onClickSlideTab(View view) {
 		startActivity(new Intent(getApplicationContext(), MoreTabActivity.class));
 	}
+
+	/**
+	 * 可滑动tab界面
+	 * 
+	 * @param view
+	 */
+	public void onClickSlideBar(View view) {
+		startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.shizhefei.indicator.moretab;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 
 import com.shizhefei.indicator.R;
 import com.shizhefei.indicator.slide.SlideFragment;
-import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
+import com.shizhefei.view.indicator.ScrollIndicatorView;
+import com.shizhefei.view.indicator.slidebar.ColorBar;
+import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
 public class MoreTabActivity extends FragmentActivity {
 	private IndicatorViewPager indicatorViewPager;
@@ -25,11 +28,19 @@ public class MoreTabActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_moretab);
 		ViewPager viewPager = (ViewPager) findViewById(R.id.moretab_viewPager);
-		Indicator indicator = (Indicator) findViewById(R.id.moretab_indicator);
+		ScrollIndicatorView indicator = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
+		indicator.setScrollBar(new ColorBar(this, Color.RED, 5));
+
+		// 设置滚动监听
+		int selectColorId = R.color.tab_top_text_2;
+		int unSelectColorId = R.color.tab_top_text_1;
+		indicator.setOnTransitionListener(new OnTransitionTextListener().setColorId(this, selectColorId, unSelectColorId));
+
 		viewPager.setOffscreenPageLimit(2);
 		indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
 		inflate = LayoutInflater.from(getApplicationContext());
 		indicatorViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+
 	}
 
 	private class MyAdapter extends IndicatorFragmentPagerAdapter {

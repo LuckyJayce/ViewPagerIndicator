@@ -5,10 +5,18 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
+
+import com.shizhefei.view.indicator.slidebar.ScrollBar;
+import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 
 public class FixedIndicatorView extends LinearLayout implements Indicator {
 
@@ -20,25 +28,39 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	public FixedIndicatorView(Context context) {
 		super(context);
+		init();
 	}
 
 	@SuppressLint("NewApi")
 	public FixedIndicatorView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		init();
 	}
 
 	public FixedIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init();
+	}
+
+	private void init() {
+		inRun = new InRun();
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		inRun.stop();
 	}
 
 	@Override
 	public void setAdapter(IndicatorAdapter adapter) {
 		if (this.mAdapter != null) {
-			this.mAdapter.setDataSetObserver(null);
+			this.mAdapter.unRegistDataSetObserver(dataSetObserver);
 		}
 		this.mAdapter = adapter;
-		adapter.setDataSetObserver(dataSetObserver);
+		adapter.registDataSetObserver(dataSetObserver);
 		adapter.notifyDataSetChanged();
+		initNotifyOnPageScrollListener();
 	}
 
 	@Override
@@ -56,15 +78,49 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		setCurrentItem(item, true);
 	}
 
+	private int mPreSelectedTabIndex = -1;
+
 	@Override
 	public void setCurrentItem(int item, boolean anim) {
-		mSelectedTabIndex = item;
-		final int tabCount = mAdapter.getCount();
-		for (int i = 0; i < tabCount; i++) {
-			final ViewGroup group = (ViewGroup) getChildAt(i);
-			View child = group.getChildAt(0);
-			final boolean isSelected = (i == item);
-			child.setSelected(isSelected);
+		if (mSelectedTabIndex != item) {
+			int mPreSelectedTabIndex = mSelectedTabIndex;
+			mSelectedTabIndex = item;
+			final int tabCount = mAdapter.getCount();
+			for (int i = 0; i < tabCount; i++) {
+				final ViewGroup group = (ViewGroup) getChildAt(i);
+				View child = group.getChildAt(0);
+				final boolean isSelected = (i == item);
+				child.setSelected(isSelected);
+			}
+
+			if (!inRun.isFinished()) {
+				inRun.stop();
+			}
+			if (scrollBar != null && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
+				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
+				int ex = getChildAt(item).getLeft();
+				final float pageDelta = (float) Math.abs(ex - sx) / (getChildAt(item).getWidth());
+				int duration = (int) ((pageDelta + 1) * 100);
+				duration = Math.min(duration, 600);
+				inRun.startScroll(sx, ex, duration);
+				Log.i("qqqq", " setCurrentItem startScroll");
+			}
+			// measureScrollBar(true);
+		}
+	}
+
+	private void initNotifyOnPageScrollListener() {
+		int tabCount;
+		if (mAdapter != null && (tabCount = mAdapter.getCount()) > 1) {
+			if (onPageScrollListener != null && tabCount > 1 && mSelectedTabIndex >= 0) {
+				int position2 = mSelectedTabIndex + 1;
+				if (position2 > tabCount - 1) {
+					position2 = mSelectedTabIndex - 1;
+				}
+				View view1 = getItemView(mSelectedTabIndex);
+				View view2 = getItemView(position2);
+				onPageScrollListener.onTransition(view1, view2, mSelectedTabIndex, position2, 1);
+			}
 		}
 	}
 
@@ -76,7 +132,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	private List<ViewGroup> views = new LinkedList<ViewGroup>();
 
 	private DataSetObserver dataSetObserver = new DataSetObserver() {
-
 		@Override
 		public void onChange() {
 			int count = getChildCount();
@@ -100,11 +155,22 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				result.addView(view);
 				result.setOnClickListener(onClickListener);
 				result.setTag(i);
-				addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
+				if (shouldWeight) {
+					addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
+				} else {
+					addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+				}
 			}
+			mPreSelectedTabIndex = -1;
 			setCurrentItem(0, false);
 		}
 	};
+
+	private boolean shouldWeight = true;
+
+	void setShouldWeight(boolean shouldWeight) {
+		this.shouldWeight = shouldWeight;
+	}
 
 	private OnClickListener onClickListener = new OnClickListener() {
 
@@ -114,9 +180,331 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			ViewGroup parent = (ViewGroup) v;
 			setCurrentItem(i);
 			if (onItemSelectedListener != null) {
-				onItemSelectedListener.onItemSelected(parent.getChildAt(0), i);
+				onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
 			}
 		}
 	};
 
+	private int mWidthMode;
+
+	private ScrollBar scrollBar;
+
+	@Override
+	public void setScrollBar(ScrollBar scrollBar) {
+		int paddingBottom = getPaddingBottom();
+		int paddingTop = getPaddingTop();
+		if (this.scrollBar != null) {
+			switch (this.scrollBar.getGravity()) {
+			case BOTTOM_FLOAT:
+				paddingBottom = paddingBottom - scrollBar.getHeight(getHeight());
+				break;
+
+			case TOP_FLOAT:
+				paddingTop = paddingTop - scrollBar.getHeight(getHeight());
+				break;
+			default:
+				break;
+			}
+		}
+		this.scrollBar = scrollBar;
+		switch (this.scrollBar.getGravity()) {
+		case BOTTOM_FLOAT:
+			paddingBottom = paddingBottom + scrollBar.getHeight(getHeight());
+			break;
+
+		case TOP_FLOAT:
+			paddingTop = paddingTop + scrollBar.getHeight(getHeight());
+			break;
+		default:
+			break;
+		}
+		setPadding(getPaddingLeft(), paddingTop, getPaddingRight(), paddingBottom);
+		// measureScrollBar(true);
+	}
+
+	private InRun inRun;
+
+	private class InRun implements Runnable {
+		private int updateTime = 20;
+
+		private Scroller scroller;
+		private final Interpolator sInterpolator = new Interpolator() {
+			public float getInterpolation(float t) {
+				t -= 1.0f;
+				return t * t * t * t * t + 1.0f;
+			}
+		};
+
+		public InRun() {
+			super();
+			scroller = new Scroller(getContext(), sInterpolator);
+		}
+
+		public void startScroll(int startX, int endX, int dration) {
+			scroller.startScroll(startX, 0, endX - startX, 0, dration);
+			ViewCompat.postInvalidateOnAnimation(FixedIndicatorView.this);
+			post(this);
+		}
+
+		public boolean isFinished() {
+			return scroller.isFinished();
+		}
+
+		public boolean computeScrollOffset() {
+			return scroller.computeScrollOffset();
+		}
+
+		public int getCurrentX() {
+			return scroller.getCurrX();
+		}
+
+		public void stop() {
+			Log.i("qqqq", "inrun stop");
+			if (scroller.isFinished()) {
+				scroller.abortAnimation();
+			}
+			removeCallbacks(this);
+		}
+
+		@Override
+		public void run() {
+			if (!scroller.isFinished()) {
+				ViewCompat.postInvalidateOnAnimation(FixedIndicatorView.this);
+				postDelayed(this, updateTime);
+			}
+		}
+	}
+
+	@Override
+	protected void dispatchDraw(Canvas canvas) {
+		if (scrollBar != null && scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
+			drawSlideBar(canvas);
+		}
+		super.dispatchDraw(canvas);
+		if (scrollBar != null && scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
+			drawSlideBar(canvas);
+		}
+	}
+
+	private void drawSlideBar(Canvas canvas) {
+		if (mAdapter == null || scrollBar == null) {
+			return;
+		}
+		final int count = mAdapter.getCount();
+		if (count == 0) {
+			return;
+		}
+		if (getCurrentItem() >= count) {
+			setCurrentItem(count - 1);
+			return;
+		}
+		float offsetX = 0;
+		int offsetY = 0;
+		switch (this.scrollBar.getGravity()) {
+		case CENTENT_BACKGROUND:
+		case CENTENT:
+			offsetY = (getHeight() - scrollBar.getHeight(getHeight())) / 2;
+			break;
+		case TOP:
+		case TOP_FLOAT:
+			offsetY = 0;
+			break;
+		case BOTTOM:
+		case BOTTOM_FLOAT:
+		default:
+			offsetY = getHeight() - scrollBar.getHeight(getHeight());
+			break;
+		}
+		View currentView = null;
+		if (!inRun.isFinished() && inRun.computeScrollOffset()) {
+			Log.i("qqqq", " dispatchDraw !mScroller.isFinished()");
+			offsetX = inRun.getCurrentX();
+			int position = 0;
+			for (int i = 0; i < count; i++) {
+				currentView = getChildAt(i);
+				if (currentView.getLeft() <= offsetX && offsetX < currentView.getRight()) {
+					position = i;
+					break;
+				}
+			}
+			int width = currentView.getWidth();
+			int positionOffsetPixels = (int) (offsetX - currentView.getLeft());
+			float positionOffset = (offsetX - currentView.getLeft()) / width;
+			notifyPageScrolled(position, positionOffset, positionOffsetPixels);
+			Log.i("eeee", "position:" + position + " positionOffset:" + positionOffset + " positionOffsetPixels:" + positionOffsetPixels + " width:"
+					+ width + " offsetX:" + offsetX);
+
+			Log.i("qqqq", " dispatchDraw left:" + offsetX + " currentView.getLeft():" + currentView.getLeft());
+		} else if (mPositionOffset - 0.0f > 0.01) {
+			Log.i("qqqq", " dispatchDraw mPositionOffset:" + mPositionOffset);
+			currentView = getChildAt(mPosition);
+			int width = currentView.getWidth();
+			offsetX = currentView.getLeft() + width * mPositionOffset;
+			notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
+
+			Log.i("eeee", "position:" + mPosition + " positionOffset:" + mPositionOffset + " positionOffsetPixels:" + mPositionOffsetPixels
+					+ " width:" + width + " offsetX:" + offsetX);
+		} else {
+			Log.i("qqqq", " dispatchDraw else");
+			currentView = getChildAt(mSelectedTabIndex);
+			if (currentView == null) {
+				return;
+			}
+			offsetX = currentView.getLeft();
+		}
+		int tabWidth = currentView.getWidth();
+		int width = scrollBar.getSlideView().getWidth();
+		width = Math.min(tabWidth, width);
+		offsetX += (tabWidth - width) / 2;
+		int saveCount = canvas.save();
+		canvas.translate(offsetX, offsetY);
+		canvas.clipRect(0, 0, width, scrollBar.getHeight(getHeight())); // needed
+
+		int preHeight = scrollBar.getSlideView().getHeight();
+		int preWidth = scrollBar.getSlideView().getHeight();
+		if (preHeight != scrollBar.getHeight(getHeight()) || preWidth != scrollBar.getWidth(tabWidth)) {
+			measureScrollBar(true);
+		}
+		scrollBar.getSlideView().draw(canvas);
+		canvas.restoreToCount(saveCount);
+	}
+
+	private float firstPositionOffset = 0;
+	private float secondPositionOffset = 0;
+
+	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		if (positionOffset <= 0.0001f) {
+			firstPositionOffset = 0;
+			secondPositionOffset = 0;
+		} else if (firstPositionOffset <= 0.01f) {
+			firstPositionOffset = positionOffset;
+		} else if (secondPositionOffset <= 0.01f) {
+			secondPositionOffset = positionOffset;
+		}
+		if (secondPositionOffset < 0.0001f) {
+			return;
+		}
+		if (scrollBar != null) {
+			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
+		}
+		if (onPageScrollListener != null && position + 1 <= getChildCount() - 1) {
+			int unSelect = 0;
+			int select = 0;
+			float selectPercent;
+			if (firstPositionOffset < secondPositionOffset) {
+				select = position;
+				unSelect = position + 1;
+				selectPercent = 1 - positionOffset;
+			} else {
+				unSelect = position;
+				select = position + 1;
+				selectPercent = positionOffset;
+			}
+			Log.i("zzzz", "position:" + position + " positionOffset:" + positionOffset + " first:" + firstPositionOffset + "second:"
+					+ secondPositionOffset + " select:" + select + " unSelect:" + unSelect + " selectPercent:" + selectPercent);
+			View selectView = getItemView(select);
+			View unSelectView = getItemView(unSelect);
+			// if (selectView != null && unSelectView != null) {
+			onPageScrollListener.onTransition(selectView, unSelectView, select, unSelect, selectPercent);
+			// }
+		}
+	}
+
+	private void measureScrollBar(boolean needChange) {
+		if (scrollBar == null)
+			return;
+		View view = scrollBar.getSlideView();
+		if (view.isLayoutRequested() || needChange) {
+			if (mAdapter != null && mAdapter.getCount() > 0 && mSelectedTabIndex >= 0 && mSelectedTabIndex < mAdapter.getCount()) {
+				int widthSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), mWidthMode);
+				int heightSpec;
+				ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+				if (layoutParams != null && layoutParams.height > 0) {
+					heightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height, MeasureSpec.EXACTLY);
+				} else {
+					heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+				}
+				view.measure(widthSpec, heightSpec);
+				View curr = getChildAt(mSelectedTabIndex);
+				view.layout(0, 0, scrollBar.getWidth(curr.getMeasuredWidth()), scrollBar.getHeight(getHeight()));
+			}
+		}
+	}
+
+	// 布局过程中， 先调onMeasure计算每个child的大小， 然后调用onLayout对child进行布局，
+	// onSizeChanged（）实在布局发生变化时的回调函数，间接回去调用onMeasure, onLayout函数重新布局
+	// 当屏幕旋转的时候导致了 布局的size改变，故而会调用此方法。
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+		// 重新计算浮动的view的大小
+		measureScrollBar(true);
+		int count = getChildCount();
+		if (shouldWeight && count > 0) {
+			int width = (getWidth() - getPaddingLeft() - getPaddingRight()) / count;
+			for (int i = 0; i < count; i++) {
+				View view = getChildAt(i);
+				android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+				layoutParams.width = width;
+				view.setLayoutParams(layoutParams);
+			}
+		}
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+	}
+
+	private int mPosition;
+	private int mPositionOffsetPixels;
+
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		this.mPosition = position;
+		this.mPositionOffset = positionOffset;
+		this.mPositionOffsetPixels = positionOffsetPixels;
+		Log.i("info", "position:" + position + "  onPageScrolled mPositionOffset:" + mPositionOffset);
+		if (scrollBar != null) {
+			ViewCompat.postInvalidateOnAnimation(this);
+		} else {
+			notifyPageScrolled(position, positionOffset, positionOffsetPixels);
+		}
+	}
+
+	private float mPositionOffset;
+
+	@Override
+	public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
+		this.onPageScrollListener = onPageScrollListener;
+		initNotifyOnPageScrollListener();
+	}
+
+	private OnTransitionListener onPageScrollListener;
+
+	@Override
+	public View getItemView(int position) {
+		if (position < 0 || position > mAdapter.getCount() - 1) {
+			return null;
+		}
+		final ViewGroup group = (ViewGroup) getChildAt(position);
+		Log.i("mmmm", "position:" + position);
+		return group.getChildAt(0);
+	}
+
+	@Override
+	public OnItemSelectedListener getOnItemSelectListener() {
+		return onItemSelectedListener;
+	}
+
+	@Override
+	public OnTransitionListener getOnTransitionListener() {
+		return onPageScrollListener;
+	}
+
+	@Override
+	public int getPreSelectItem() {
+		return mPreSelectedTabIndex;
+	}
 }

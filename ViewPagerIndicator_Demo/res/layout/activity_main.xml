@@ -41,6 +41,14 @@
             android:layout_margin="4dp"
             android:onClick="onClickSlideTab"
             android:text="可滑动tab界面" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="onClickSlideBar"
+            android:text="可滑动" />
     </LinearLayout>
 
 </FrameLayout>

@@ -2,7 +2,6 @@ package com.shizhefei.view.indicator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -24,6 +23,7 @@ public class IndicatorViewPager {
 	private ViewPager viewPager;
 	private IndicatorPagerAdapter adapter;
 	private OnIndicatorPageChangeListener onIndicatorPageChangeListener;
+
 	public IndicatorViewPager(Indicator indicator, ViewPager viewPager) {
 		super();
 		this.indicatorView = indicator;
@@ -97,16 +97,22 @@ public class IndicatorViewPager {
 	private OnItemSelectedListener onItemSelectedListener = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemSelected(View view, int position) {
-			viewPager.setCurrentItem(position, true);
+		public void onItemSelected(View selectItemView, int select, int preSelect) {
+			viewPager.setCurrentItem(select, viewPager.isCanScroll());
 			if (onIndicatorPageChangeListener != null) {
-				onIndicatorPageChangeListener.onIndicatorPageChange(position);
+				onIndicatorPageChangeListener.onIndicatorPageChange(preSelect, select);
 			}
 		}
 	};
 
 	public static interface OnIndicatorPageChangeListener {
-		public void onIndicatorPageChange(int item);
+		/**
+		 * 注意 preItem 可能为 -1。表示之前没有选中过,每次adapter.notifyDataSetChanged也会将preItem 设置为-1；
+		 * 
+		 * @param preItem
+		 * @param currentItem
+		 */
+		public void onIndicatorPageChange(int preItem, int currentItem);
 	}
 
 	private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
@@ -115,17 +121,17 @@ public class IndicatorViewPager {
 		public void onPageSelected(int position) {
 			indicatorView.setCurrentItem(position, true);
 			if (onIndicatorPageChangeListener != null) {
-				onIndicatorPageChangeListener.onIndicatorPageChange(position);
+				onIndicatorPageChangeListener.onIndicatorPageChange(indicatorView.getPreSelectItem(), position);
 			}
 		}
 
 		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			indicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
 
 		@Override
-		public void onPageScrollStateChanged(int arg0) {
+		public void onPageScrollStateChanged(int state) {
 
 		}
 	};
