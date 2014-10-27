@@ -42,7 +42,8 @@ public class OnTransitionTextListener implements OnTransitionListener {
 		return this;
 	}
 
-	public final OnTransitionTextListener setValueFromRes(Context context, int selectColorId, int unSelectColorId, int selectSizeId, int unSelectSizeId) {
+	public final OnTransitionTextListener setValueFromRes(Context context, int selectColorId, int unSelectColorId, int selectSizeId,
+			int unSelectSizeId) {
 		setColorId(context, selectColorId, unSelectColorId);
 		setSizeId(context, selectSizeId, unSelectSizeId);
 		return this;
@@ -68,28 +69,6 @@ public class OnTransitionTextListener implements OnTransitionListener {
 		return this;
 	}
 
-	@Override
-	public void onTransition(View selectView, View unSelecteView, int selectPosition, int unSelectPosition, float selectPercent) {
-		TextView selectTextView = getTextView(selectView, selectPosition);
-		TextView unSelectTextView = getTextView(unSelecteView, unSelectPosition);
-
-		if (selectColor != -1 && unSelectColor != -1) {
-			selectTextView.setTextColor(gradient.getColor((int) (selectPercent * 100)));
-			unSelectTextView.setTextColor(gradient.getColor((int) ((1 - selectPercent) * 100)));
-		}
-
-		if (unSelectSize > 0 && selectSize > 0) {
-			if (isPxSize) {
-				selectTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, unSelectSize + dFontFize * selectPercent);
-				unSelectTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, unSelectSize + dFontFize * (1 - selectPercent));
-			} else {
-				selectTextView.setTextSize(unSelectSize + dFontFize * selectPercent);
-				unSelectTextView.setTextSize(unSelectSize + dFontFize * (1 - selectPercent));
-			}
-
-		}
-	}
-
 	/**
 	 * 如果tabItemView 不是目标的TextView，那么你可以重写该方法返回实际要变化的TextView
 	 * 
@@ -101,6 +80,22 @@ public class OnTransitionTextListener implements OnTransitionListener {
 	 */
 	public TextView getTextView(View tabItemView, int position) {
 		return (TextView) tabItemView;
+	}
+
+	@Override
+	public void onTransition(View view, int position, float selectPercent) {
+		TextView selectTextView = getTextView(view, position);
+		if (selectColor != -1 && unSelectColor != -1) {
+			selectTextView.setTextColor(gradient.getColor((int) (selectPercent * 100)));
+		}
+		if (unSelectSize > 0 && selectSize > 0) {
+			if (isPxSize) {
+				selectTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, unSelectSize + dFontFize * selectPercent);
+			} else {
+				selectTextView.setTextSize(unSelectSize + dFontFize * selectPercent);
+			}
+
+		}
 	}
 
 }
