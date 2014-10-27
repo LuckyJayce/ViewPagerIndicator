@@ -1,7 +1,9 @@
 package com.shizhefei.view.indicator;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -119,7 +121,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				}
 				View view1 = getItemView(mSelectedTabIndex);
 				View view2 = getItemView(position2);
-				onPageScrollListener.onTransition(view1, view2, mSelectedTabIndex, position2, 1);
+				onPageScrollListener.onTransition(view1, mSelectedTabIndex, 1);
+				onPageScrollListener.onTransition(view2, position2, 0);
 			}
 		}
 	}
@@ -317,7 +320,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 		View currentView = null;
 		if (!inRun.isFinished() && inRun.computeScrollOffset()) {
-			Log.i("qqqq", " dispatchDraw !mScroller.isFinished()");
 			offsetX = inRun.getCurrentX();
 			int position = 0;
 			for (int i = 0; i < count; i++) {
@@ -331,21 +333,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			int positionOffsetPixels = (int) (offsetX - currentView.getLeft());
 			float positionOffset = (offsetX - currentView.getLeft()) / width;
 			notifyPageScrolled(position, positionOffset, positionOffsetPixels);
-			Log.i("eeee", "position:" + position + " positionOffset:" + positionOffset + " positionOffsetPixels:" + positionOffsetPixels + " width:"
-					+ width + " offsetX:" + offsetX);
-
-			Log.i("qqqq", " dispatchDraw left:" + offsetX + " currentView.getLeft():" + currentView.getLeft());
 		} else if (mPositionOffset - 0.0f > 0.01) {
-			Log.i("qqqq", " dispatchDraw mPositionOffset:" + mPositionOffset);
 			currentView = getChildAt(mPosition);
 			int width = currentView.getWidth();
 			offsetX = currentView.getLeft() + width * mPositionOffset;
 			notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
-
-			Log.i("eeee", "position:" + mPosition + " positionOffset:" + mPositionOffset + " positionOffsetPixels:" + mPositionOffsetPixels
-					+ " width:" + width + " offsetX:" + offsetX);
 		} else {
-			Log.i("qqqq", " dispatchDraw else");
 			currentView = getChildAt(mSelectedTabIndex);
 			if (currentView == null) {
 				return;
@@ -371,6 +364,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private float firstPositionOffset = 0;
 	private float secondPositionOffset = 0;
+	private int preSelect = -1;
+	private Set<Integer> hasSelectPosition = new HashSet<Integer>(4);
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		if (positionOffset <= 0.0001f) {
@@ -400,13 +395,21 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				select = position + 1;
 				selectPercent = positionOffset;
 			}
-			Log.i("zzzz", "position:" + position + " positionOffset:" + positionOffset + " first:" + firstPositionOffset + "second:"
-					+ secondPositionOffset + " select:" + select + " unSelect:" + unSelect + " selectPercent:" + selectPercent);
+			if (preSelect != select) {
+				hasSelectPosition.remove(select);
+				hasSelectPosition.remove(unSelect);
+				for (int i : hasSelectPosition) {
+					View view = getItemView(i);
+					onPageScrollListener.onTransition(view, i, 0);
+				}
+			}
 			View selectView = getItemView(select);
 			View unSelectView = getItemView(unSelect);
-			// if (selectView != null && unSelectView != null) {
-			onPageScrollListener.onTransition(selectView, unSelectView, select, unSelect, selectPercent);
-			// }
+			onPageScrollListener.onTransition(selectView, select, selectPercent);
+			onPageScrollListener.onTransition(unSelectView, unSelect, 1 - selectPercent);
+			hasSelectPosition.add(select);
+			hasSelectPosition.add(unSelect);
+			preSelect = select;
 		}
 	}
 
@@ -465,7 +468,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		this.mPosition = position;
 		this.mPositionOffset = positionOffset;
 		this.mPositionOffsetPixels = positionOffsetPixels;
-		Log.i("info", "position:" + position + "  onPageScrolled mPositionOffset:" + mPositionOffset);
 		if (scrollBar != null) {
 			ViewCompat.postInvalidateOnAnimation(this);
 		} else {
@@ -489,7 +491,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			return null;
 		}
 		final ViewGroup group = (ViewGroup) getChildAt(position);
-		Log.i("mmmm", "position:" + position);
 		return group.getChildAt(0);
 	}
 

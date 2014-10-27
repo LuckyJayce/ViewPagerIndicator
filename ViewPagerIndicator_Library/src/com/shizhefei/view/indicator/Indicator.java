@@ -85,6 +85,6 @@ public interface Indicator {
 	}
 
 	public static interface OnTransitionListener {
-		public void onTransition(View selectView, View unSelecteView, int selectPosition, int unSelectPosition, float selectPercent);
+		public void onTransition(View view, int position, float selectPercent);
 	}
 }
