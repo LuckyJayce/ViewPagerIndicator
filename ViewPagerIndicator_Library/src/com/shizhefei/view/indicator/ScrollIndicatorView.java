@@ -19,7 +19,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	public ScrollIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		fixedIndicatorView = new FixedIndicatorView(context);
-		fixedIndicatorView.setShouldWeight(false);
+		fixedIndicatorView.setSplitMethod(FixedIndicatorView.SPLITMETHOD_WRAP);
 		addView(fixedIndicatorView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		setHorizontalScrollBarEnabled(false);
 	}

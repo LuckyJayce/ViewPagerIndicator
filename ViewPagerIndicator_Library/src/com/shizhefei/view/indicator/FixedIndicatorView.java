@@ -28,6 +28,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private int mSelectedTabIndex = -1;
 
+	public static final int SPLITMETHOD_EQUALS = 0;
+	public static final int SPLITMETHOD_WEIGHT = 1;
+	public static final int SPLITMETHOD_WRAP = 2;
+
+	private int splitMethod = SPLITMETHOD_WEIGHT;
+
 	public FixedIndicatorView(Context context) {
 		super(context);
 		init();
@@ -84,6 +90,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	@Override
 	public void setCurrentItem(int item, boolean anim) {
+		if (item < 0) {
+			item = 0;
+		} else if (item > mAdapter.getCount() - 1) {
+			item = mAdapter.getCount() - 1;
+		}
 		if (mSelectedTabIndex != item) {
 			int mPreSelectedTabIndex = mSelectedTabIndex;
 			mSelectedTabIndex = item;
@@ -105,7 +116,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				int duration = (int) ((pageDelta + 1) * 100);
 				duration = Math.min(duration, 600);
 				inRun.startScroll(sx, ex, duration);
-				Log.i("qqqq", " setCurrentItem startScroll");
 			}
 			// measureScrollBar(true);
 		}
@@ -158,21 +168,21 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				result.addView(view);
 				result.setOnClickListener(onClickListener);
 				result.setTag(i);
-				if (shouldWeight) {
-					addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
-				} else {
-					addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-				}
+				addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 			}
 			mPreSelectedTabIndex = -1;
-			setCurrentItem(0, false);
+			setCurrentItem(mSelectedTabIndex, false);
+			measureTabs();
 		}
 	};
 
-	private boolean shouldWeight = true;
+	public void setSplitMethod(int splitMethod) {
+		this.splitMethod = splitMethod;
+		measureTabs();
+	}
 
-	void setShouldWeight(boolean shouldWeight) {
-		this.shouldWeight = shouldWeight;
+	public int getSplitMethod() {
+		return splitMethod;
 	}
 
 	private OnClickListener onClickListener = new OnClickListener() {
@@ -434,6 +444,43 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
+	private void measureTabs() {
+		int width = getMeasuredWidth();
+		int count = getChildCount();
+		if (count == 0) {
+			return;
+		}
+		switch (splitMethod) {
+		case SPLITMETHOD_EQUALS:
+			int cellWitdh = (width - getPaddingLeft() - getPaddingRight()) / count;
+			for (int i = 0; i < count; i++) {
+				View view = getChildAt(i);
+				android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+				layoutParams.width = cellWitdh;
+				view.setLayoutParams(layoutParams);
+			}
+			break;
+		case SPLITMETHOD_WRAP:
+			for (int i = 0; i < count; i++) {
+				View view = getChildAt(i);
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.weight = 0;
+				view.setLayoutParams(layoutParams);
+			}
+			break;
+		case SPLITMETHOD_WEIGHT:
+			for (int i = 0; i < count; i++) {
+				View view = getChildAt(i);
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.weight = 1;
+				view.setLayoutParams(layoutParams);
+			}
+			break;
+		}
+	}
+
 	// 布局过程中， 先调onMeasure计算每个child的大小， 然后调用onLayout对child进行布局，
 	// onSizeChanged（）实在布局发生变化时的回调函数，间接回去调用onMeasure, onLayout函数重新布局
 	// 当屏幕旋转的时候导致了 布局的size改变，故而会调用此方法。
@@ -442,26 +489,18 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		super.onSizeChanged(w, h, oldw, oldh);
 		// 重新计算浮动的view的大小
 		measureScrollBar(true);
-		int count = getChildCount();
-		if (shouldWeight && count > 0) {
-			int width = (getWidth() - getPaddingLeft() - getPaddingRight()) / count;
-			for (int i = 0; i < count; i++) {
-				View view = getChildAt(i);
-				android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-				layoutParams.width = width;
-				view.setLayoutParams(layoutParams);
-			}
-		}
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+		measureTabs();
 	}
 
 	private int mPosition;
 	private int mPositionOffsetPixels;
+	private float mPositionOffset;
 
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -475,7 +514,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
-	private float mPositionOffset;
 
 	@Override
 	public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
