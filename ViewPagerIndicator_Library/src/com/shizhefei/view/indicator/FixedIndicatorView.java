@@ -32,7 +32,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public static final int SPLITMETHOD_WEIGHT = 1;
 	public static final int SPLITMETHOD_WRAP = 2;
 
-	private int splitMethod = SPLITMETHOD_WEIGHT;
+	private int splitMethod = SPLITMETHOD_EQUALS;
 
 	public FixedIndicatorView(Context context) {
 		super(context);
@@ -116,6 +116,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				int duration = (int) ((pageDelta + 1) * 100);
 				duration = Math.min(duration, 600);
 				inRun.startScroll(sx, ex, duration);
+				Log.i("qqqq", " setCurrentItem startScroll");
 			}
 			// measureScrollBar(true);
 		}
@@ -445,18 +446,18 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	}
 
 	private void measureTabs() {
-		int width = getMeasuredWidth();
+		// int width = getMeasuredWidth();
 		int count = getChildCount();
-		if (count == 0) {
-			return;
-		}
+		// if (count == 0 || width == 0) {
+		// return;
+		// }
 		switch (splitMethod) {
 		case SPLITMETHOD_EQUALS:
-			int cellWitdh = (width - getPaddingLeft() - getPaddingRight()) / count;
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
-				android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-				layoutParams.width = cellWitdh;
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+				layoutParams.width = 0;
+				layoutParams.weight = 1;
 				view.setLayoutParams(layoutParams);
 			}
 			break;
@@ -481,6 +482,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
+	@Override
+	protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+		super.measureChildren(widthMeasureSpec, heightMeasureSpec);
+	}
+
 	// 布局过程中， 先调onMeasure计算每个child的大小， 然后调用onLayout对child进行布局，
 	// onSizeChanged（）实在布局发生变化时的回调函数，间接回去调用onMeasure, onLayout函数重新布局
 	// 当屏幕旋转的时候导致了 布局的size改变，故而会调用此方法。
@@ -489,18 +495,24 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		super.onSizeChanged(w, h, oldw, oldh);
 		// 重新计算浮动的view的大小
 		measureScrollBar(true);
+		Log.i("Tab", "onSizeChanged :" + getMeasuredWidth());
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
-		measureTabs();
+		Log.i("Tab", "onMeasure :" + getMeasuredWidth());
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		Log.i("Tab", "onLayout :" + getMeasuredWidth());
 	}
 
 	private int mPosition;
 	private int mPositionOffsetPixels;
-	private float mPositionOffset;
 
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -514,6 +526,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
+	private float mPositionOffset;
 
 	@Override
 	public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
@@ -546,4 +559,5 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
 	}
+	
 }
