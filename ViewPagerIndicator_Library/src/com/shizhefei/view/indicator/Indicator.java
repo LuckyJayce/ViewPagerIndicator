@@ -39,7 +39,7 @@ public interface Indicator {
 	 * 目前提供的子类
 	 * {@link com.shizhefei.view.indicator.transition.OnTransitionTextListener}
 	 * 
-	 * @param onPageScrollListener
+	 * @param onTransitionListener
 	 * 
 	 */
 	public void setOnTransitionListener(OnTransitionListener onTransitionListener);

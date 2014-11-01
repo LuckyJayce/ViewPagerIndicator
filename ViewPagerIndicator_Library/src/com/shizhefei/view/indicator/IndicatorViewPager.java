@@ -69,42 +69,94 @@ public class IndicatorViewPager {
 		this.onIndicatorPageChangeListener = onIndicatorPageChangeListener;
 	}
 
+	/**
+	 * 设置indicatorView上滑动变化的转换监听，tab在切换过程中会调用此监听。
+	 * 
+	 * @param onTransitionListener
+	 */
 	public void setIndicatorOnTransitionListener(OnTransitionListener onTransitionListener) {
 		indicatorView.setOnTransitionListener(onTransitionListener);
 	}
 
+	/**
+	 * 设置indicatorView的滑动块样式
+	 * 
+	 * @param scrollBar
+	 */
 	public void setIndicatorScrollBar(ScrollBar scrollBar) {
 		indicatorView.setScrollBar(scrollBar);
 	}
 
+	/**
+	 * 设置缓存界面的个数，左右两边缓存界面的个数，不会被重新创建。<br>
+	 * 默认是1，表示左右两边 相连的1个界面和当前界面都会被缓存住，比如切换到左边的一个界面，那个界面是不会重新创建的。
+	 * 
+	 * @param limit
+	 */
 	public void setPageOffscreenLimit(int limit) {
 		viewPager.setOffscreenPageLimit(limit);
 	}
 
+	/**
+	 * 设置预加载界面的个数。左右两边加载界面的个数<br>
+	 * 默认是1，表示左右两边 相连的1个界面会和当前界面同时加载
+	 * 
+	 * @param limit
+	 */
 	public void setPagePrepareNumber(int limit) {
 		viewPager.setPrepareNumber(limit);
 	}
 
+	/**
+	 * 设置page间的图片的宽度
+	 * 
+	 * @param marginPixels
+	 */
 	public void setPageMargin(int marginPixels) {
 		viewPager.setPageMargin(marginPixels);
 	}
 
+	/**
+	 * 设置page间的图片
+	 * 
+	 * @param d
+	 */
 	public void setPageMarginDrawable(Drawable d) {
 		viewPager.setPageMarginDrawable(d);
 	}
 
+	/**
+	 * 设置page间的图片
+	 * 
+	 * @param resId
+	 */
 	public void setPageMarginDrawable(int resId) {
 		viewPager.setPageMarginDrawable(resId);
 	}
 
+	/**
+	 * 设置page是否可滑动
+	 * 
+	 * @param isCanScroll
+	 */
 	public void setPageCanScroll(boolean isCanScroll) {
 		viewPager.setCanScroll(isCanScroll);
 	}
 
+	/**
+	 * 获取上一次选中的索引
+	 * 
+	 * @return
+	 */
 	public int getPreSelectItem() {
 		return indicatorView.getPreSelectItem();
 	}
 
+	/**
+	 * 获取当前选中的索引
+	 * 
+	 * @return
+	 */
 	public int getCurrentItem() {
 		return viewPager.getCurrentItem();
 	}
