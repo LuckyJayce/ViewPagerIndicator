@@ -11,8 +11,7 @@ import com.shizhefei.view.indicator.slidebar.ScrollBar;
 /**
  * @author试着飞
  * @date 2014年11月1日
- * @version 1.0 
- * 指示器
+ * @version 1.0 指示器
  */
 public interface Indicator {
 	/**
@@ -43,7 +42,7 @@ public interface Indicator {
 	 * @param onPageScrollListener
 	 * 
 	 */
-	public void setOnTransitionListener(OnTransitionListener onPageScrollListener);
+	public void setOnTransitionListener(OnTransitionListener onTransitionListener);
 
 	public OnTransitionListener getOnTransitionListener();
 

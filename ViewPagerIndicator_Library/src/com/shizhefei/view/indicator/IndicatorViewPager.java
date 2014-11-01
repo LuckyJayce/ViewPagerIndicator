@@ -1,5 +1,6 @@
 package com.shizhefei.view.indicator;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -10,13 +11,15 @@ import android.view.ViewGroup;
 
 import com.shizhefei.view.indicator.Indicator.IndicatorAdapter;
 import com.shizhefei.view.indicator.Indicator.OnItemSelectedListener;
+import com.shizhefei.view.indicator.Indicator.OnTransitionListener;
+import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
 
 /**
  * 
  * @author试着飞
  * @date 2014年11月1日
- * @version 1.0
+ * @version 1.0 
  * 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
@@ -31,19 +34,6 @@ public class IndicatorViewPager {
 		this.viewPager = viewPager;
 		viewPager.setOnPageChangeListener(onPageChangeListener);
 		indicatorView.setOnItemSelectListener(onItemSelectedListener);
-	}
-
-	public OnIndicatorPageChangeListener getOnIndicatorPageChangeListener() {
-		return onIndicatorPageChangeListener;
-	}
-
-	/**
-	 * 设置页面切换监听
-	 * 
-	 * @return
-	 */
-	public void setOnIndicatorPageChangeListener(OnIndicatorPageChangeListener onIndicatorPageChangeListener) {
-		this.onIndicatorPageChangeListener = onIndicatorPageChangeListener;
 	}
 
 	/**
@@ -70,8 +60,61 @@ public class IndicatorViewPager {
 		indicatorView.setCurrentItem(item, anim);
 	}
 
+	/**
+	 * 设置页面切换监听
+	 * 
+	 * @return
+	 */
+	public void setOnIndicatorPageChangeListener(OnIndicatorPageChangeListener onIndicatorPageChangeListener) {
+		this.onIndicatorPageChangeListener = onIndicatorPageChangeListener;
+	}
+
+	public void setIndicatorOnTransitionListener(OnTransitionListener onTransitionListener) {
+		indicatorView.setOnTransitionListener(onTransitionListener);
+	}
+
+	public void setIndicatorScrollBar(ScrollBar scrollBar) {
+		indicatorView.setScrollBar(scrollBar);
+	}
+
+	public void setPageOffscreenLimit(int limit) {
+		viewPager.setOffscreenPageLimit(limit);
+	}
+
+	public void setPagePrepareNumber(int limit) {
+		viewPager.setPrepareNumber(limit);
+	}
+
+	public void setPageMargin(int marginPixels) {
+		viewPager.setPageMargin(marginPixels);
+	}
+
+	public void setPageMarginDrawable(Drawable d) {
+		viewPager.setPageMarginDrawable(d);
+	}
+
+	public void setPageMarginDrawable(int resId) {
+		viewPager.setPageMarginDrawable(resId);
+	}
+
+	public void setPageCanScroll(boolean isCanScroll) {
+		viewPager.setCanScroll(isCanScroll);
+	}
+
+	public int getPreSelectItem() {
+		return indicatorView.getPreSelectItem();
+	}
+
 	public int getCurrentItem() {
 		return viewPager.getCurrentItem();
+	}
+
+	public IndicatorPagerAdapter getAdapter() {
+		return this.adapter;
+	}
+
+	public OnIndicatorPageChangeListener getOnIndicatorPageChangeListener() {
+		return onIndicatorPageChangeListener;
 	}
 
 	public Indicator getIndicatorView() {
@@ -80,10 +123,6 @@ public class IndicatorViewPager {
 
 	public ViewPager getViewPager() {
 		return viewPager;
-	}
-
-	public IndicatorPagerAdapter getAdapter() {
-		return this.adapter;
 	}
 
 	/**
@@ -108,7 +147,8 @@ public class IndicatorViewPager {
 
 	public static interface OnIndicatorPageChangeListener {
 		/**
-		 * 注意 preItem 可能为 -1。表示之前没有选中过,每次adapter.notifyDataSetChanged也会将preItem 设置为-1；
+		 * 注意 preItem 可能为 -1。表示之前没有选中过,每次adapter.notifyDataSetChanged也会将preItem
+		 * 设置为-1；
 		 * 
 		 * @param preItem
 		 * @param currentItem
