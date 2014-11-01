@@ -3,7 +3,13 @@ package com.shizhefei.view.indicator.slidebar;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-
+/**
+ * 
+ * @author试着飞
+ * @date 2014年11月2日
+ * @version 1.0
+ * 通过颜色来设置滑动块
+ */
 public class ColorBar implements ScrollBar {
 	protected Gravity gravity;
 	protected View view;
@@ -72,7 +78,6 @@ public class ColorBar implements ScrollBar {
 
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		Log.i("wwww", "position:" + position + " positionOffset:" + positionOffset + " positionOffsetPixels:" + positionOffsetPixels);
 	}
 
 }

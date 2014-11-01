@@ -8,10 +8,11 @@ import android.widget.HorizontalScrollView;
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 
 /**
- * 通过ScrollView形式动态扩充的Indicator，适用于项比较多。
  * 
- * @author Administrator
- * 
+ * @author试着飞
+ * @date 2014年11月1日
+ * @version 1.0
+ *  主要用于多个tab可以进行滑动
  */
 public class ScrollIndicatorView extends HorizontalScrollView implements Indicator {
 	private FixedIndicatorView fixedIndicatorView;

@@ -20,6 +20,12 @@ import android.widget.Scroller;
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 
+/**
+ * 
+ * @author试着飞
+ * @date 2014年11月1日
+ * @version 1.0 主要用于固定大小来平均分配tab的情况的指示器
+ */
 public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private IndicatorAdapter mAdapter;
@@ -28,10 +34,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private int mSelectedTabIndex = -1;
 
+	/** 平均分配tab */
 	public static final int SPLITMETHOD_EQUALS = 0;
+	/** 如果内容等的话会平均分配tab,如果内容不相等的话，内容比较多的那个tab占的位置比较大 */
 	public static final int SPLITMETHOD_WEIGHT = 1;
+	/** 根据tab自己分配所占的空间 */
 	public static final int SPLITMETHOD_WRAP = 2;
 
+	/**默认为平均分配*/
 	private int splitMethod = SPLITMETHOD_EQUALS;
 
 	public FixedIndicatorView(Context context) {
@@ -99,6 +109,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			int mPreSelectedTabIndex = mSelectedTabIndex;
 			mSelectedTabIndex = item;
 			final int tabCount = mAdapter.getCount();
+			/*
+			 * 设置当前选中的tab
+			 */
 			for (int i = 0; i < tabCount; i++) {
 				final ViewGroup group = (ViewGroup) getChildAt(i);
 				View child = group.getChildAt(0);
@@ -106,17 +119,21 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				child.setSelected(isSelected);
 			}
 
+			// 判断切换动画是否完成,没有完成，就停止
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
+			// 判断scrollBar不为空，且用户没有使用viewpager切换，且之前有选择过
 			if (scrollBar != null && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
+				// 获取scrollBar开始移动的起始位置
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
+				// 获取scrollBar结束的位置
 				int ex = getChildAt(item).getLeft();
 				final float pageDelta = (float) Math.abs(ex - sx) / (getChildAt(item).getWidth());
 				int duration = (int) ((pageDelta + 1) * 100);
 				duration = Math.min(duration, 600);
+				// 开始执行scrollBar的滑动动画
 				inRun.startScroll(sx, ex, duration);
-				Log.i("qqqq", " setCurrentItem startScroll");
 			}
 			// measureScrollBar(true);
 		}
@@ -238,6 +255,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private InRun inRun;
 
+	/**
+	 * 用于做tab的scrollBar的滑动动画的刷新
+	 */
 	private class InRun implements Runnable {
 		private int updateTime = 20;
 
@@ -273,7 +293,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 
 		public void stop() {
-			Log.i("qqqq", "inrun stop");
 			if (scroller.isFinished()) {
 				scroller.abortAnimation();
 			}
@@ -445,12 +464,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
+	/**
+	 * 设置tab的分配方式
+	 */
 	private void measureTabs() {
-		// int width = getMeasuredWidth();
 		int count = getChildCount();
-		// if (count == 0 || width == 0) {
-		// return;
-		// }
 		switch (splitMethod) {
 		case SPLITMETHOD_EQUALS:
 			for (int i = 0; i < count; i++) {
@@ -495,20 +513,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		super.onSizeChanged(w, h, oldw, oldh);
 		// 重新计算浮动的view的大小
 		measureScrollBar(true);
-		Log.i("Tab", "onSizeChanged :" + getMeasuredWidth());
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
-		Log.i("Tab", "onMeasure :" + getMeasuredWidth());
-	}
-
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		super.onLayout(changed, l, t, r, b);
-		Log.i("Tab", "onLayout :" + getMeasuredWidth());
 	}
 
 	private int mPosition;
@@ -559,5 +569,5 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
 	}
-	
+
 }

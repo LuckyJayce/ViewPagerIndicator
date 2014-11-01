@@ -13,10 +13,11 @@ import com.shizhefei.view.indicator.Indicator.OnItemSelectedListener;
 import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
 
 /**
- * 以调停者模式，将indicatorView，ViewPager进行同步控制，组合使用
  * 
- * @author Administrator
- * 
+ * @author试着飞
+ * @date 2014年11月1日
+ * @version 1.0
+ * 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
 	private Indicator indicatorView;
