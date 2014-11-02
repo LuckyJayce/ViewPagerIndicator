@@ -100,8 +100,31 @@ support4.jar目前是1069k，因为我把源码也放了进去。
 子类ScrollIndicatorView 主要用于多个tab可以进行滑动。**
 
 ## 3.indicatorViewPager  ##
-用于将ViewPager和Indicator 联合使用。
-indicatorViewPager.setAdapter(IndicatorPagerAdapter adapter)
+用于将ViewPager和Indicator 联合使用。  
+
+
+			indicatorViewPager.setAdapter(IndicatorPagerAdapter adapter)  
+	        // 设置它可以自定义实现在滑动过程中，tab项的字体变化，颜色变化等等过渡效果  
+    		indicatorViewPager.setIndicatorOnTransitionListener(onTransitionListener);  
+    		// 设置它可以自定义滑动块的样式  
+    		indicatorViewPager.setIndicatorScrollBar(scrollBar);  
+    		// 设置page是否可滑动切换  
+    		indicatorViewPager.setPageCanScroll(false);  
+    		/*
+    		 * 设置缓存界面的个数，左右两边缓存界面的个数，不会被重新创建。 默认是1，表示左右两边  
+    		 * 相连的1个界面和当前界面都会被缓存住，比如切换到左边的一个界面，那个界面是不会重新创建的。  
+    		 */  
+    		indicatorViewPager.setPageOffscreenLimit(1);  
+    		/*
+    		 * 设置预加载界面的个数。左右两边加载界面的个数 默认是1，表示左右两边 相连的1个界面会和当前界面同时加载  
+    		 */  
+    		indicatorViewPager.setPagePrepareNumber(1);  
+    		// 设置页面切换监听  
+    		indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListener);  
+    		// 设置page间的图片的宽度  
+    		indicatorViewPager.setPageMargin(1);  
+    		// 设置page间的图片  
+    		indicatorViewPager.setPageMarginDrawable(d);  
 
 ## 4.IndicatorPagerAdapter  ##
 子类IndicatorFragmentPagerAdapter 用于 界面是fragment的形式。
