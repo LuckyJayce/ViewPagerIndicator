@@ -1,18 +1,3 @@
-/*
-Copyright 2014 shizhefei（LuckyJayce）
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.shizhefei.view.indicator;
 
 import java.util.HashSet;
@@ -25,7 +10,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -35,12 +19,6 @@ import android.widget.Scroller;
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 
-/**
- * 
- * @author试着飞
- * @date 2014年11月1日
- * @version 1.0 主要用于固定大小来平均分配tab的情况的指示器
- */
 public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private IndicatorAdapter mAdapter;
@@ -49,14 +27,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private int mSelectedTabIndex = -1;
 
-	/** 平均分配tab */
 	public static final int SPLITMETHOD_EQUALS = 0;
-	/** 如果内容等的话会平均分配tab,如果内容不相等的话，内容比较多的那个tab占的位置比较大 */
 	public static final int SPLITMETHOD_WEIGHT = 1;
-	/** 根据tab自己分配所占的空间 */
 	public static final int SPLITMETHOD_WRAP = 2;
 
-	/**默认为平均分配*/
 	private int splitMethod = SPLITMETHOD_EQUALS;
 
 	public FixedIndicatorView(Context context) {
@@ -121,12 +95,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			item = mAdapter.getCount() - 1;
 		}
 		if (mSelectedTabIndex != item) {
-			int mPreSelectedTabIndex = mSelectedTabIndex;
+			mPreSelectedTabIndex = mSelectedTabIndex;
 			mSelectedTabIndex = item;
 			final int tabCount = mAdapter.getCount();
-			/*
-			 * 设置当前选中的tab
-			 */
 			for (int i = 0; i < tabCount; i++) {
 				final ViewGroup group = (ViewGroup) getChildAt(i);
 				View child = group.getChildAt(0);
@@ -134,38 +105,33 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				child.setSelected(isSelected);
 			}
 
-			// 判断切换动画是否完成,没有完成，就停止
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
-			// 判断scrollBar不为空，且用户没有使用viewpager切换，且之前有选择过
-			if (scrollBar != null && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
-				// 获取scrollBar开始移动的起始位置
+			initNotifyOnPageScrollListener();
+			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
-				// 获取scrollBar结束的位置
 				int ex = getChildAt(item).getLeft();
 				final float pageDelta = (float) Math.abs(ex - sx) / (getChildAt(item).getWidth());
 				int duration = (int) ((pageDelta + 1) * 100);
 				duration = Math.min(duration, 600);
-				// 开始执行scrollBar的滑动动画
 				inRun.startScroll(sx, ex, duration);
 			}
-			// measureScrollBar(true);
 		}
 	}
 
 	private void initNotifyOnPageScrollListener() {
 		int tabCount;
 		if (mAdapter != null && (tabCount = mAdapter.getCount()) > 1) {
-			if (onPageScrollListener != null && tabCount > 1 && mSelectedTabIndex >= 0) {
-				int position2 = mSelectedTabIndex + 1;
-				if (position2 > tabCount - 1) {
-					position2 = mSelectedTabIndex - 1;
+			if (onPageScrollListener != null && tabCount > 1) {
+				if (mPreSelectedTabIndex >= 0) {
+					View view1 = getItemView(mPreSelectedTabIndex);
+					onPageScrollListener.onTransition(view1, mPreSelectedTabIndex, 0);
 				}
-				View view1 = getItemView(mSelectedTabIndex);
-				View view2 = getItemView(position2);
-				onPageScrollListener.onTransition(view1, mSelectedTabIndex, 1);
-				onPageScrollListener.onTransition(view2, position2, 0);
+				if (mSelectedTabIndex >= 0) {
+					View view1 = getItemView(mSelectedTabIndex);
+					onPageScrollListener.onTransition(view1, mSelectedTabIndex, 1);
+				}
 			}
 		}
 	}
@@ -231,8 +197,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	};
 
-	private int mWidthMode;
-
 	private ScrollBar scrollBar;
 
 	@Override
@@ -270,9 +234,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private InRun inRun;
 
-	/**
-	 * 用于做tab的scrollBar的滑动动画的刷新
-	 */
 	private class InRun implements Runnable {
 		private int updateTime = 20;
 
@@ -316,8 +277,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 		@Override
 		public void run() {
+			ViewCompat.postInvalidateOnAnimation(FixedIndicatorView.this);
 			if (!scroller.isFinished()) {
-				ViewCompat.postInvalidateOnAnimation(FixedIndicatorView.this);
 				postDelayed(this, updateTime);
 			}
 		}
@@ -378,7 +339,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			int positionOffsetPixels = (int) (offsetX - currentView.getLeft());
 			float positionOffset = (offsetX - currentView.getLeft()) / width;
 			notifyPageScrolled(position, positionOffset, positionOffsetPixels);
-		} else if (mPositionOffset - 0.0f > 0.01) {
+		} else if (mPositionOffset > 0.001f) {
 			currentView = getChildAt(mPosition);
 			int width = currentView.getWidth();
 			offsetX = currentView.getLeft() + width * mPositionOffset;
@@ -390,19 +351,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			}
 			offsetX = currentView.getLeft();
 		}
-		int tabWidth = currentView.getWidth();
+		int tabWidth = measureScrollBar(unSelect, select, selectPercent, true);
 		int width = scrollBar.getSlideView().getWidth();
-		width = Math.min(tabWidth, width);
 		offsetX += (tabWidth - width) / 2;
 		int saveCount = canvas.save();
 		canvas.translate(offsetX, offsetY);
-		canvas.clipRect(0, 0, width, scrollBar.getHeight(getHeight())); // needed
-
-		int preHeight = scrollBar.getSlideView().getHeight();
-		int preWidth = scrollBar.getSlideView().getHeight();
-		if (preHeight != scrollBar.getHeight(getHeight()) || preWidth != scrollBar.getWidth(tabWidth)) {
-			measureScrollBar(true);
-		}
+		canvas.clipRect(0, 0, width, scrollBar.getSlideView().getHeight()); // needed
 		scrollBar.getSlideView().draw(canvas);
 		canvas.restoreToCount(saveCount);
 	}
@@ -411,6 +365,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	private float secondPositionOffset = 0;
 	private int preSelect = -1;
 	private Set<Integer> hasSelectPosition = new HashSet<Integer>(4);
+
+	private int unSelect = -1;
+
+	private int select = -1;
+
+	private float selectPercent;;
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		if (positionOffset <= 0.0001f) {
@@ -421,16 +381,15 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		} else if (secondPositionOffset <= 0.01f) {
 			secondPositionOffset = positionOffset;
 		}
-		if (secondPositionOffset < 0.0001f) {
+		if (secondPositionOffset < 0.01f) {
 			return;
 		}
 		if (scrollBar != null) {
 			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
-		if (onPageScrollListener != null && position + 1 <= getChildCount() - 1) {
-			int unSelect = 0;
-			int select = 0;
-			float selectPercent;
+		if (position + 1 <= getChildCount() - 1) {
+			unSelect = 0;
+			select = 0;
 			if (firstPositionOffset < secondPositionOffset) {
 				select = position;
 				unSelect = position + 1;
@@ -440,50 +399,54 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				select = position + 1;
 				selectPercent = positionOffset;
 			}
-			if (preSelect != select) {
-				hasSelectPosition.remove(select);
-				hasSelectPosition.remove(unSelect);
-				for (int i : hasSelectPosition) {
-					View view = getItemView(i);
-					onPageScrollListener.onTransition(view, i, 0);
+			if (onPageScrollListener != null) {
+				if (preSelect != select) {
+					hasSelectPosition.remove(select);
+					hasSelectPosition.remove(unSelect);
+					for (int i : hasSelectPosition) {
+						View view = getItemView(i);
+						onPageScrollListener.onTransition(view, i, 0);
+					}
 				}
+				View selectView = getItemView(select);
+				View unSelectView = getItemView(unSelect);
+				onPageScrollListener.onTransition(selectView, select, selectPercent);
+				onPageScrollListener.onTransition(unSelectView, unSelect, 1 - selectPercent);
+				hasSelectPosition.add(select);
+				hasSelectPosition.add(unSelect);
 			}
-			View selectView = getItemView(select);
-			View unSelectView = getItemView(unSelect);
-			onPageScrollListener.onTransition(selectView, select, selectPercent);
-			onPageScrollListener.onTransition(unSelectView, unSelect, 1 - selectPercent);
-			hasSelectPosition.add(select);
-			hasSelectPosition.add(unSelect);
 			preSelect = select;
 		}
 	}
 
-	private void measureScrollBar(boolean needChange) {
+	private int measureScrollBar(int unSelect, int select, float selectPercent, boolean needChange) {
 		if (scrollBar == null)
-			return;
+			return 0;
 		View view = scrollBar.getSlideView();
 		if (view.isLayoutRequested() || needChange) {
 			if (mAdapter != null && mAdapter.getCount() > 0 && mSelectedTabIndex >= 0 && mSelectedTabIndex < mAdapter.getCount()) {
-				int widthSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), mWidthMode);
-				int heightSpec;
-				ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-				if (layoutParams != null && layoutParams.height > 0) {
-					heightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height, MeasureSpec.EXACTLY);
-				} else {
-					heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+				View unSelectV = getChildAt(unSelect);
+				View selectV = getChildAt(select);
+				if (selectV == null) {
+					selectV = getChildAt(mSelectedTabIndex);
+					selectPercent = 1;
 				}
-				view.measure(widthSpec, heightSpec);
-				View curr = getChildAt(mSelectedTabIndex);
-				view.layout(0, 0, scrollBar.getWidth(curr.getMeasuredWidth()), scrollBar.getHeight(getHeight()));
+				if (selectV != null) {
+					int width = (int) (selectV.getWidth() * selectPercent + (unSelectV == null ? 0 : unSelectV.getWidth() * (1 - selectPercent)));
+					view.layout(0, 0, scrollBar.getWidth(width), scrollBar.getHeight(getHeight()));
+					return width;
+				}
 			}
 		}
+		return scrollBar.getSlideView().getWidth();
 	}
 
-	/**
-	 * 设置tab的分配方式
-	 */
 	private void measureTabs() {
+		// int width = getMeasuredWidth();
 		int count = getChildCount();
+		// if (count == 0 || width == 0) {
+		// return;
+		// }
 		switch (splitMethod) {
 		case SPLITMETHOD_EQUALS:
 			for (int i = 0; i < count; i++) {
@@ -520,20 +483,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		super.measureChildren(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	// 布局过程中， 先调onMeasure计算每个child的大小， 然后调用onLayout对child进行布局，
-	// onSizeChanged（）实在布局发生变化时的回调函数，间接回去调用onMeasure, onLayout函数重新布局
-	// 当屏幕旋转的时候导致了 布局的size改变，故而会调用此方法。
+	// 甯冨眬杩囩▼涓紝 鍏堣皟onMeasure璁＄畻姣忎釜child鐨勫ぇ灏忥紝 鐒跺悗璋冪敤onLayout瀵筩hild杩涜甯冨眬锛�
+	// onSizeChanged锛堬級瀹炲湪甯冨眬鍙戠敓鍙樺寲鏃剁殑鍥炶皟鍑芥暟锛岄棿鎺ュ洖鍘昏皟鐢╫nMeasure, onLayout鍑芥暟閲嶆柊甯冨眬
+	// 褰撳睆骞曟棆杞殑鏃跺�瀵艰嚧浜�甯冨眬鐨剆ize鏀瑰彉锛屾晠鑰屼細璋冪敤姝ゆ柟娉曘�
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		// 重新计算浮动的view的大小
-		measureScrollBar(true);
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+		// 閲嶆柊璁＄畻娴姩鐨剉iew鐨勫ぇ灏�
+		measureScrollBar(-1, mSelectedTabIndex, 1, true);
 	}
 
 	private int mPosition;
@@ -584,5 +541,4 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
 	}
-
 }
