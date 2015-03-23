@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.support.annotation.DrawableRes;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
@@ -60,14 +59,14 @@ import java.util.Comparator;
  * Layout manager that allows the user to flip left and right through pages of
  * data. You supply an implementation of a {@link PagerAdapter} to generate the
  * pages that the view shows.
- *
+ * 
  * <p>
  * Note this class is currently under early design and development. The API will
  * likely change in later updates of the compatibility library, requiring
  * changes to the source code of apps when they are compiled against the newer
  * version.
  * </p>
- *
+ * 
  * <p>
  * ViewPager is most often used in conjunction with {@link android.app.Fragment}
  * , which is a convenient way to supply and manage the lifecycle of each page.
@@ -77,18 +76,12 @@ import java.util.Comparator;
  * {@link android.support.v4.app.FragmentStatePagerAdapter}; each of these
  * classes have simple code showing how to build a full user interface with
  * them.
- *
+ * 
  * <p>
- * For more information about how to use ViewPager, read <a href="{@docRoot}
- * training/implementing-navigation/lateral.html">Creating Swipe Views with
- * Tabs</a>.
- * </p>
- *
- * <p>
- * Below is a more complicated example of ViewPager, using it in conjunction
- * with {@link android.app.ActionBar} tabs. You can find other examples of using
+ * Here is a more complicated example of ViewPager, using it in conjuction with
+ * {@link android.app.ActionBar} tabs. You can find other examples of using
  * ViewPager in the API 4+ Support Demos and API 13+ Support Demos sample code.
- *
+ * 
  * {@sample
  * development/samples/Support13Demos/src/com/example/android/supportv13/app/
  * ActionBarTabsPager.java complete}
@@ -108,6 +101,15 @@ public class ViewPager extends ViewGroup {
 	private static final int MIN_FLING_VELOCITY = 400; // dips
 
 	private static final int[] LAYOUT_ATTRS = new int[] { android.R.attr.layout_gravity };
+	private boolean isCanScroll = true;
+
+	public void setCanScroll(boolean isCanScroll) {
+		this.isCanScroll = isCanScroll;
+	}
+
+	public boolean isCanScroll() {
+		return isCanScroll;
+	}
 
 	/**
 	 * Used to track what the expected number of items in the adapter should be.
@@ -270,7 +272,7 @@ public class ViewPager extends ViewGroup {
 		 * This method will be invoked when the current page is scrolled, either
 		 * as part of a programmatically initiated smooth scroll or a user
 		 * initiated touch scroll.
-		 *
+		 * 
 		 * @param position
 		 *            Position index of the first page currently being
 		 *            displayed. Page position+1 will be visible if
@@ -287,7 +289,7 @@ public class ViewPager extends ViewGroup {
 		/**
 		 * This method will be invoked when a new page becomes selected.
 		 * Animation is not necessarily complete.
-		 *
+		 * 
 		 * @param position
 		 *            Position index of the new selected page.
 		 */
@@ -297,7 +299,7 @@ public class ViewPager extends ViewGroup {
 		 * Called when the scroll state changes. Useful for discovering when the
 		 * user begins dragging, when the pager is automatically settling to the
 		 * current page, or when it is fully stopped/idle.
-		 *
+		 * 
 		 * @param state
 		 *            The new scroll state.
 		 * @see ViewPager#SCROLL_STATE_IDLE
@@ -335,7 +337,7 @@ public class ViewPager extends ViewGroup {
 	 * A PageTransformer is invoked whenever a visible/attached page is
 	 * scrolled. This offers an opportunity for the application to apply a
 	 * custom transformation to the page views using animation properties.
-	 *
+	 * 
 	 * <p>
 	 * As property animation is only supported as of Android 3.0 and forward,
 	 * setting a PageTransformer on a ViewPager on earlier platform versions
@@ -345,7 +347,7 @@ public class ViewPager extends ViewGroup {
 	public interface PageTransformer {
 		/**
 		 * Apply a property transformation to the given page.
-		 *
+		 * 
 		 * @param page
 		 *            Apply the transformation to this page
 		 * @param position
@@ -435,7 +437,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Set a PagerAdapter that will supply views for this pager as needed.
-	 *
+	 * 
 	 * @param adapter
 	 *            Adapter to use
 	 */
@@ -499,7 +501,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Retrieve the current adapter supplying pages.
-	 *
+	 * 
 	 * @return The currently registered PagerAdapter
 	 */
 	public PagerAdapter getAdapter() {
@@ -518,7 +520,7 @@ public class ViewPager extends ViewGroup {
 	 * Set the currently selected page. If the ViewPager has already been
 	 * through its first layout with its current adapter there will be a smooth
 	 * animated transition between the current item and the specified item.
-	 *
+	 * 
 	 * @param item
 	 *            Item index to select
 	 */
@@ -529,7 +531,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Set the currently selected page.
-	 *
+	 * 
 	 * @param item
 	 *            Item index to select
 	 * @param smoothScroll
@@ -627,7 +629,7 @@ public class ViewPager extends ViewGroup {
 	/**
 	 * Set a listener that will be invoked whenever the page changes or is
 	 * incrementally scrolled. See {@link OnPageChangeListener}.
-	 *
+	 * 
 	 * @param listener
 	 *            Listener to set
 	 */
@@ -640,13 +642,13 @@ public class ViewPager extends ViewGroup {
 	 * whenever the scroll position is changed. This allows the application to
 	 * apply custom property transformations to each page, overriding the
 	 * default sliding look and feel.
-	 *
+	 * 
 	 * <p>
 	 * <em>Note:</em> Prior to Android 3.0 the property animation APIs did not
 	 * exist. As a result, setting a PageTransformer prior to Android 3.0 (API
 	 * 11) will have no effect.
 	 * </p>
-	 *
+	 * 
 	 * @param reverseDrawingOrder
 	 *            true if the supplied PageTransformer requires page views to be
 	 *            drawn from last to first instead of first to last.
@@ -704,7 +706,7 @@ public class ViewPager extends ViewGroup {
 	/**
 	 * Set a separate OnPageChangeListener for internal use by the support
 	 * library.
-	 *
+	 * 
 	 * @param listener
 	 *            Listener to set
 	 * @return The old listener that was set, if any.
@@ -719,7 +721,7 @@ public class ViewPager extends ViewGroup {
 	/**
 	 * Returns the number of pages that will be retained to either side of the
 	 * current page in the view hierarchy in an idle state. Defaults to 1.
-	 *
+	 * 
 	 * @return How many pages will be kept offscreen on either side
 	 * @see #setOffscreenPageLimit(int)
 	 */
@@ -731,7 +733,7 @@ public class ViewPager extends ViewGroup {
 	 * Set the number of pages that should be retained to either side of the
 	 * current page in the view hierarchy in an idle state. Pages beyond this
 	 * limit will be recreated from the adapter when needed.
-	 *
+	 * 
 	 * <p>
 	 * This is offered as an optimization. If you know in advance the number of
 	 * pages you will need to support or have lazy-loading mechanisms in place
@@ -741,12 +743,12 @@ public class ViewPager extends ViewGroup {
 	 * will be spent in layout for newly created view subtrees as the user pages
 	 * back and forth.
 	 * </p>
-	 *
+	 * 
 	 * <p>
 	 * You should keep this limit low, especially if your pages have complex
 	 * layouts. This setting defaults to 1.
 	 * </p>
-	 *
+	 * 
 	 * @param limit
 	 *            How many pages will be kept offscreen in an idle state.
 	 */
@@ -764,7 +766,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Set the margin between pages.
-	 *
+	 * 
 	 * @param marginPixels
 	 *            Distance between adjacent pages in pixels
 	 * @see #getPageMargin()
@@ -783,7 +785,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Return the margin between pages.
-	 *
+	 * 
 	 * @return The size of the margin in pixels
 	 */
 	public int getPageMargin() {
@@ -792,7 +794,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Set a drawable that will be used to fill the margin between pages.
-	 *
+	 * 
 	 * @param d
 	 *            Drawable to display between pages
 	 */
@@ -806,11 +808,11 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Set a drawable that will be used to fill the margin between pages.
-	 *
+	 * 
 	 * @param resId
 	 *            Resource ID of a drawable to display between pages
 	 */
-	public void setPageMarginDrawable(@DrawableRes int resId) {
+	public void setPageMarginDrawable(int resId) {
 		setPageMarginDrawable(getContext().getResources().getDrawable(resId));
 	}
 
@@ -843,7 +845,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
-	 *
+	 * 
 	 * @param x
 	 *            the number of pixels to scroll by on the X axis
 	 * @param y
@@ -855,7 +857,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
-	 *
+	 * 
 	 * @param x
 	 *            the number of pixels to scroll by on the X axis
 	 * @param y
@@ -1101,10 +1103,13 @@ public class ViewPager extends ViewGroup {
 					itemIndex--;
 					ii = itemIndex >= 0 ? mItems.get(itemIndex) : null;
 				} else {
-					ii = addNewItem(pos, itemIndex + 1);
-					extraWidthLeft += ii.widthFactor;
-					curIndex++;
-					ii = itemIndex >= 0 ? mItems.get(itemIndex) : null;
+					if (pos >= mCurItem - mPrepareNumber
+							&& pos <= mCurItem + mPrepareNumber) {
+						ii = addNewItem(pos, itemIndex + 1);
+						extraWidthLeft += ii.widthFactor;
+						curIndex++;
+						ii = itemIndex >= 0 ? mItems.get(itemIndex) : null;
+					}
 				}
 			}
 
@@ -1137,11 +1142,14 @@ public class ViewPager extends ViewGroup {
 						ii = itemIndex < mItems.size() ? mItems.get(itemIndex)
 								: null;
 					} else {
-						ii = addNewItem(pos, itemIndex);
-						itemIndex++;
-						extraWidthRight += ii.widthFactor;
-						ii = itemIndex < mItems.size() ? mItems.get(itemIndex)
-								: null;
+						if (pos >= mCurItem - mPrepareNumber
+								&& pos <= mCurItem + mPrepareNumber) {
+							ii = addNewItem(pos, itemIndex);
+							itemIndex++;
+							extraWidthRight += ii.widthFactor;
+							ii = itemIndex < mItems.size() ? mItems
+									.get(itemIndex) : null;
+						}
 					}
 				}
 			}
@@ -1196,6 +1204,19 @@ public class ViewPager extends ViewGroup {
 				}
 			}
 		}
+	}
+
+	private int mPrepareNumber = 1;
+
+	public void setPrepareNumber(int prepareNumber) {
+		if (prepareNumber > mOffscreenPageLimit) {
+			prepareNumber = mOffscreenPageLimit;
+		}
+		this.mPrepareNumber = prepareNumber;
+	}
+
+	public int getPrepareNumber() {
+		return mPrepareNumber;
 	}
 
 	private void sortChildDrawingOrder() {
@@ -1792,7 +1813,7 @@ public class ViewPager extends ViewGroup {
 	 * touch scroll. If you override this method you must call through to the
 	 * superclass implementation (e.g. super.onPageScrolled(position, offset,
 	 * offsetPixels)) before onPageScrolled returns.
-	 *
+	 * 
 	 * @param position
 	 *            Position index of the first page currently being displayed.
 	 *            Page position+1 will be visible if positionOffset is nonzero.
@@ -1920,6 +1941,9 @@ public class ViewPager extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (!isCanScroll) {
+			return false;
+		}
 		/*
 		 * This method JUST determines whether we want to intercept the motion.
 		 * If we return true, onMotionEvent will be called and we do the actual
@@ -2077,6 +2101,9 @@ public class ViewPager extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
+		if (!isCanScroll) {
+			return false;
+		}
 		if (mFakeDragging) {
 			// A fake drag is in progress already, ignore this real one
 			// but still eat the touch events.
@@ -2427,7 +2454,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Start a fake drag of the pager.
-	 *
+	 * 
 	 * <p>
 	 * A fake drag can be useful if you want to synchronize the motion of the
 	 * ViewPager with the touch scrolling of another view, while still letting
@@ -2435,14 +2462,14 @@ public class ViewPager extends ViewGroup {
 	 * parallax-scrolling tabs.) Call {@link #fakeDragBy(float)} to simulate the
 	 * actual drag motion. Call {@link #endFakeDrag()} to complete the fake drag
 	 * and fling as necessary.
-	 *
+	 * 
 	 * <p>
 	 * During a fake drag the ViewPager will ignore all touch events. If a real
 	 * drag is already in progress, this method will return false.
-	 *
+	 * 
 	 * @return true if the fake drag began successfully, false if it could not
 	 *         be started.
-	 *
+	 * 
 	 * @see #fakeDragBy(float)
 	 * @see #endFakeDrag()
 	 */
@@ -2469,7 +2496,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * End a fake drag of the pager.
-	 *
+	 * 
 	 * @see #beginFakeDrag()
 	 * @see #fakeDragBy(float)
 	 */
@@ -2502,7 +2529,7 @@ public class ViewPager extends ViewGroup {
 	/**
 	 * Fake drag by an offset in pixels. You must have called
 	 * {@link #beginFakeDrag()} first.
-	 *
+	 * 
 	 * @param xOffset
 	 *            Offset in pixels to drag by.
 	 * @see #beginFakeDrag()
@@ -2552,9 +2579,9 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Returns true if a fake drag is in progress.
-	 *
+	 * 
 	 * @return true if currently in a fake drag, false otherwise.
-	 *
+	 * 
 	 * @see #beginFakeDrag()
 	 * @see #fakeDragBy(float)
 	 * @see #endFakeDrag()
@@ -2622,7 +2649,7 @@ public class ViewPager extends ViewGroup {
 
 	/**
 	 * Tests scrollability within child views of v given a delta of dx.
-	 *
+	 * 
 	 * @param v
 	 *            View to test for horizontal scrollability
 	 * @param checkV
@@ -2673,7 +2700,7 @@ public class ViewPager extends ViewGroup {
 	 * You can call this function yourself to have the scroll view perform
 	 * scrolling from a key event, just as if the event had been dispatched to
 	 * it by the view hierarchy.
-	 *
+	 * 
 	 * @param event
 	 *            The key event to execute.
 	 * @return Return true if the event was handled, else false.
@@ -2964,6 +2991,7 @@ public class ViewPager extends ViewGroup {
 		return new LayoutParams(getContext(), attrs);
 	}
 
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	class MyAccessibilityDelegate extends AccessibilityDelegateCompat {
 
 		@Override
@@ -2982,7 +3010,6 @@ public class ViewPager extends ViewGroup {
 			}
 		}
 
-		@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 		@Override
 		public void onInitializeAccessibilityNodeInfo(View host,
 				AccessibilityNodeInfoCompat info) {
