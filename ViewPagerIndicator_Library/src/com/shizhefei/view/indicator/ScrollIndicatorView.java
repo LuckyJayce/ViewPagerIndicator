@@ -11,17 +11,18 @@ import com.shizhefei.view.indicator.slidebar.ScrollBar;
  * 
  * @author试着飞
  * @date 2014年11月1日
- * @version 1.0
- *  主要用于多个tab可以进行滑动
+ * @version 1.0 主要用于多个tab可以进行滑动
  */
-public class ScrollIndicatorView extends HorizontalScrollView implements Indicator {
+public class ScrollIndicatorView extends HorizontalScrollView implements
+		Indicator {
 	private FixedIndicatorView fixedIndicatorView;
 
 	public ScrollIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		fixedIndicatorView = new FixedIndicatorView(context);
 		fixedIndicatorView.setSplitMethod(FixedIndicatorView.SPLITMETHOD_WRAP);
-		addView(fixedIndicatorView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		addView(fixedIndicatorView, new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT));
 		setHorizontalScrollBarEnabled(false);
 	}
 
@@ -35,7 +36,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	}
 
 	@Override
-	public void setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener) {
+	public void setOnItemSelectListener(
+			OnItemSelectedListener onItemSelectedListener) {
 		fixedIndicatorView.setOnItemSelectListener(onItemSelectedListener);
 	}
 
@@ -73,7 +75,9 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		animateToTab(fixedIndicatorView.getCurrentItem());
+		if (fixedIndicatorView.getCount() > 0) {
+			animateToTab(fixedIndicatorView.getCurrentItem());
+		}
 	}
 
 	private void animateToTab(final int position) {
@@ -86,7 +90,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 		}
 		mTabSelector = new Runnable() {
 			public void run() {
-				final int scrollPos = tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2;
+				final int scrollPos = tabView.getLeft()
+						- (getWidth() - tabView.getWidth()) / 2;
 				smoothScrollTo(scrollPos, 0);
 				mTabSelector = null;
 			}
@@ -106,7 +111,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 			animateToTab(item);
 		} else {
 			final View tabView = fixedIndicatorView.getChildAt(item);
-			final int scrollPos = tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2;
+			final int scrollPos = tabView.getLeft()
+					- (getWidth() - tabView.getWidth()) / 2;
 			scrollTo(scrollPos, 0);
 		}
 	}
@@ -122,7 +128,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	}
 
 	@Override
-	public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
+	public void setOnTransitionListener(
+			OnTransitionListener onPageScrollListener) {
 		fixedIndicatorView.setOnTransitionListener(onPageScrollListener);
 	}
 
@@ -137,8 +144,10 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	}
 
 	@Override
-	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		fixedIndicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
+	public void onPageScrolled(int position, float positionOffset,
+			int positionOffsetPixels) {
+		fixedIndicatorView.onPageScrolled(position, positionOffset,
+				positionOffsetPixels);
 	}
 
 	@Override
