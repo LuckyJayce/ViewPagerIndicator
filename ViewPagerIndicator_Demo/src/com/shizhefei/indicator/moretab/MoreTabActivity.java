@@ -43,6 +43,28 @@ public class MoreTabActivity extends FragmentActivity {
 
 	}
 
+	private int size = 3;
+
+	public void on3(View view) {
+		size = 3;
+		indicatorViewPager.getAdapter().notifyDataSetChanged();
+	}
+	
+	public void on4(View view) {
+		size = 4;
+		indicatorViewPager.getAdapter().notifyDataSetChanged();
+	}
+	
+	public void on5(View view) {
+		size = 5;
+		indicatorViewPager.getAdapter().notifyDataSetChanged();
+	}
+	
+	public void on12(View view) {
+		size = 12;
+		indicatorViewPager.getAdapter().notifyDataSetChanged();
+	}
+
 	private class MyAdapter extends IndicatorFragmentPagerAdapter {
 
 		public MyAdapter(FragmentManager fragmentManager) {
@@ -51,7 +73,7 @@ public class MoreTabActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 10;
+			return size;
 		}
 
 		@Override

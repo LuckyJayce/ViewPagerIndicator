@@ -32,6 +32,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public static final int SPLITMETHOD_WRAP = 2;
 
 	private int splitMethod = SPLITMETHOD_EQUALS;
+	private boolean isSplitAuto;
 
 	public FixedIndicatorView(Context context) {
 		super(context);
@@ -71,8 +72,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	}
 
 	@Override
-	public void setOnItemSelectListener(
-			OnItemSelectedListener onItemSelectedListener) {
+	public void setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener) {
 		this.onItemSelectedListener = onItemSelectedListener;
 	}
 
@@ -110,13 +110,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				inRun.stop();
 			}
 			initNotifyOnPageScrollListener();
-			if (getWidth() != 0 && anim && mPositionOffset < 0.01f
-					&& mPreSelectedTabIndex >= 0
-					&& mPreSelectedTabIndex < getChildCount()) {
+			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
 				int ex = getChildAt(item).getLeft();
-				final float pageDelta = (float) Math.abs(ex - sx)
-						/ (getChildAt(item).getWidth());
+				final float pageDelta = (float) Math.abs(ex - sx) / (getChildAt(item).getWidth());
 				int duration = (int) ((pageDelta + 1) * 100);
 				duration = Math.min(duration, 600);
 				inRun.startScroll(sx, ex, duration);
@@ -130,13 +127,15 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			if (onPageScrollListener != null && tabCount > 1) {
 				if (mPreSelectedTabIndex >= 0) {
 					View view1 = getItemView(mPreSelectedTabIndex);
-					onPageScrollListener.onTransition(view1,
-							mPreSelectedTabIndex, 0);
+					if (view1 != null) {
+						onPageScrollListener.onTransition(view1, mPreSelectedTabIndex, 0);
+					}
 				}
 				if (mSelectedTabIndex >= 0) {
 					View view1 = getItemView(mSelectedTabIndex);
-					onPageScrollListener.onTransition(view1, mSelectedTabIndex,
-							1);
+					if (view1 != null) {
+						onPageScrollListener.onTransition(view1, mSelectedTabIndex, 1);
+					}
 				}
 			}
 		}
@@ -173,8 +172,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				result.addView(view);
 				result.setOnClickListener(onClickListener);
 				result.setTag(i);
-				addView(result, new LinearLayout.LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+				addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 			}
 			mPreSelectedTabIndex = -1;
 			setCurrentItem(mSelectedTabIndex, false);
@@ -183,8 +181,22 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	};
 
 	public void setSplitMethod(int splitMethod) {
+		this.isSplitAuto = false;
+		setSplitMethod_(splitMethod);
+	}
+
+	private void setSplitMethod_(int splitMethod) {
 		this.splitMethod = splitMethod;
 		measureTabs();
+	}
+
+	boolean isSplitAuto() {
+		return isSplitAuto;
+	}
+
+	void setSplitMethodAuto() {
+		this.isSplitAuto = true;
+		invalidate();
 	}
 
 	public int getSplitMethod() {
@@ -199,8 +211,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			ViewGroup parent = (ViewGroup) v;
 			setCurrentItem(i);
 			if (onItemSelectedListener != null) {
-				onItemSelectedListener.onItemSelected(parent.getChildAt(0), i,
-						mPreSelectedTabIndex);
+				onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
 			}
 		}
 	};
@@ -214,8 +225,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		if (this.scrollBar != null) {
 			switch (this.scrollBar.getGravity()) {
 			case BOTTOM_FLOAT:
-				paddingBottom = paddingBottom
-						- scrollBar.getHeight(getHeight());
+				paddingBottom = paddingBottom - scrollBar.getHeight(getHeight());
 				break;
 
 			case TOP_FLOAT:
@@ -237,8 +247,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		default:
 			break;
 		}
-		setPadding(getPaddingLeft(), paddingTop, getPaddingRight(),
-				paddingBottom);
+		setPadding(getPaddingLeft(), paddingTop, getPaddingRight(), paddingBottom);
 		// measureScrollBar(true);
 	}
 
@@ -296,13 +305,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		if (scrollBar != null
-				&& scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
+		if (scrollBar != null && scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
 		}
 		super.dispatchDraw(canvas);
-		if (scrollBar != null
-				&& scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
+		if (scrollBar != null && scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
 		}
 	}
@@ -342,8 +349,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			int position = 0;
 			for (int i = 0; i < count; i++) {
 				currentView = getChildAt(i);
-				if (currentView.getLeft() <= offsetX
-						&& offsetX < currentView.getRight()) {
+				if (currentView.getLeft() <= offsetX && offsetX < currentView.getRight()) {
 					position = i;
 					break;
 				}
@@ -356,8 +362,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			currentView = getChildAt(mPosition);
 			int width = currentView.getWidth();
 			offsetX = currentView.getLeft() + width * mPositionOffset;
-			notifyPageScrolled(mPosition, mPositionOffset,
-					mPositionOffsetPixels);
+			notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
 		} else {
 			currentView = getChildAt(mSelectedTabIndex);
 			if (currentView == null) {
@@ -386,8 +391,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private float selectPercent;;
 
-	private void notifyPageScrolled(int position, float positionOffset,
-			int positionOffsetPixels) {
+	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		if (positionOffset <= 0.0001f) {
 			firstPositionOffset = 0;
 			secondPositionOffset = 0;
@@ -400,8 +404,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			return;
 		}
 		if (scrollBar != null) {
-			scrollBar.onPageScrolled(position, positionOffset,
-					positionOffsetPixels);
+			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
 		if (position + 1 <= getChildCount() - 1) {
 			unSelect = 0;
@@ -421,15 +424,18 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 					hasSelectPosition.remove(unSelect);
 					for (int i : hasSelectPosition) {
 						View view = getItemView(i);
-						onPageScrollListener.onTransition(view, i, 0);
+						if (view != null) {
+							onPageScrollListener.onTransition(view, i, 0);
+						}
+
 					}
 				}
 				View selectView = getItemView(select);
 				View unSelectView = getItemView(unSelect);
-				onPageScrollListener.onTransition(selectView, select,
-						selectPercent);
-				onPageScrollListener.onTransition(unSelectView, unSelect,
-						1 - selectPercent);
+				if (selectView != null)
+					onPageScrollListener.onTransition(selectView, select, selectPercent);
+				if (unSelectView != null)
+					onPageScrollListener.onTransition(unSelectView, unSelect, 1 - selectPercent);
 				hasSelectPosition.add(select);
 				hasSelectPosition.add(unSelect);
 			}
@@ -437,15 +443,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 	}
 
-	private int measureScrollBar(int unSelect, int select, float selectPercent,
-			boolean needChange) {
+	private int measureScrollBar(int unSelect, int select, float selectPercent, boolean needChange) {
 		if (scrollBar == null)
 			return 0;
 		View view = scrollBar.getSlideView();
 		if (view.isLayoutRequested() || needChange) {
-			if (mAdapter != null && mAdapter.getCount() > 0
-					&& mSelectedTabIndex >= 0
-					&& mSelectedTabIndex < mAdapter.getCount()) {
+			if (mAdapter != null && mAdapter.getCount() > 0 && mSelectedTabIndex >= 0 && mSelectedTabIndex < mAdapter.getCount()) {
 				View unSelectV = getChildAt(unSelect);
 				View selectV = getChildAt(select);
 				if (selectV == null) {
@@ -453,10 +456,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 					selectPercent = 1;
 				}
 				if (selectV != null) {
-					int width = (int) (selectV.getWidth() * selectPercent + (unSelectV == null ? 0
-							: unSelectV.getWidth() * (1 - selectPercent)));
-					view.layout(0, 0, scrollBar.getWidth(width),
-							scrollBar.getHeight(getHeight()));
+					int width = (int) (selectV.getWidth() * selectPercent + (unSelectV == null ? 0 : unSelectV.getWidth() * (1 - selectPercent)));
+					view.layout(0, 0, scrollBar.getWidth(width), scrollBar.getHeight(getHeight()));
 					return width;
 				}
 			}
@@ -474,8 +475,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		case SPLITMETHOD_EQUALS:
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view
-						.getLayoutParams();
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
 				layoutParams.width = 0;
 				layoutParams.weight = 1;
 				view.setLayoutParams(layoutParams);
@@ -484,8 +484,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		case SPLITMETHOD_WRAP:
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view
-						.getLayoutParams();
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
 				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 				layoutParams.weight = 0;
 				view.setLayoutParams(layoutParams);
@@ -494,8 +493,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		case SPLITMETHOD_WEIGHT:
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
-				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view
-						.getLayoutParams();
+				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
 				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 				layoutParams.weight = 1;
 				view.setLayoutParams(layoutParams);
@@ -531,8 +529,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	private int mPositionOffsetPixels;
 
 	@Override
-	public void onPageScrolled(int position, float positionOffset,
-			int positionOffsetPixels) {
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		this.mPosition = position;
 		this.mPositionOffset = positionOffset;
 		this.mPositionOffsetPixels = positionOffsetPixels;
@@ -546,8 +543,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	private float mPositionOffset;
 
 	@Override
-	public void setOnTransitionListener(
-			OnTransitionListener onPageScrollListener) {
+	public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
 		this.onPageScrollListener = onPageScrollListener;
 		initNotifyOnPageScrollListener();
 	}
@@ -576,5 +572,27 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	@Override
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		if (isSplitAuto) {
+			int width = 0;
+			int layoutWidth = getMeasuredWidth();
+			for (int i = 0; i < getChildCount(); i++) {
+				View child = getChildAt(i);
+				child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+				width = +child.getMeasuredWidth();
+				if (width > layoutWidth) {
+					break;
+				}
+			}
+			if (width >= layoutWidth) {
+				setSplitMethod_(SPLITMETHOD_EQUALS);
+			} else {
+				setSplitMethod_(SPLITMETHOD_WRAP);
+			}
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 }

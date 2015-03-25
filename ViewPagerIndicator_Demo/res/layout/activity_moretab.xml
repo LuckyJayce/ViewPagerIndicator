@@ -4,6 +4,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="on3"
+            android:text="3 个" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="on4"
+            android:text="4  个" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="on5"
+            android:text="5  个" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="on12"
+            android:text="12  个" />
+    </LinearLayout>
+
     <com.shizhefei.view.indicator.ScrollIndicatorView
         android:id="@+id/moretab_indicator"
         android:layout_width="match_parent"
