@@ -34,8 +34,7 @@ import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
  * 
  * @author试着飞
  * @date 2014年11月1日
- * @version 1.0 
- * 将indicatorView，ViewPager联合使用
+ * @version 1.0 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
 	private Indicator indicatorView;
@@ -286,13 +285,31 @@ public class IndicatorViewPager {
 			public View getView(int position, View convertView, ViewGroup container) {
 				return IndicatorViewPagerAdapter.this.getViewForPage(position, convertView, container);
 			}
+
+			@Override
+			public float getPageWidth(int position) {
+				return IndicatorViewPagerAdapter.this.getPageRatio(position);
+			}
+
+			@Override
+			public int getItemPosition(Object object) {
+				return IndicatorViewPagerAdapter.this.getItemPosition(object);
+			}
 		};
+
+		public int getItemPosition(Object object) {
+			return RecyclingPagerAdapter.POSITION_NONE;
+		}
 
 		public abstract int getCount();
 
 		public abstract View getViewForTab(int position, View convertView, ViewGroup container);
 
 		public abstract View getViewForPage(int position, View convertView, ViewGroup container);
+
+		public float getPageRatio(int position) {
+			return 1f;
+		}
 
 		@Override
 		public void notifyDataSetChanged() {
@@ -334,6 +351,16 @@ public class IndicatorViewPager {
 				public Fragment getItem(int position) {
 					return IndicatorFragmentPagerAdapter.this.getFragmentForPage(position);
 				}
+
+				@Override
+				public float getPageWidth(int position) {
+					return IndicatorFragmentPagerAdapter.this.getPageRatio(position);
+				}
+
+				@Override
+				public int getItemPosition(Object object) {
+					return IndicatorFragmentPagerAdapter.this.getItemPosition(object);
+				}
 			};
 		}
 
@@ -348,7 +375,12 @@ public class IndicatorViewPager {
 			public int getCount() {
 				return IndicatorFragmentPagerAdapter.this.getCount();
 			}
+
 		};
+
+		public int getItemPosition(Object object) {
+			return FragmentListPageAdapter.POSITION_NONE;
+		}
 
 		public abstract int getCount();
 
@@ -356,10 +388,15 @@ public class IndicatorViewPager {
 
 		public abstract Fragment getFragmentForPage(int position);
 
+		public float getPageRatio(int position) {
+			return 1f;
+		}
+
 		@Override
 		public void notifyDataSetChanged() {
 			indicatorAdapter.notifyDataSetChanged();
 			pagerAdapter.notifyDataSetChanged();
+			;
 		}
 
 		@Override
@@ -373,5 +410,4 @@ public class IndicatorViewPager {
 		}
 
 	}
-
 }
