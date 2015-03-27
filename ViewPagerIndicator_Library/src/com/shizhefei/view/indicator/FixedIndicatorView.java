@@ -1,9 +1,7 @@
 package com.shizhefei.view.indicator;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -109,7 +107,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
-			initNotifyOnPageScrollListener();
+//			initNotifyOnPageScrollListener();
 			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
 				int ex = getChildAt(item).getLeft();
@@ -370,7 +368,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			}
 			offsetX = currentView.getLeft();
 		}
-		int tabWidth = measureScrollBar(unSelect, select, selectPercent, true);
+		int tabWidth = measureScrollBar(mPosition, mPosition + 1, selectPercent, true);
 		int width = scrollBar.getSlideView().getWidth();
 		offsetX += (tabWidth - width) / 2;
 		int saveCount = canvas.save();
@@ -380,66 +378,20 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		canvas.restoreToCount(saveCount);
 	}
 
-	private float firstPositionOffset = 0;
-	private float secondPositionOffset = 0;
-	private int preSelect = -1;
-	private Set<Integer> hasSelectPosition = new HashSet<Integer>(4);
-
-	private int unSelect = -1;
-
-	private int select = -1;
-
-	private float selectPercent;;
+	private float selectPercent;
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		if (positionOffset <= 0.0001f) {
-			firstPositionOffset = 0;
-			secondPositionOffset = 0;
-		} else if (firstPositionOffset <= 0.01f) {
-			firstPositionOffset = positionOffset;
-		} else if (secondPositionOffset <= 0.01f) {
-			secondPositionOffset = positionOffset;
-		}
-		if (secondPositionOffset < 0.01f) {
+		if (position < 0 || position+1 > getCount() - 1) {
 			return;
 		}
 		if (scrollBar != null) {
 			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
-		if (position + 1 <= getChildCount() - 1) {
-			unSelect = 0;
-			select = 0;
-			if (firstPositionOffset < secondPositionOffset) {
-				select = position;
-				unSelect = position + 1;
-				selectPercent = 1 - positionOffset;
-			} else {
-				unSelect = position;
-				select = position + 1;
-				selectPercent = positionOffset;
-			}
-			if (onPageScrollListener != null) {
-				if (preSelect != select) {
-					hasSelectPosition.remove(select);
-					hasSelectPosition.remove(unSelect);
-					for (int i : hasSelectPosition) {
-						View view = getItemView(i);
-						if (view != null) {
-							onPageScrollListener.onTransition(view, i, 0);
-						}
-
-					}
-				}
-				View selectView = getItemView(select);
-				View unSelectView = getItemView(unSelect);
-				if (selectView != null)
-					onPageScrollListener.onTransition(selectView, select, selectPercent);
-				if (unSelectView != null)
-					onPageScrollListener.onTransition(unSelectView, unSelect, 1 - selectPercent);
-				hasSelectPosition.add(select);
-				hasSelectPosition.add(unSelect);
-			}
-			preSelect = select;
+		if (onPageScrollListener != null) {
+			View view = getItemView(position);
+			onPageScrollListener.onTransition(view, position, 1 - positionOffset);
+			view = getItemView(position + 1);
+			onPageScrollListener.onTransition(view, position+1, positionOffset);
 		}
 	}
 
