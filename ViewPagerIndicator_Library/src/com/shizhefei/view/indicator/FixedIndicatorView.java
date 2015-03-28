@@ -8,6 +8,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -107,7 +109,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
-//			initNotifyOnPageScrollListener();
+			if (!anim) {
+				notifyPageScrolled(item, 0, 0);
+			}
 			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
 				int ex = getChildAt(item).getLeft();
@@ -379,19 +383,30 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	}
 
 	private float selectPercent;
+	private int[] prePositions = { -1, -1 };
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		if (position < 0 || position+1 > getCount() - 1) {
+		if (position < 0 || position + 1 > getCount() - 1) {
 			return;
 		}
 		if (scrollBar != null) {
 			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
 		if (onPageScrollListener != null) {
+			for (int i : prePositions) {
+				if (i != position && i != position + 1) {
+					View view = getItemView(i);
+					if (view != null) {
+						onPageScrollListener.onTransition(view, i, 0);
+					}
+				}
+			}
+			prePositions[0] = position;
+			prePositions[1] = position + 1;
 			View view = getItemView(position);
 			onPageScrollListener.onTransition(view, position, 1 - positionOffset);
 			view = getItemView(position + 1);
-			onPageScrollListener.onTransition(view, position+1, positionOffset);
+			onPageScrollListener.onTransition(view, position + 1, positionOffset);
 		}
 	}
 
