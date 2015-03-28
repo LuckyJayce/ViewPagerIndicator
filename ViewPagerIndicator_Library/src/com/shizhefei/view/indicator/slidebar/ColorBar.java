@@ -1,7 +1,6 @@
 package com.shizhefei.view.indicator.slidebar;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 /**
  * 
