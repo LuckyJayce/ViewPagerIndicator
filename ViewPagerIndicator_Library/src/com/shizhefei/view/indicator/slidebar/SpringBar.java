@@ -39,7 +39,7 @@ public class SpringBar extends View implements ScrollBar {
 	private float minRadiusPercent;
 
 	public SpringBar(Context context, int springColor) {
-		this(context, springColor, 0.9f, 0.45f);
+		this(context, springColor, 0.9f, 0.35f);
 	}
 
 	public SpringBar(Context context, int springColor, float maxRadiusPercent, float minRadiusPercent) {
