@@ -92,8 +92,7 @@ ViewPagerIndicator
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
 # 主要的类 #
 ## 1.ViewPager ##
-support-v4 里面的viewpager被重新改写了。  
-support4.jar目前是1069k，因为我把源码也放了进去。  
+android-support-v4 里面的viewpager被重新改写了。    
 **1.在原先的基础上添加了setCanScroll(false)的方法用来禁止滑动。 
 2.setPrepareNumber(1)的方法用来配合setOffscreenPageLimit(1)进行预加载界面和防止重新创建界面**
 
@@ -137,6 +136,19 @@ support4.jar目前是1069k，因为我把源码也放了进去。
 indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListener)设置界面的切换监听。
 
 Indicator 既可以单独使用。也可以通过indicatorViewPager的形式联合viewpager一起使用。
+
+## 5.ScrollBar  ##
+tab的滑动块通过indicatorViewPager.setIndicatorScrollBar(scrollBar);进行设置
+子类有  
+ColorBar 颜色的滑动块   
+DrawableBar 图片滑动块  
+LayoutBar 布局滑动块  
+TextWidthColorBar 大小同tab里的text一样宽的颜色的滑动块  
+SpringBar 实现拖拽效果的圆形滑动块  该类修改于https://github.com/chenupt/SpringIndicator  
+
+## 5.OnTransitionListener  ##
+子类有  
+OnTransitionTextListener tab的字体颜色变化，和字体大小变化效果    
 
 ## 说明 ##
 项目 ViewPagerIndicator_Demo 是示例代码。 看了这个例子你会惊奇的发现里面居然都是通过viewpager实现，没有使用tabhost，而所有形式的tab都是用Indicator实现。
