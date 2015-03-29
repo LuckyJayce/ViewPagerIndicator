@@ -49,7 +49,7 @@ public class SpringActivity extends Activity {
 				convertView = inflate.inflate(R.layout.tab_top2, container, false);
 			}
 			TextView textView = (TextView) convertView;
-			textView.setText(" " + position);
+			textView.setText(String.valueOf(position));
 			return convertView;
 		}
 

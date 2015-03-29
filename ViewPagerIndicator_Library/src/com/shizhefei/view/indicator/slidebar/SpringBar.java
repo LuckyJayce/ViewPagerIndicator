@@ -92,8 +92,8 @@ public class SpringBar extends View implements ScrollBar {
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		this.positionOffset = positionOffset;
 		if (positionOffset < 0.02f || positionOffset > 0.98f) {
-			head.setX(getOffsetX(positionOffset));
-			foot.setX(getOffsetX(positionOffset));
+			head.setX(getOffsetX(0));
+			foot.setX(getOffsetX(0));
 			head.setRadius(radiusMax);
 			foot.setRadius(radiusMax);
 		} else {
@@ -128,7 +128,7 @@ public class SpringBar extends View implements ScrollBar {
 	}
 
 	private float getOffsetX(float positionOffset) {
-		return tabWidth + tabWidth / 2 - tabWidth * (1 - positionOffset) + tabWidth / 4;
+		return tabWidth + tabWidth / 2 - tabWidth * (1 - positionOffset) + tabWidth / 4.0f;
 	}
 
 	private float getPositionDistance(int position) {
