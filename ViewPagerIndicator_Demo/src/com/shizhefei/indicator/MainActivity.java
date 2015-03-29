@@ -9,6 +9,7 @@ import com.shizhefei.indicator.guide.GuideActivity;
 import com.shizhefei.indicator.moretab.MoreTabActivity;
 import com.shizhefei.indicator.setting.SettingActivity;
 import com.shizhefei.indicator.slide.SlideMainActivity;
+import com.shizhefei.indicator.spring.SpringActivity;
 import com.shizhefei.indicator.tabmain.TabMainActivity;
 
 public class MainActivity extends FragmentActivity {
@@ -55,6 +56,18 @@ public class MainActivity extends FragmentActivity {
 	public void onClickSlideTab(View view) {
 		startActivity(new Intent(getApplicationContext(), MoreTabActivity.class));
 	}
+	
+	
+	/**
+	 * 可滑动tab界面
+	 * 
+	 * @param view
+	 */
+	public void onClickSpringTab(View view) {
+		startActivity(new Intent(getApplicationContext(), SpringActivity.class));
+	}
+	
+	
 
 	/**
 	 * 可滑动tab界面

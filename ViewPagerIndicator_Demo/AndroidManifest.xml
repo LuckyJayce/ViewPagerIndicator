@@ -23,20 +23,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.shizhefei.indicator.guide.GuideActivity"
+            android:name=".guide.GuideActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.shizhefei.indicator.tabmain.TabMainActivity"
+            android:name=".tabmain.TabMainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.shizhefei.indicator.slide.SlideMainActivity"
+            android:name=".slide.SlideMainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.shizhefei.indicator.moretab.MoreTabActivity"
+            android:name=".moretab.MoreTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name="com.shizhefei.indicator.setting.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.shizhefei.indicator.spring.SpringActivity"
+            android:label="@string/title_activity_spring" >
+        </activity>
     </application>
 
 </manifest>
