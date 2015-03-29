@@ -8,8 +8,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.SparseArray;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -109,7 +107,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
-			if (!anim) {
+			if (positionOffset < 0.02f || positionOffset > 0.98f) {
 				notifyPageScrolled(item, 0, 0);
 			}
 			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
@@ -384,11 +382,13 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private float selectPercent;
 	private int[] prePositions = { -1, -1 };
+	private float positionOffset;
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		if (position < 0 || position + 1 > getCount() - 1) {
 			return;
 		}
+		this.positionOffset = positionOffset;
 		if (scrollBar != null) {
 			scrollBar.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
