@@ -7,7 +7,7 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 ###3. 支持自定义切换tab的过渡效果  
 ###4. 支持子界面的预加载和界面缓存  
 ###5. 支持设置界面是否可滑动  
-###5. android:minSdkVersion="8" android:targetSdkVersion="21" 
+###6. android:minSdkVersion="8" android:targetSdkVersion="21" 
 
 
 # 使用方法 #  
