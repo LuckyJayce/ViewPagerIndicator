@@ -66,7 +66,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		this.mAdapter = adapter;
 		adapter.registDataSetObserver(dataSetObserver);
 		adapter.notifyDataSetChanged();
-		initNotifyOnPageScrollListener();
 	}
 
 	@Override
@@ -109,6 +108,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			}
 			if (positionOffset < 0.02f || positionOffset > 0.98f) {
 				notifyPageScrolled(item, 0, 0);
+				initNotifyOnPageScrollListener();
 			}
 			if (getWidth() != 0 && anim && mPositionOffset < 0.01f && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
 				int sx = getChildAt(mPreSelectedTabIndex).getLeft();
