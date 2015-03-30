@@ -1,6 +1,6 @@
 ViewPagerIndicator
 ==================
-Download sample Apk[Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)  
+Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)  
 
 ###1. 支持自定义tab样式  
 ###2. 支持自定义滑动块样式和位置  
