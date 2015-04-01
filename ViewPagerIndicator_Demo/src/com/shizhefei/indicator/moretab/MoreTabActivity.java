@@ -22,6 +22,7 @@ import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 public class MoreTabActivity extends FragmentActivity {
 	private IndicatorViewPager indicatorViewPager;
 	private LayoutInflater inflate;
+	private String[] names = { "CUPCAKE", "DONUT", "FROYO", "GINGERBREAD", "HONEYCOMB", "ICE CREAM SANDWICH", "JELLY BEAN", "KITKAT" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +50,17 @@ public class MoreTabActivity extends FragmentActivity {
 		size = 3;
 		indicatorViewPager.getAdapter().notifyDataSetChanged();
 	}
-	
+
 	public void on4(View view) {
 		size = 4;
 		indicatorViewPager.getAdapter().notifyDataSetChanged();
 	}
-	
+
 	public void on5(View view) {
 		size = 5;
 		indicatorViewPager.getAdapter().notifyDataSetChanged();
 	}
-	
+
 	public void on12(View view) {
 		size = 12;
 		indicatorViewPager.getAdapter().notifyDataSetChanged();
@@ -82,8 +83,8 @@ public class MoreTabActivity extends FragmentActivity {
 				convertView = inflate.inflate(R.layout.tab_top, container, false);
 			}
 			TextView textView = (TextView) convertView;
-			textView.setText("tab" + position);
-			textView.setPadding(30, 0, 30, 0);
+			textView.setText(names[position % names.length]);
+			textView.setPadding(20, 0, 20, 0);
 			return convertView;
 		}
 

@@ -90,7 +90,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	}
 
 	private void animateToTab(final int position) {
-		if (position < 0 && position > fixedIndicatorView.getChildCount() - 1) {
+		if (position < 0 || position > fixedIndicatorView.getCount() - 1) {
 			return;
 		}
 		final View tabView = fixedIndicatorView.getChildAt(position);
@@ -114,10 +114,14 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 	@Override
 	public void setCurrentItem(int item, boolean anim) {
+		int count = fixedIndicatorView.getCount();
+		if (count == 0) {
+			return;
+		}
 		if (item < 0) {
 			item = 0;
-		} else if (item > fixedIndicatorView.getCount() - 1) {
-			item = fixedIndicatorView.getCount() - 1;
+		} else if (item > count - 1) {
+			item = count - 1;
 		}
 		fixedIndicatorView.setCurrentItem(item, anim);
 		if (anim) {

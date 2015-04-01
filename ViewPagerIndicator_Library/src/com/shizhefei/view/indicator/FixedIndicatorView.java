@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -87,10 +88,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	@Override
 	public void setCurrentItem(int item, boolean anim) {
+		int count = getCount();
+		if (count == 0) {
+			return;
+		}
 		if (item < 0) {
 			item = 0;
-		} else if (item > mAdapter.getCount() - 1) {
-			item = mAdapter.getCount() - 1;
+		} else if (item > count - 1) {
+			item = count - 1;
 		}
 		if (mSelectedTabIndex != item) {
 			mPreSelectedTabIndex = mSelectedTabIndex;
@@ -364,13 +369,13 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			offsetX = currentView.getLeft() + width * mPositionOffset;
 			notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
 		} else {
-			currentView = getChildAt(mSelectedTabIndex);
+			currentView = getChildAt(mPosition);
 			if (currentView == null) {
 				return;
 			}
 			offsetX = currentView.getLeft();
 		}
-		int tabWidth = measureScrollBar(mPosition, mPosition + 1, selectPercent, true);
+		int tabWidth = measureScrollBar(mPosition, mPositionOffset, true);
 		int width = scrollBar.getSlideView().getWidth();
 		offsetX += (tabWidth - width) / 2;
 		int saveCount = canvas.save();
@@ -380,12 +385,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		canvas.restoreToCount(saveCount);
 	}
 
-	private float selectPercent;
 	private int[] prePositions = { -1, -1 };
 	private float positionOffset;
 
 	private void notifyPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-		if (position < 0 || position + 1 > getCount() - 1) {
+		if (position < 0 || position > getCount() - 1) {
 			return;
 		}
 		this.positionOffset = positionOffset;
@@ -406,27 +410,24 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			View view = getItemView(position);
 			onPageScrollListener.onTransition(view, position, 1 - positionOffset);
 			view = getItemView(position + 1);
-			onPageScrollListener.onTransition(view, position + 1, positionOffset);
+			if (view != null) {
+				onPageScrollListener.onTransition(view, position + 1, positionOffset);
+			}
+
 		}
 	}
 
-	private int measureScrollBar(int unSelect, int select, float selectPercent, boolean needChange) {
+	private int measureScrollBar(int position, float selectPercent, boolean needChange) {
 		if (scrollBar == null)
 			return 0;
 		View view = scrollBar.getSlideView();
 		if (view.isLayoutRequested() || needChange) {
-			if (mAdapter != null && mAdapter.getCount() > 0 && mSelectedTabIndex >= 0 && mSelectedTabIndex < mAdapter.getCount()) {
-				View unSelectV = getChildAt(unSelect);
-				View selectV = getChildAt(select);
-				if (selectV == null) {
-					selectV = getChildAt(mSelectedTabIndex);
-					selectPercent = 1;
-				}
-				if (selectV != null) {
-					int width = (int) (selectV.getWidth() * selectPercent + (unSelectV == null ? 0 : unSelectV.getWidth() * (1 - selectPercent)));
-					view.layout(0, 0, scrollBar.getWidth(width), scrollBar.getHeight(getHeight()));
-					return width;
-				}
+			View selectV = getChildAt(position);
+			View unSelectV = getChildAt(position + 1);
+			if (selectV != null) {
+				int width = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
+				view.layout(0, 0, scrollBar.getWidth(width), scrollBar.getHeight(getHeight()));
+				return width;
 			}
 		}
 		return scrollBar.getSlideView().getWidth();
@@ -489,7 +490,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		// 閲嶆柊璁＄畻娴姩鐨剉iew鐨勫ぇ灏�
-		measureScrollBar(-1, mSelectedTabIndex, 1, true);
+		measureScrollBar(mSelectedTabIndex, 1, true);
 	}
 
 	private int mPosition;
