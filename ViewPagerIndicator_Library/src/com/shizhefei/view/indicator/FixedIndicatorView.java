@@ -111,7 +111,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			if (!inRun.isFinished()) {
 				inRun.stop();
 			}
-			if (positionOffset < 0.02f || positionOffset > 0.98f) {
+			if (positionOffset < 0.02f || positionOffset > 0.98f || !anim) {
 				notifyPageScrolled(item, 0, 0);
 				initNotifyOnPageScrollListener();
 			}
@@ -156,6 +156,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	private DataSetObserver dataSetObserver = new DataSetObserver() {
 		@Override
 		public void onChange() {
+			if (!inRun.isFinished()) {
+				inRun.stop();
+			}
+			positionOffset = 0;
 			int count = getChildCount();
 			int newCount = mAdapter.getCount();
 			views.clear();

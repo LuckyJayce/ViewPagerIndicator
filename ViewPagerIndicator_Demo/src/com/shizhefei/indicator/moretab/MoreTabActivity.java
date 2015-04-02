@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.shizhefei.indicator.R;
 import com.shizhefei.indicator.slide.SlideFragment;
+import com.shizhefei.view.indicator.FragmentListPageAdapter;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
@@ -95,6 +96,11 @@ public class MoreTabActivity extends FragmentActivity {
 			bundle.putInt(SlideFragment.INTENT_INT_INDEX, position);
 			fragment.setArguments(bundle);
 			return fragment;
+		}
+		
+		@Override
+		public int getItemPosition(Object object) {
+			return FragmentListPageAdapter.POSITION_NONE;
 		}
 
 	};

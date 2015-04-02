@@ -59,6 +59,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 			if (mTabSelector != null) {
 				removeCallbacks(mTabSelector);
 			}
+			positionOffset = 0;
 			setCurrentItem(fixedIndicatorView.getCurrentItem(), false);
 		}
 	};
@@ -86,6 +87,21 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 		super.onSizeChanged(w, h, oldw, oldh);
 		if (fixedIndicatorView.getCount() > 0) {
 			animateToTab(fixedIndicatorView.getCurrentItem());
+		}
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		if (unScrollPosition != -1) {
+			final View tabView = fixedIndicatorView.getChildAt(unScrollPosition);
+			if (tabView != null) {
+				final int scrollPos = tabView.getLeft() - (getMeasuredWidth() - tabView.getMeasuredWidth()) / 2;
+				if (scrollPos >= 0) {
+					smoothScrollTo(scrollPos, 0);
+					unScrollPosition = -1;
+				}
+			}
 		}
 	}
 
@@ -123,15 +139,24 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 		} else if (item > count - 1) {
 			item = count - 1;
 		}
-		fixedIndicatorView.setCurrentItem(item, anim);
-		if (anim) {
-			animateToTab(item);
-		} else {
-			final View tabView = fixedIndicatorView.getChildAt(item);
-			final int scrollPos = tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2;
-			scrollTo(scrollPos, 0);
+		unScrollPosition = -1;
+		if (positionOffset < 0.02f || positionOffset > 0.98f) {
+			if (anim) {
+				animateToTab(item);
+			} else {
+				final View tabView = fixedIndicatorView.getChildAt(item);
+				final int scrollPos = tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2;
+				if (scrollPos >= 0) {
+					scrollTo(scrollPos, 0);
+				} else {
+					unScrollPosition = item;
+				}
+			}
 		}
+		fixedIndicatorView.setCurrentItem(item, anim);
 	}
+
+	private int unScrollPosition = -1;
 
 	@Override
 	public int getCurrentItem() {
@@ -158,8 +183,18 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 		fixedIndicatorView.setScrollBar(scrollBar);
 	}
 
+	private float positionOffset;
+
 	@Override
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		this.positionOffset = positionOffset;
+		final View tabView = fixedIndicatorView.getChildAt(position);
+		final View tabView2 = fixedIndicatorView.getChildAt(position + 1);
+		float offset = (tabView.getWidth() + (tabView2 == null ? tabView.getWidth() : tabView2.getWidth())) / 2 * positionOffset;
+		final int scrollPos = (int) (tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2 + offset);
+		if (scrollPos >= 0) {
+			scrollTo(scrollPos, 0);
+		}
 		fixedIndicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
 	}
 
