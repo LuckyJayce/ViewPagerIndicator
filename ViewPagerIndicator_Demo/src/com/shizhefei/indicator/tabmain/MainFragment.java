@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.shizhefei.indicator.BaseFragment;
+import com.shizhefei.fragment.LazyFragment;
 import com.shizhefei.indicator.R;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
@@ -22,7 +22,7 @@ import com.shizhefei.view.indicator.slidebar.LayoutBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-public class MainFragment extends BaseFragment {
+public class MainFragment extends LazyFragment {
 	private IndicatorViewPager indicatorViewPager;
 	private LayoutInflater inflate;
 	public static final String INTENT_STRING_TABNAME = "intent_String_tabname";
@@ -31,8 +31,8 @@ public class MainFragment extends BaseFragment {
 	private int index;
 
 	@Override
-	protected void onCreateView(Bundle savedInstanceState) {
-		super.onCreateView(savedInstanceState);
+	protected void onCreateViewLazy(Bundle savedInstanceState) {
+		super.onCreateViewLazy(savedInstanceState);
 		setContentView(R.layout.fragment_tabmain);
 		Resources res = getResources();
 

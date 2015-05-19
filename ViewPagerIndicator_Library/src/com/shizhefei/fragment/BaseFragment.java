@@ -1,4 +1,4 @@
-package com.shizhefei.indicator;
+package com.shizhefei.fragment;
 
 import java.lang.reflect.Field;
 
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class BaseFragment extends Fragment {
-	private LayoutInflater inflater;
+	protected LayoutInflater inflater;
 	private View contentView;
 	private Context context;
 	private ViewGroup container;

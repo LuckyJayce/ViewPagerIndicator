@@ -6,18 +6,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.shizhefei.indicator.BaseFragment;
+import com.shizhefei.fragment.LazyFragment;
 import com.shizhefei.indicator.R;
 
-public class MoreFragment extends BaseFragment {
+public class MoreFragment extends LazyFragment {
 	private ProgressBar progressBar;
 	private TextView textView;
 	private int tabIndex;
 	public static final String INTENT_INT_INDEX = "intent_int_index";
 
 	@Override
-	protected void onCreateView(Bundle savedInstanceState) {
-		super.onCreateView(savedInstanceState);
+	protected void onCreateViewLazy(Bundle savedInstanceState) {
+		super.onCreateViewLazy(savedInstanceState);
 		setContentView(R.layout.fragment_tabmain_item);
 		tabIndex = getArguments().getInt(INTENT_INT_INDEX);
 		progressBar = (ProgressBar) findViewById(R.id.fragment_mainTab_item_progressBar);
@@ -27,8 +27,8 @@ public class MoreFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	public void onDestroyViewLazy() {
+		super.onDestroyViewLazy();
 		handler.removeMessages(1);
 	}
 
