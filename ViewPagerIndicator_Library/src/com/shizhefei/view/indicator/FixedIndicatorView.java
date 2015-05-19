@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -31,7 +30,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public static final int SPLITMETHOD_WRAP = 2;
 
 	private int splitMethod = SPLITMETHOD_EQUALS;
-	private boolean isSplitAuto;
 
 	public FixedIndicatorView(Context context) {
 		super(context);
@@ -190,22 +188,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	};
 
 	public void setSplitMethod(int splitMethod) {
-		this.isSplitAuto = false;
-		setSplitMethod_(splitMethod);
-	}
-
-	private void setSplitMethod_(int splitMethod) {
 		this.splitMethod = splitMethod;
 		measureTabs();
-	}
-
-	boolean isSplitAuto() {
-		return isSplitAuto;
-	}
-
-	void setSplitMethodAuto() {
-		this.isSplitAuto = true;
-		invalidate();
 	}
 
 	public int getSplitMethod() {
@@ -486,14 +470,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		super.measureChildren(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	// 甯冨眬杩囩▼涓紝 鍏堣皟onMeasure璁＄畻姣忎釜child鐨勫ぇ灏忥紝 鐒跺悗璋冪敤onLayout瀵筩hild杩涜甯冨眬锛�
-	// onSizeChanged锛堬級瀹炲湪甯冨眬鍙戠敓鍙樺寲鏃剁殑鍥炶皟鍑芥暟锛岄棿鎺ュ洖鍘昏皟鐢╫nMeasure,
-	// onLayout鍑芥暟閲嶆柊甯冨眬
-	// 褰撳睆骞曟棆杞殑鏃跺�瀵艰嚧浜�甯冨眬鐨剆ize鏀瑰彉锛屾晠鑰屼細璋冪敤姝ゆ柟娉曘�
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		// 閲嶆柊璁＄畻娴姩鐨剉iew鐨勫ぇ灏�
 		measureScrollBar(mSelectedTabIndex, 1, true);
 	}
 
@@ -544,27 +523,5 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	@Override
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		if (isSplitAuto) {
-			int width = 0;
-			int layoutWidth = getMeasuredWidth();
-			for (int i = 0; i < getChildCount(); i++) {
-				View child = getChildAt(i);
-				child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-				width = +child.getMeasuredWidth();
-				if (width > layoutWidth) {
-					break;
-				}
-			}
-			if (width >= layoutWidth) {
-				setSplitMethod_(SPLITMETHOD_EQUALS);
-			} else {
-				setSplitMethod_(SPLITMETHOD_WRAP);
-			}
-		}
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 }

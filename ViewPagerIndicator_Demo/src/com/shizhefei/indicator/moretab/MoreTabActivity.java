@@ -9,7 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.shizhefei.indicator.R;
 import com.shizhefei.indicator.slide.SlideFragment;
@@ -24,13 +27,15 @@ public class MoreTabActivity extends FragmentActivity {
 	private IndicatorViewPager indicatorViewPager;
 	private LayoutInflater inflate;
 	private String[] names = { "CUPCAKE", "DONUT", "FROYO", "GINGERBREAD", "HONEYCOMB", "ICE CREAM SANDWICH", "JELLY BEAN", "KITKAT" };
+	private ScrollIndicatorView indicator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_moretab);
+		ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton1);
 		ViewPager viewPager = (ViewPager) findViewById(R.id.moretab_viewPager);
-		ScrollIndicatorView indicator = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
+		indicator = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
 		indicator.setScrollBar(new ColorBar(this, Color.RED, 5));
 
 		// 设置滚动监听
@@ -43,7 +48,20 @@ public class MoreTabActivity extends FragmentActivity {
 		inflate = LayoutInflater.from(getApplicationContext());
 		indicatorViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
+		// 默认true ，自动布局
+		toggleButton.setChecked(indicator.isSplitAuto());
+		toggleButton.setOnCheckedChangeListener(onCheckedChangeListener);
+
 	}
+
+	private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			// 设置是否自动布局
+			indicator.setSplitAuto(isChecked);
+		}
+	};
 
 	private int size = 3;
 
@@ -97,7 +115,7 @@ public class MoreTabActivity extends FragmentActivity {
 			fragment.setArguments(bundle);
 			return fragment;
 		}
-		
+
 		@Override
 		public int getItemPosition(Object object) {
 			return FragmentListPageAdapter.POSITION_NONE;

@@ -34,6 +34,13 @@
             android:layout_height="wrap_content"
             android:onClick="on12"
             android:text="12  个" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="不自动布局"
+            android:textOn="自动布局" />
     </LinearLayout>
 
     <com.shizhefei.view.indicator.ScrollIndicatorView

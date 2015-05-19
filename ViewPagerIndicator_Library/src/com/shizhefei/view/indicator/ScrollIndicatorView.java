@@ -2,8 +2,11 @@ package com.shizhefei.view.indicator;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 
@@ -14,11 +17,11 @@ import com.shizhefei.view.indicator.slidebar.ScrollBar;
  * @version 1.0 主要用于多个tab可以进行滑动
  */
 public class ScrollIndicatorView extends HorizontalScrollView implements Indicator {
-	private FixedIndicatorView fixedIndicatorView;
+	private SFixedIndicatorView fixedIndicatorView;
 
 	public ScrollIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		fixedIndicatorView = new FixedIndicatorView(context);
+		fixedIndicatorView = new SFixedIndicatorView(context);
 		addView(fixedIndicatorView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		setHorizontalScrollBarEnabled(false);
 		setSplitAuto(true);
@@ -26,11 +29,11 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 	public void setSplitAuto(boolean splitAuto) {
 		setFillViewport(splitAuto);
-		if (splitAuto) {
-			fixedIndicatorView.setSplitMethodAuto();
-		} else {
-			fixedIndicatorView.setSplitMethod(FixedIndicatorView.SPLITMETHOD_WRAP);
-		}
+		fixedIndicatorView.setSplitAuto(splitAuto);
+	}
+
+	public boolean isSplitAuto() {
+		return fixedIndicatorView.isSplitAuto();
 	}
 
 	@Override
@@ -189,6 +192,9 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		this.positionOffset = positionOffset;
 		final View tabView = fixedIndicatorView.getChildAt(position);
+		if (tabView == null) {
+			return;
+		}
 		final View tabView2 = fixedIndicatorView.getChildAt(position + 1);
 		float offset = (tabView.getWidth() + (tabView2 == null ? tabView.getWidth() : tabView2.getWidth())) / 2 * positionOffset;
 		final int scrollPos = (int) (tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2 + offset);
@@ -206,5 +212,66 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	@Override
 	public View getItemView(int item) {
 		return fixedIndicatorView.getItemView(item);
+	}
+
+	private static class SFixedIndicatorView extends FixedIndicatorView {
+
+		private boolean isAutoSplit;
+
+		public SFixedIndicatorView(Context context) {
+			super(context);
+		}
+
+		public boolean isSplitAuto() {
+			return isAutoSplit;
+		}
+
+		public void setSplitAuto(boolean isAutoSplit) {
+			if (this.isAutoSplit != isAutoSplit) {
+				this.isAutoSplit = isAutoSplit;
+				if (!isAutoSplit) {
+					setSplitMethod(SPLITMETHOD_WRAP);
+				}
+				requestLayout();
+				invalidate();
+			}
+		}
+
+		@Override
+		protected void onMeasure(int widthSpec, int heightSpec) {
+			if (isAutoSplit) {
+				ScrollIndicatorView group = (ScrollIndicatorView) getParent();
+				int totalWidth = 0;
+				int count = getChildCount();
+				int maxCellWidth = 0;
+				for (int i = 0; i < count; i++) {
+					int width = measureChildWidth(getChildAt(i), widthSpec, heightSpec);
+					maxCellWidth = maxCellWidth < width ? width : maxCellWidth;
+					totalWidth += width;
+				}
+				int layoutWidth = group.getMeasuredWidth();
+				Log.d("pppp", "onMeasure: layoutWidth" + layoutWidth + " totalWidth:" + totalWidth + " maxCellWidth * count:" + maxCellWidth * count);
+				if (totalWidth > layoutWidth) {
+					group.setFillViewport(false);
+					setSplitMethod(SPLITMETHOD_WRAP);
+				} else if (maxCellWidth * count > layoutWidth) {
+					group.setFillViewport(true);
+					setSplitMethod(SPLITMETHOD_WEIGHT);
+				} else {
+					group.setFillViewport(true);
+					setSplitMethod(SPLITMETHOD_EQUALS);
+				}
+			}
+			super.onMeasure(widthSpec, heightSpec);
+		}
+
+		private int measureChildWidth(View view, int widthSpec, int heightSpec) {
+			LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) view.getLayoutParams();
+			int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec, getPaddingLeft() + getPaddingRight(), LayoutParams.WRAP_CONTENT);
+			int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec, getPaddingTop() + getPaddingBottom(), p.height);
+			view.measure(childWidthSpec, childHeightSpec);
+			return view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
+		}
+
 	}
 }
