@@ -63,10 +63,10 @@ public class TabMainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getFragmentForPage(int position) {
-			MainFragment mainFragment = new MainFragment();
+			FirstLayerFragment mainFragment = new FirstLayerFragment();
 			Bundle bundle = new Bundle();
-			bundle.putString(MainFragment.INTENT_STRING_TABNAME, tabNames[position]);
-			bundle.putInt(MainFragment.INTENT_INT_INDEX, position);
+			bundle.putString(FirstLayerFragment.INTENT_STRING_TABNAME, tabNames[position]);
+			bundle.putInt(FirstLayerFragment.INTENT_INT_INDEX, position);
 			mainFragment.setArguments(bundle);
 			return mainFragment;
 		}

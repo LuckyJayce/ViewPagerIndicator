@@ -3,26 +3,25 @@ package com.shizhefei.indicator.tabmain;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shizhefei.fragment.LazyFragment;
 import com.shizhefei.indicator.R;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorPagerAdapter;
-import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorViewPagerAdapter;
+import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.slidebar.LayoutBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-public class MainFragment extends LazyFragment {
+public class FirstLayerFragment extends LazyFragment {
 	private IndicatorViewPager indicatorViewPager;
 	private LayoutInflater inflate;
 	public static final String INTENT_STRING_TABNAME = "intent_String_tabname";
@@ -69,10 +68,22 @@ public class MainFragment extends LazyFragment {
 
 		indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
 		inflate = LayoutInflater.from(getApplicationContext());
-		indicatorViewPager.setAdapter(adapter);
+
+		// 注意这里 的FragmentManager 是 getChildFragmentManager(); 因为是在Fragment里面
+		// 而在activity里面用FragmentManager 是 getSupportFragmentManager()
+		indicatorViewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 	}
 
-	private IndicatorPagerAdapter adapter = new IndicatorViewPagerAdapter() {
+	private class MyAdapter extends IndicatorFragmentPagerAdapter {
+
+		public MyAdapter(FragmentManager fragmentManager) {
+			super(fragmentManager);
+		}
+
+		@Override
+		public int getCount() {
+			return 4;
+		}
 
 		@Override
 		public View getViewForTab(int position, View convertView, ViewGroup container) {
@@ -85,26 +96,14 @@ public class MainFragment extends LazyFragment {
 		}
 
 		@Override
-		public View getViewForPage(int position, View convertView, ViewGroup container) {
-			if (convertView == null) {
-				convertView = inflate.inflate(R.layout.fragment_tabmain_item, container, false);
-			}
-			final TextView textView = (TextView) convertView.findViewById(R.id.fragment_mainTab_item_textView);
-			textView.setText(tabName + " " + position + " 界面加载完毕");
-			final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.fragment_mainTab_item_progressBar);
-			new Handler() {
-				public void handleMessage(android.os.Message msg) {
-					textView.setVisibility(View.VISIBLE);
-					progressBar.setVisibility(View.GONE);
-				}
-			}.sendEmptyMessageDelayed(1, 3000);
-			return convertView;
+		public Fragment getFragmentForPage(int position) {
+			SecondLayerFragment mainFragment = new SecondLayerFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString(SecondLayerFragment.INTENT_STRING_TABNAME, tabName);
+			bundle.putInt(SecondLayerFragment.INTENT_INT_POSITION, position);
+			mainFragment.setArguments(bundle);
+			return mainFragment;
 		}
-
-		@Override
-		public int getCount() {
-			return 4;
-		}
-	};
+	}
 
 }
