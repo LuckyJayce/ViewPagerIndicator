@@ -1,16 +1,17 @@
 package com.shizhefei.view.indicator.slidebar;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 /**
  * 
  * @author试着飞
  * @date 2014年11月2日
- * @version 1.0 
- * 通过xml来设置 滑动块
+ * @version 1.0 通过xml来设置 滑动块
  */
 public class LayoutBar implements ScrollBar {
 	protected Context context;
@@ -19,6 +20,7 @@ public class LayoutBar implements ScrollBar {
 	protected int height;
 	protected int width;
 	protected Gravity gravity;
+	private LayoutParams layoutParams;
 
 	public LayoutBar(Context context, int layoutId) {
 		this(context, layoutId, Gravity.BOTTOM);
@@ -29,6 +31,7 @@ public class LayoutBar implements ScrollBar {
 		this.context = context;
 		this.layoutId = layoutId;
 		this.view = LayoutInflater.from(context).inflate(layoutId, new LinearLayout(context), false);
+		layoutParams = view.getLayoutParams();
 		this.height = view.getLayoutParams().height;
 		this.width = view.getLayoutParams().width;
 		this.gravity = gravity;
@@ -37,6 +40,7 @@ public class LayoutBar implements ScrollBar {
 	@Override
 	public int getHeight(int tabHeight) {
 		if (height <= 0) {
+			layoutParams.height = tabHeight;
 			return tabHeight;
 		}
 		return height;
@@ -45,6 +49,7 @@ public class LayoutBar implements ScrollBar {
 	@Override
 	public int getWidth(int tabWidth) {
 		if (width <= 0) {
+			layoutParams.width = tabWidth;
 			return tabWidth;
 		}
 		return width;

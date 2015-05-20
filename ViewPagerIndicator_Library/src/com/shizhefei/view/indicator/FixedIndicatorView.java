@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -413,9 +414,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			View selectV = getChildAt(position);
 			View unSelectV = getChildAt(position + 1);
 			if (selectV != null) {
-				int width = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
-				view.layout(0, 0, scrollBar.getWidth(width), scrollBar.getHeight(getHeight()));
-				return width;
+				int tabWidth = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
+				int width = scrollBar.getWidth(tabWidth);
+				int height = scrollBar.getHeight(getHeight());
+				view.measure(width, height);
+				view.layout(0, 0, width, height);
+				return tabWidth;
 			}
 		}
 		return scrollBar.getSlideView().getWidth();
@@ -524,4 +528,5 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	public int getPreSelectItem() {
 		return mPreSelectedTabIndex;
 	}
+
 }
