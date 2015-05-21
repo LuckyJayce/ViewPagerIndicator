@@ -11,14 +11,12 @@ import com.shizhefei.view.utils.ColorGradient;
 
 /**
  * 
- * @author zsy
+ * @author LuckyJayce
  *
  */
 public class OnTransitionTextListener implements OnTransitionListener {
 	private float selectSize = -1;
 	private float unSelectSize = -1;
-	private int selectColor = -1;
-	private int unSelectColor = -1;
 	private ColorGradient gradient;
 	private float dFontFize = -1;
 
@@ -63,8 +61,6 @@ public class OnTransitionTextListener implements OnTransitionListener {
 	}
 
 	public final OnTransitionTextListener setColor(int selectColor, int unSelectColor) {
-		this.selectColor = selectColor;
-		this.unSelectColor = unSelectColor;
 		gradient = new ColorGradient(unSelectColor, selectColor, 100);
 		return this;
 	}
@@ -85,7 +81,7 @@ public class OnTransitionTextListener implements OnTransitionListener {
 	@Override
 	public void onTransition(View view, int position, float selectPercent) {
 		TextView selectTextView = getTextView(view, position);
-		if (selectColor != -1 && unSelectColor != -1) {
+		if (gradient != null) {
 			selectTextView.setTextColor(gradient.getColor((int) (selectPercent * 100)));
 		}
 		if (unSelectSize > 0 && selectSize > 0) {
