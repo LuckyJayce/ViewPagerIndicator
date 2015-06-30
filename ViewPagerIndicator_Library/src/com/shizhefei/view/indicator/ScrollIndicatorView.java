@@ -239,27 +239,31 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 		@Override
 		protected void onMeasure(int widthSpec, int heightSpec) {
+			Log.d("pppp", "onMeasure start: layoutWidth " + ((ScrollIndicatorView) getParent()).getMeasuredWidth());
 			if (isAutoSplit) {
 				ScrollIndicatorView group = (ScrollIndicatorView) getParent();
-				int totalWidth = 0;
-				int count = getChildCount();
-				int maxCellWidth = 0;
-				for (int i = 0; i < count; i++) {
-					int width = measureChildWidth(getChildAt(i), widthSpec, heightSpec);
-					maxCellWidth = maxCellWidth < width ? width : maxCellWidth;
-					totalWidth += width;
-				}
 				int layoutWidth = group.getMeasuredWidth();
-				Log.d("pppp", "onMeasure: layoutWidth" + layoutWidth + " totalWidth:" + totalWidth + " maxCellWidth * count:" + maxCellWidth * count);
-				if (totalWidth > layoutWidth) {
-					group.setFillViewport(false);
-					setSplitMethod(SPLITMETHOD_WRAP);
-				} else if (maxCellWidth * count > layoutWidth) {
-					group.setFillViewport(true);
-					setSplitMethod(SPLITMETHOD_WEIGHT);
-				} else {
-					group.setFillViewport(true);
-					setSplitMethod(SPLITMETHOD_EQUALS);
+				if (layoutWidth != 0) {
+					int totalWidth = 0;
+					int count = getChildCount();
+					int maxCellWidth = 0;
+					for (int i = 0; i < count; i++) {
+						int width = measureChildWidth(getChildAt(i), widthSpec, heightSpec);
+						maxCellWidth = maxCellWidth < width ? width : maxCellWidth;
+						totalWidth += width;
+					}
+					Log.d("pppp", "onMeasure: layoutWidth" + layoutWidth + " totalWidth:" + totalWidth + " maxCellWidth * count:" + maxCellWidth
+							* count);
+					if (totalWidth > layoutWidth) {
+						group.setFillViewport(false);
+						setSplitMethod(SPLITMETHOD_WRAP);
+					} else if (maxCellWidth * count > layoutWidth) {
+						group.setFillViewport(true);
+						setSplitMethod(SPLITMETHOD_WEIGHT);
+					} else {
+						group.setFillViewport(true);
+						setSplitMethod(SPLITMETHOD_EQUALS);
+					}
 				}
 			}
 			super.onMeasure(widthSpec, heightSpec);
