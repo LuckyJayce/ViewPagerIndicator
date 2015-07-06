@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.shizhefei.fragment.LazyFragment;
 import com.shizhefei.indicator.R;
-import com.shizhefei.view.indicator.FixedIndicatorView;
+import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
@@ -40,7 +41,7 @@ public class FirstLayerFragment extends LazyFragment {
 		index = bundle.getInt(INTENT_INT_INDEX);
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.fragment_tabmain_viewPager);
-		FixedIndicatorView indicator = (FixedIndicatorView) findViewById(R.id.fragment_tabmain_indicator);
+		Indicator indicator = (Indicator) findViewById(R.id.fragment_tabmain_indicator);
 
 		switch (index) {
 		case 0:
@@ -62,7 +63,7 @@ public class FirstLayerFragment extends LazyFragment {
 
 		int selectColor = res.getColor(R.color.tab_top_text_2);
 		int unSelectColor = res.getColor(R.color.tab_top_text_1);
-		indicator.setOnTransitionListener(new OnTransitionTextListener(selectSize, unSelectSize, selectColor, unSelectColor));
+		indicator.setOnTransitionListener(new OnTransitionTextListener().setColor(selectColor, unSelectColor).setSize(selectSize, unSelectSize));
 
 		viewPager.setOffscreenPageLimit(4);
 
@@ -72,6 +73,44 @@ public class FirstLayerFragment extends LazyFragment {
 		// 注意这里 的FragmentManager 是 getChildFragmentManager(); 因为是在Fragment里面
 		// 而在activity里面用FragmentManager 是 getSupportFragmentManager()
 		indicatorViewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
+
+		Log.d("cccc", "Fragment 将要创建View " + this);
+	}
+
+	@Override
+	protected void onResumeLazy() {
+		super.onResumeLazy();
+		Log.d("cccc", "Fragment所在的Activity onResume, onResumeLazy " + this);
+	}
+
+	@Override
+	protected void onFragmentStartLazy() {
+		super.onFragmentStartLazy();
+		Log.d("cccc", "Fragment 显示 " + this);
+	}
+
+	@Override
+	protected void onFragmentStopLazy() {
+		super.onFragmentStopLazy();
+		Log.d("cccc", "Fragment 掩藏 " + this);
+	}
+
+	@Override
+	protected void onPauseLazy() {
+		super.onPauseLazy();
+		Log.d("cccc", "Fragment所在的Activity onPause, onPauseLazy " + this);
+	}
+
+	@Override
+	protected void onDestroyViewLazy() {
+		super.onDestroyViewLazy();
+		Log.d("cccc", "Fragment View将被销毁 " + this);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.d("cccc", "Fragment 所在的Activity onDestroy " + this);
 	}
 
 	private class MyAdapter extends IndicatorFragmentPagerAdapter {
