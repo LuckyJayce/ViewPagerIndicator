@@ -205,9 +205,9 @@ public class IndicatorViewPager {
 		@Override
 		public void onItemSelected(View selectItemView, int select, int preSelect) {
 			viewPager.setCurrentItem(select, viewPager.isCanScroll());
-			if (onIndicatorPageChangeListener != null) {
-				onIndicatorPageChangeListener.onIndicatorPageChange(preSelect, select);
-			}
+//			if (onIndicatorPageChangeListener != null) {
+//				onIndicatorPageChangeListener.onIndicatorPageChange(preSelect, select);
+//			}
 		}
 	};
 
