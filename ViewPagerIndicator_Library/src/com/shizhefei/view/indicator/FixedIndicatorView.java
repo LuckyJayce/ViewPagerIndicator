@@ -301,10 +301,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	protected void dispatchDraw(Canvas canvas) {
 		if (scrollBar != null && scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
+		} else {
+			inRun.stop();
 		}
 		super.dispatchDraw(canvas);
 		if (scrollBar != null && scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
+		} else {
+			inRun.stop();
 		}
 	}
 
@@ -314,10 +318,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		}
 		final int count = mAdapter.getCount();
 		if (count == 0) {
+			inRun.stop();
 			return;
 		}
 		if (getCurrentItem() >= count) {
 			setCurrentItem(count - 1);
+			inRun.stop();
 			return;
 		}
 		float offsetX = 0;
@@ -363,6 +369,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				return;
 			}
 			offsetX = currentView.getLeft();
+		}
+		if (inRun.isFinished()) {
+			inRun.stop();
 		}
 		int tabWidth = measureScrollBar(mPosition, mPositionOffset, true);
 		int width = scrollBar.getSlideView().getWidth();
