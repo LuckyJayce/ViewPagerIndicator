@@ -301,13 +301,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 	protected void dispatchDraw(Canvas canvas) {
 		if (scrollBar != null && scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
-		} else {
-			inRun.stop();
 		}
 		super.dispatchDraw(canvas);
 		if (scrollBar != null && scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
 			drawSlideBar(canvas);
-		} else {
+		}
+		if (scrollBar == null) {
 			inRun.stop();
 		}
 	}
