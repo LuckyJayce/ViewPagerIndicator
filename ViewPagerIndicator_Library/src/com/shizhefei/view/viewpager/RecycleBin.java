@@ -40,6 +40,7 @@ public class RecycleBin {
 			throw new IllegalArgumentException("Can't have a viewTypeCount < 1");
 		}
 		// noinspection unchecked
+		@SuppressWarnings("unchecked")
 		SparseArray<View>[] scrapViews = new SparseArray[viewTypeCount];
 		for (int i = 0; i < viewTypeCount; i++) {
 			scrapViews[i] = new SparseArray<View>();

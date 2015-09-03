@@ -1,15 +1,16 @@
 package com.shizhefei.view.indicator.slidebar;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.os.Build;
 import android.view.View;
+
 /**
  * 
  * @author试着飞
  * @date 2014年11月2日
- * @version 1.0
- * 通过图片来设置滑动块
+ * @version 1.0 通过图片来设置滑动块
  */
 public class DrawableBar implements ScrollBar {
 	protected Gravity gravity;
@@ -29,10 +30,16 @@ public class DrawableBar implements ScrollBar {
 		this(context, drawable, Gravity.BOTTOM);
 	}
 
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public DrawableBar(Context context, Drawable drawable, Gravity gravity) {
 		view = new View(context);
 		this.drawable = drawable;
-		view.setBackgroundDrawable(drawable);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			view.setBackground(drawable);
+		} else {
+			view.setBackgroundDrawable(drawable);
+		}
 		this.gravity = gravity;
 	}
 

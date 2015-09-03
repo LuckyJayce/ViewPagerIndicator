@@ -89,7 +89,6 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
 	 *         also be returned.
 	 * @see #IGNORE_ITEM_VIEW_TYPE
 	 */
-	@SuppressWarnings("UnusedParameters")
 	// Argument potentially used by subclasses.
 	public int getItemViewType(int position) {
 		return 0;
