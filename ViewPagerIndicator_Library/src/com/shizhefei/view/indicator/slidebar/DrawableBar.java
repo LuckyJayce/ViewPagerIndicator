@@ -59,7 +59,7 @@ public class DrawableBar implements ScrollBar {
 
 	@Override
 	public int getWidth(int tabWidth) {
-		return drawable.getIntrinsicHeight();
+		return drawable.getIntrinsicWidth();
 	}
 
 	@Override
