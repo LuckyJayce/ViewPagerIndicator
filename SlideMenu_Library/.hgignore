@@ -1,5 +1,0 @@
-
-syntax: regexp
-^bin$
-syntax: regexp
-^gen$

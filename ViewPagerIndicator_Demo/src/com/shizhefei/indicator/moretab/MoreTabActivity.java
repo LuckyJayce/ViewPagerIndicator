@@ -9,13 +9,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.shizhefei.indicator.R;
-import com.shizhefei.indicator.slide.SlideFragment;
 import com.shizhefei.view.indicator.FragmentListPageAdapter;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
@@ -111,7 +110,7 @@ public class MoreTabActivity extends FragmentActivity {
 		public Fragment getFragmentForPage(int position) {
 			MoreFragment fragment = new MoreFragment();
 			Bundle bundle = new Bundle();
-			bundle.putInt(SlideFragment.INTENT_INT_INDEX, position);
+			bundle.putInt(MoreFragment.INTENT_INT_INDEX, position);
 			fragment.setArguments(bundle);
 			return fragment;
 		}

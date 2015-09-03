@@ -27,14 +27,6 @@
             android:text="tab主界面" />
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:onClick="onClickSlideMain"
-            android:text="滑动菜主界面" />
-
-        <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,14 +40,6 @@
             android:layout_margin="4dp"
             android:onClick="onClickSpringTab"
             android:text="springtab界面" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:onClick="onClickSlideBar"
-            android:text="可滑动" />
     </LinearLayout>
 
 </FrameLayout>
