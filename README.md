@@ -93,10 +93,12 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
 # 主要的类 #
-## 1.ViewPager ##
-android-support-v4 里面的viewpager被重新改写了。    
-**1.在原先的基础上添加了setCanScroll(false)的方法用来禁止滑动。 
-2.setPrepareNumber(1)的方法用来配合setOffscreenPageLimit(1)进行预加载界面和防止重新创建界面**
+## 1.ViewPager ##  
+这个版本以后 android-support-v4 可以用原生的了 没有重写ViewPager。  
+原先重写的ViewPager的setPrepareNumber 用 Fragment继承于LazyFragment代替实现懒加载  
+原先setCanScroll 转移到了 ViewPager的子类SViewPager上  
+
+2.使用LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
 
 ## 2.Indicator ##
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
@@ -152,10 +154,30 @@ SpringBar 实现拖拽效果的圆形滑动块  该类修改于https://github.co
 子类有  
 OnTransitionTextListener tab的字体颜色变化，和字体大小变化效果    
 
+## 6.LazyFragment 懒加载Fragment    
+Fragment继承该类实现 显示Framgment的时候才会去创建你自己的界面布局，否则不创建。  
+  
+1.实现原理：  
+一开始onCreateView的时候只是加载一个空的FrameLayout  
+当通过结合onCreateView和setUserVisibleHint两个方法进行判断是否需要加载真正的布局界面，需要的时候把真正的布局界面添加到之前的空的FrameLayout上面  
+  
+2.回调方法：  
+            onCreateViewLazy  对应 onCreateView  
+            onDestroyViewLazy 对应 onDestroyView  
+            onResumeLazy      对应 onResume  
+            onPauseLazy       对应 onPause  
+            onDestroy 和 onCreate 方法不变  
+            另外添加了onFragmentStartLazy fragment显示的时候调用，在ViewPager界面切换的时候你就可以通过这个判断是否显示  
+            onFragmentStopLazy fragment不显示的时候调用  
+            上面所有有lazy结尾的方法都意味着 真正的布局正在显示  
+              
+3.使用方法  
+放心在onCreateViewLazy 的时候创建布局，初始化数据。调用该方法的时候，界面已经要显示啦
+  在onDestroyViewLazy的方法里面做释放操作  
+
 ## 说明 ##
 项目 ViewPagerIndicator_Demo 是示例代码。 看了这个例子你会惊奇的发现里面居然都是通过viewpager实现，没有使用tabhost，而所有形式的tab都是用Indicator实现。
 项目 ViewPagerIndicator_Library 是类库
-项目 SlideMenu_Library 是第三方的slidemenu类库
 
 有什么建议可以发到我的邮箱  794629068@qq.com
 
