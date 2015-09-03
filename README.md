@@ -98,7 +98,7 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 原先重写的ViewPager的setPrepareNumber 用 Fragment继承于LazyFragment代替实现懒加载  
 原先setCanScroll 转移到了 ViewPager的子类SViewPager上  
 
-2.LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
+2.使用LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
 
 ## 2.Indicator ##
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
