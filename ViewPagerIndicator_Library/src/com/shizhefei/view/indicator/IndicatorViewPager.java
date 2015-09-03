@@ -29,6 +29,7 @@ import com.shizhefei.view.indicator.Indicator.OnItemSelectedListener;
 import com.shizhefei.view.indicator.Indicator.OnTransitionListener;
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
+import com.shizhefei.view.viewpager.SViewPager;
 
 /**
  * 
@@ -112,16 +113,6 @@ public class IndicatorViewPager {
 	}
 
 	/**
-	 * 设置预加载界面的个数。左右两边加载界面的个数<br>
-	 * 默认是1，表示左右两边 相连的1个界面会和当前界面同时加载
-	 * 
-	 * @param limit
-	 */
-	public void setPagePrepareNumber(int limit) {
-		viewPager.setPrepareNumber(limit);
-	}
-
-	/**
 	 * 设置page间的图片的宽度
 	 * 
 	 * @param marginPixels
@@ -146,15 +137,6 @@ public class IndicatorViewPager {
 	 */
 	public void setPageMarginDrawable(int resId) {
 		viewPager.setPageMarginDrawable(resId);
-	}
-
-	/**
-	 * 设置page是否可滑动
-	 * 
-	 * @param isCanScroll
-	 */
-	public void setPageCanScroll(boolean isCanScroll) {
-		viewPager.setCanScroll(isCanScroll);
 	}
 
 	/**
@@ -204,10 +186,15 @@ public class IndicatorViewPager {
 
 		@Override
 		public void onItemSelected(View selectItemView, int select, int preSelect) {
-			viewPager.setCurrentItem(select, viewPager.isCanScroll());
-//			if (onIndicatorPageChangeListener != null) {
-//				onIndicatorPageChangeListener.onIndicatorPageChange(preSelect, select);
-//			}
+			if (viewPager instanceof SViewPager) {
+				viewPager.setCurrentItem(select, ((SViewPager) viewPager).isCanScroll());
+			} else {
+				viewPager.setCurrentItem(select, true);
+			}
+			// if (onIndicatorPageChangeListener != null) {
+			// onIndicatorPageChangeListener.onIndicatorPageChange(preSelect,
+			// select);
+			// }
 		}
 	};
 
