@@ -369,6 +369,26 @@ public class IndicatorViewPager {
 			return FragmentListPageAdapter.POSITION_UNCHANGED;
 		}
 
+		/**
+		 * 获取position位置上的Fragment，Fragment没有被创建时返回null
+		 * 
+		 * @param position
+		 * 
+		 * @return
+		 */
+		public Fragment getExitFragment(int position) {
+			return pagerAdapter.getExitFragment(position);
+		}
+
+		/**
+		 * 获取当前显示的Fragment
+		 * 
+		 * @return
+		 */
+		public Fragment getCurrentFragment() {
+			return pagerAdapter.getCurrentFragment();
+		}
+
 		public abstract int getCount();
 
 		public abstract View getViewForTab(int position, View convertView, ViewGroup container);
