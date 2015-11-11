@@ -126,8 +126,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 	private void initNotifyOnPageScrollListener() {
 		int tabCount;
-		if (mAdapter != null && (tabCount = mAdapter.getCount()) > 1) {
-			if (onPageScrollListener != null && tabCount > 1) {
+		if (mAdapter != null && (tabCount = mAdapter.getCount()) > 1 && onPageScrollListener != null) {
 				if (mPreSelectedTabIndex >= 0) {
 					View view1 = getItemView(mPreSelectedTabIndex);
 					if (view1 != null) {
@@ -140,7 +139,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 						onPageScrollListener.onTransition(view1, mSelectedTabIndex, 1);
 					}
 				}
-			}
 		}
 	}
 
