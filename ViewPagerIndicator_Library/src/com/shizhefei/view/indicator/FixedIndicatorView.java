@@ -168,6 +168,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			int size = views.size();
 			for (int i = 0; i < newCount; i++) {
 				LinearLayout result = new LinearLayout(getContext());
+				result.setGravity(android.view.Gravity.CENTER);
 				View view;
 				if (i < size) {
 					View temp = views.get(i).getChildAt(0);
