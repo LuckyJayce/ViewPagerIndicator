@@ -1,6 +1,6 @@
 ViewPagerIndicator
 ==================  
-点击上方的release，可以下载最新的jar包    
+Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases/download/v1.0.2/viewpagerindicator_v1.0.2.jar)  
 Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
 
 ###1. 支持自定义tab样式  
