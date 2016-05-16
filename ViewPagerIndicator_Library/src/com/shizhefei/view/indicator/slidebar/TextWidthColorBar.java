@@ -69,6 +69,9 @@ public class TextWidthColorBar extends ColorBar {
 	}
 
 	private int getTextWidth(TextView textView) {
+		if(textView==null){
+		   return 0;
+		}
 		Rect bounds = new Rect();
 		String text = textView.getText().toString();
 		Paint paint = textView.getPaint();
