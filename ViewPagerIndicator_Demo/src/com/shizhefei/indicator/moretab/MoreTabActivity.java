@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,30 +27,34 @@ public class MoreTabActivity extends FragmentActivity {
 	private IndicatorViewPager indicatorViewPager;
 	private LayoutInflater inflate;
 	private String[] names = { "CUPCAKE", "DONUT", "FROYO", "GINGERBREAD", "HONEYCOMB", "ICE CREAM SANDWICH", "JELLY BEAN", "KITKAT" };
-	private ScrollIndicatorView indicator;
+	private ScrollIndicatorView scrollIndicatorView;
+	private ToggleButton pinnedToggleButton;
+	private ToggleButton splitAutotoggleButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_moretab);
-		ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton1);
+		splitAutotoggleButton = (ToggleButton) findViewById(R.id.toggleButton1);
+		pinnedToggleButton = (ToggleButton) findViewById(R.id.toggleButton2);
 		ViewPager viewPager = (ViewPager) findViewById(R.id.moretab_viewPager);
-		indicator = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
-		indicator.setScrollBar(new ColorBar(this, Color.RED, 5));
+		scrollIndicatorView = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
+		scrollIndicatorView.setScrollBar(new ColorBar(this, Color.RED, 5));
 
 		// 设置滚动监听
 		int selectColorId = R.color.tab_top_text_2;
 		int unSelectColorId = R.color.tab_top_text_1;
-		indicator.setOnTransitionListener(new OnTransitionTextListener().setColorId(this, selectColorId, unSelectColorId));
+		scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener().setColorId(this, selectColorId, unSelectColorId));
 
 		viewPager.setOffscreenPageLimit(2);
-		indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
+		indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
 		inflate = LayoutInflater.from(getApplicationContext());
 		indicatorViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
 		// 默认true ，自动布局
-		toggleButton.setChecked(indicator.isSplitAuto());
-		toggleButton.setOnCheckedChangeListener(onCheckedChangeListener);
+		splitAutotoggleButton.setChecked(scrollIndicatorView.isSplitAuto());
+		splitAutotoggleButton.setOnCheckedChangeListener(onCheckedChangeListener);
+		pinnedToggleButton.setOnCheckedChangeListener(onCheckedChangeListener);
 
 	}
 
@@ -57,8 +62,14 @@ public class MoreTabActivity extends FragmentActivity {
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			// 设置是否自动布局
-			indicator.setSplitAuto(isChecked);
+			if (buttonView == splitAutotoggleButton) {
+				// 设置是否自动布局
+				scrollIndicatorView.setSplitAuto(isChecked);
+			} else if (buttonView == pinnedToggleButton) {
+				scrollIndicatorView.setPinnedTabView(isChecked);
+				// 设置固定tab的shadow，这里不设置的话会使用默认的shadow绘制
+				scrollIndicatorView.setPinnedShadow(R.drawable.tabshadow, dipToPix(4));
+			}
 		}
 	};
 
@@ -102,7 +113,9 @@ public class MoreTabActivity extends FragmentActivity {
 			}
 			TextView textView = (TextView) convertView;
 			textView.setText(names[position % names.length]);
-			textView.setPadding(20, 0, 20, 0);
+			textView.setBackgroundColor(Color.WHITE);
+			int padding = dipToPix(10);
+			textView.setPadding(padding, 0, padding, 0);
 			return convertView;
 		}
 
@@ -121,5 +134,17 @@ public class MoreTabActivity extends FragmentActivity {
 		}
 
 	};
+
+	/**
+	 * 根据dip值转化成px值
+	 * 
+	 * @param context
+	 * @param dip
+	 * @return
+	 */
+	private int dipToPix(float dip) {
+		int size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getResources().getDisplayMetrics());
+		return size;
+	}
 
 }

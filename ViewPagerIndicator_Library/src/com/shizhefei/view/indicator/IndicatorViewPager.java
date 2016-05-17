@@ -226,7 +226,7 @@ public class IndicatorViewPager {
 
 		@Override
 		public void onPageScrollStateChanged(int state) {
-
+			indicatorView.onPageScrollStateChanged(state);
 		}
 	};
 

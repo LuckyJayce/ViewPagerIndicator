@@ -181,4 +181,6 @@ public interface Indicator {
 	public static interface OnTransitionListener {
 		public void onTransition(View view, int position, float selectPercent);
 	}
+
+	public void onPageScrollStateChanged(int state);
 }

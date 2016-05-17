@@ -75,6 +75,7 @@ public class FirstLayerFragment extends LazyFragment {
 		indicatorViewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 
 		Log.d("cccc", "Fragment 将要创建View " + this);
+		
 	}
 
 	@Override

@@ -8,6 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="不自动布局"
+            android:textOn="自动布局" />
+        
+        <ToggleButton
+            android:id="@+id/toggleButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="不固定第一个tab"
+            android:textOn="固定第一个tab" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
@@ -34,13 +53,6 @@
             android:layout_height="wrap_content"
             android:onClick="on12"
             android:text="12  个" />
-
-        <ToggleButton
-            android:id="@+id/toggleButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="不自动布局"
-            android:textOn="自动布局" />
     </LinearLayout>
 
     <com.shizhefei.view.indicator.ScrollIndicatorView
