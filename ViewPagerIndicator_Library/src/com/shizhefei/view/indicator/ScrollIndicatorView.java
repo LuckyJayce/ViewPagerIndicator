@@ -310,6 +310,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 				ScrollBar scrollBar = fixedIndicatorView.getScrollBar();
 				// 如果scrollBar不为空，且刚好选中的是第一个的时候需要在这里重新绘制scrollBar，因为原先fixedIndicatorView回执的scrollBar被遮挡了
 				if (scrollBar != null && fixedIndicatorView.getCurrentItem() == 0) {
+					int drawScrollBarCount = canvas.save();
+
 					int offsetY = 0;
 					switch (scrollBar.getGravity()) {
 					case CENTENT_BACKGROUND:
@@ -331,11 +333,13 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 					scrollBar.getSlideView().measure(scrollBarWidth, scrollBarHeight);
 					scrollBar.getSlideView().layout(0, 0, scrollBarWidth, scrollBarHeight);
 
-					int offsetX= (pinnedTabView.getWidth() - scrollBarWidth) / 2;
-					
+					int offsetX = (pinnedTabView.getWidth() - scrollBarWidth) / 2;
+
 					canvas.translate(offsetX, offsetY);
 					canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
 					scrollBar.getSlideView().draw(canvas);
+
+					canvas.restoreToCount(drawScrollBarCount);
 				}
 
 				// pinnedTabView的分割绘制阴影
