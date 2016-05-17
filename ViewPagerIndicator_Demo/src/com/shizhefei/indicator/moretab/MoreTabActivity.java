@@ -20,7 +20,7 @@ import com.shizhefei.view.indicator.FragmentListPageAdapter;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
-import com.shizhefei.view.indicator.slidebar.ColorBar;
+import com.shizhefei.view.indicator.slidebar.TextWidthColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
 public class MoreTabActivity extends FragmentActivity {
@@ -39,7 +39,7 @@ public class MoreTabActivity extends FragmentActivity {
 		pinnedToggleButton = (ToggleButton) findViewById(R.id.toggleButton2);
 		ViewPager viewPager = (ViewPager) findViewById(R.id.moretab_viewPager);
 		scrollIndicatorView = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
-		scrollIndicatorView.setScrollBar(new ColorBar(this, Color.RED, 5));
+		scrollIndicatorView.setScrollBar(new TextWidthColorBar(this,scrollIndicatorView, Color.RED, 5));
 
 		// 设置滚动监听
 		int selectColorId = R.color.tab_top_text_2;

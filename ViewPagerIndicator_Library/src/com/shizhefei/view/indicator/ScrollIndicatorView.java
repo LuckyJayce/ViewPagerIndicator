@@ -331,7 +331,9 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 					scrollBar.getSlideView().measure(scrollBarWidth, scrollBarHeight);
 					scrollBar.getSlideView().layout(0, 0, scrollBarWidth, scrollBarHeight);
 
-					canvas.translate(0, offsetY);
+					int offsetX= (pinnedTabView.getWidth() - scrollBarWidth) / 2;
+					
+					canvas.translate(offsetX, offsetY);
 					canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
 					scrollBar.getSlideView().draw(canvas);
 				}
