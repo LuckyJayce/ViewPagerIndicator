@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
+import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 
 /**
  * 
@@ -95,6 +97,21 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 		this.shadowWidth = shadowWidth;
 		ViewCompat.postInvalidateOnAnimation(this);
 	}
+
+	public void setPinnedTabBg(Drawable pinnedTabBgDrawable) {
+		this.pinnedTabBgDrawable = pinnedTabBgDrawable;
+		ViewCompat.postInvalidateOnAnimation(this);
+	}
+
+	public void setPinnedTabBgColor(int color) {
+		setPinnedTabBg(new ColorDrawable(color));
+	}
+
+	public void setPinnedTabBgId(int pinnedTabBgDrawableId) {
+		setPinnedTabBg(ContextCompat.getDrawable(getContext(), pinnedTabBgDrawableId));
+	}
+
+	private Drawable pinnedTabBgDrawable;
 
 	public void setPinnedShadow(int shadowDrawableId, int shadowWidth) {
 		setPinnedShadow(ContextCompat.getDrawable(getContext(), shadowDrawableId), shadowWidth);
@@ -303,45 +320,22 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 				// 绘制固定在开始位置的pinnedTabView
 				canvas.translate(scrollX + getPaddingLeft(), getPaddingTop());
-				pinnedTabView.draw(canvas);
 
-				int x = pinnedTabView.getWidth();
-
-				ScrollBar scrollBar = fixedIndicatorView.getScrollBar();
-				// 如果scrollBar不为空，且刚好选中的是第一个的时候需要在这里重新绘制scrollBar，因为原先fixedIndicatorView回执的scrollBar被遮挡了
-				if (scrollBar != null && fixedIndicatorView.getCurrentItem() == 0) {
-					int drawScrollBarCount = canvas.save();
-
-					int offsetY = 0;
-					switch (scrollBar.getGravity()) {
-					case CENTENT_BACKGROUND:
-					case CENTENT:
-						offsetY = (getHeight() - scrollBar.getHeight(getHeight())) / 2;
-						break;
-					case TOP:
-					case TOP_FLOAT:
-						offsetY = 0;
-						break;
-					case BOTTOM:
-					case BOTTOM_FLOAT:
-					default:
-						offsetY = getHeight() - scrollBar.getHeight(getHeight());
-						break;
-					}
-					int scrollBarWidth = scrollBar.getWidth(pinnedTabView.getWidth());
-					int scrollBarHeight = scrollBar.getHeight(pinnedTabView.getHeight());
-					scrollBar.getSlideView().measure(scrollBarWidth, scrollBarHeight);
-					scrollBar.getSlideView().layout(0, 0, scrollBarWidth, scrollBarHeight);
-
-					int offsetX = (pinnedTabView.getWidth() - scrollBarWidth) / 2;
-
-					canvas.translate(offsetX, offsetY);
-					canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
-					scrollBar.getSlideView().draw(canvas);
-
-					canvas.restoreToCount(drawScrollBarCount);
+				if (pinnedTabBgDrawable != null) {
+					pinnedTabBgDrawable.setBounds(0, 0, pinnedTabView.getWidth(), pinnedTabView.getHeight());
+					pinnedTabBgDrawable.draw(canvas);
 				}
 
+				ScrollBar scrollBar = fixedIndicatorView.getScrollBar();
+				if (scrollBar != null && scrollBar.getGravity() == Gravity.CENTENT_BACKGROUND) {
+					drawScrollBar(canvas);
+				}
+				pinnedTabView.draw(canvas);
+				if (scrollBar != null && scrollBar.getGravity() != Gravity.CENTENT_BACKGROUND) {
+					drawScrollBar(canvas);
+				}
+
+				int x = pinnedTabView.getWidth();
 				// pinnedTabView的分割绘制阴影
 				canvas.translate(x, 0);
 				int shadowHeight = getHeight() - getPaddingTop() - getPaddingBottom();
@@ -355,6 +349,43 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 				canvas.restoreToCount(saveCount);
 			}
+		}
+	}
+
+	private void drawScrollBar(Canvas canvas) {
+		ScrollBar scrollBar = fixedIndicatorView.getScrollBar();
+		// 如果scrollBar不为空，且刚好选中的是第一个的时候需要在这里重新绘制scrollBar，因为原先fixedIndicatorView回执的scrollBar被遮挡了
+		if (scrollBar != null && fixedIndicatorView.getCurrentItem() == 0) {
+			int drawScrollBarCount = canvas.save();
+
+			int offsetY = 0;
+			switch (scrollBar.getGravity()) {
+			case CENTENT_BACKGROUND:
+			case CENTENT:
+				offsetY = (getHeight() - scrollBar.getHeight(getHeight())) / 2;
+				break;
+			case TOP:
+			case TOP_FLOAT:
+				offsetY = 0;
+				break;
+			case BOTTOM:
+			case BOTTOM_FLOAT:
+			default:
+				offsetY = getHeight() - scrollBar.getHeight(getHeight());
+				break;
+			}
+			int scrollBarWidth = scrollBar.getWidth(pinnedTabView.getWidth());
+			int scrollBarHeight = scrollBar.getHeight(pinnedTabView.getHeight());
+			scrollBar.getSlideView().measure(scrollBarWidth, scrollBarHeight);
+			scrollBar.getSlideView().layout(0, 0, scrollBarWidth, scrollBarHeight);
+
+			int offsetX = (pinnedTabView.getWidth() - scrollBarWidth) / 2;
+
+			canvas.translate(offsetX, offsetY);
+			canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
+			scrollBar.getSlideView().draw(canvas);
+
+			canvas.restoreToCount(drawScrollBarCount);
 		}
 	}
 

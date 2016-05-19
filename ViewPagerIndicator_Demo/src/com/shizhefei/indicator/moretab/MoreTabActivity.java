@@ -20,7 +20,8 @@ import com.shizhefei.view.indicator.FragmentListPageAdapter;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
-import com.shizhefei.view.indicator.slidebar.TextWidthColorBar;
+import com.shizhefei.view.indicator.slidebar.DrawableBar;
+import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
 public class MoreTabActivity extends FragmentActivity {
@@ -39,12 +40,21 @@ public class MoreTabActivity extends FragmentActivity {
 		pinnedToggleButton = (ToggleButton) findViewById(R.id.toggleButton2);
 		ViewPager viewPager = (ViewPager) findViewById(R.id.moretab_viewPager);
 		scrollIndicatorView = (ScrollIndicatorView) findViewById(R.id.moretab_indicator);
-		scrollIndicatorView.setScrollBar(new TextWidthColorBar(this,scrollIndicatorView, Color.RED, 5));
+		scrollIndicatorView.setBackgroundColor(Color.RED);
+		scrollIndicatorView.setScrollBar(new DrawableBar(this, R.drawable.round_border_white_selector, Gravity.CENTENT_BACKGROUND) {
+			@Override
+			public int getHeight(int tabHeight) {
+				return tabHeight - dipToPix(12);
+			}
+
+			@Override
+			public int getWidth(int tabWidth) {
+				return tabWidth - dipToPix(12);
+			}
+		});
 
 		// 设置滚动监听
-		int selectColorId = R.color.tab_top_text_2;
-		int unSelectColorId = R.color.tab_top_text_1;
-		scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener().setColorId(this, selectColorId, unSelectColorId));
+		scrollIndicatorView.setOnTransitionListener(new OnTransitionTextListener().setColor(Color.RED, Color.WHITE));
 
 		viewPager.setOffscreenPageLimit(2);
 		indicatorViewPager = new IndicatorViewPager(scrollIndicatorView, viewPager);
@@ -69,6 +79,7 @@ public class MoreTabActivity extends FragmentActivity {
 				scrollIndicatorView.setPinnedTabView(isChecked);
 				// 设置固定tab的shadow，这里不设置的话会使用默认的shadow绘制
 				scrollIndicatorView.setPinnedShadow(R.drawable.tabshadow, dipToPix(4));
+				scrollIndicatorView.setPinnedTabBgColor(Color.RED);
 			}
 		}
 	};
@@ -109,11 +120,10 @@ public class MoreTabActivity extends FragmentActivity {
 		@Override
 		public View getViewForTab(int position, View convertView, ViewGroup container) {
 			if (convertView == null) {
-				convertView = inflate.inflate(R.layout.tab_top, container, false);
+				convertView = inflate.inflate(R.layout.tab_top3, container, false);
 			}
 			TextView textView = (TextView) convertView;
 			textView.setText(names[position % names.length]);
-			textView.setBackgroundColor(Color.WHITE);
 			int padding = dipToPix(10);
 			textView.setPadding(padding, 0, padding, 0);
 			return convertView;
