@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/tabbar_message_center_selected" android:state_selected="true"></item>
+    <item android:drawable="@drawable/tabbar_message_center"></item>
+
+</selector>
