@@ -22,6 +22,7 @@ public class GuideActivity extends FragmentActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_guide);
+		//ViewPager,Indicator
 		ViewPager viewPager = (ViewPager) findViewById(R.id.guide_viewPager);
 		Indicator indicator = (Indicator) findViewById(R.id.guide_indicator);
 		indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
