@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_selected="true" android:color="@color/tab_top_text_2"/>
+    <item android:color="@color/tab_top_text_1"/>
+
+</selector>

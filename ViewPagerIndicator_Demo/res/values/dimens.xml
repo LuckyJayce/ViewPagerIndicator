@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- slidemenu -->
+    <dimen name="ap_base_menu_shadow_offset">80dp</dimen>
+    <dimen name="ap_base_menu_shadow_width">16dp</dimen>
+    <dimen name="tab_top_fontsize">15sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>

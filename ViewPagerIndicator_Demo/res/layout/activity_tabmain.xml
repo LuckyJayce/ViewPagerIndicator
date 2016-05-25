@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.shizhefei.view.viewpager.SViewPager
+        android:id="@+id/tabmain_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#eee"
+        android:layout_weight="1" />
+
+    <com.shizhefei.view.indicator.FixedIndicatorView
+        android:background="#fff"
+        android:id="@+id/tabmain_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>
