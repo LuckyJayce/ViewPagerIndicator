@@ -53,7 +53,7 @@ import android.view.ViewGroup;
  * <p>
  * Here is an example implementation of a pager containing fragments of lists:
  *
- * {@sample
+ * {
  * development/samples/Support13Demos/src/com/example/android/supportv13/app/
  * FragmentStatePagerSupport.java complete}
  *
@@ -61,14 +61,14 @@ import android.view.ViewGroup;
  * The <code>R.layout.fragment_pager</code> resource of the top-level fragment
  * is:
  *
- * {@sample development/samples/Support13Demos/res/layout/fragment_pager.xml
+ * { development/samples/Support13Demos/res/layout/fragment_pager.xml
  * complete}
  *
  * <p>
  * The <code>R.layout.fragment_pager_list</code> resource containing each
  * individual fragment's layout is:
  *
- * {@sample
+ * {
  * development/samples/Support13Demos/res/layout/fragment_pager_list.xml
  * complete}
  */

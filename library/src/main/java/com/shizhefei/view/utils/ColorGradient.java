@@ -4,9 +4,6 @@ import android.graphics.Color;
 
 /**
  * 
- * @author试着飞
- * @date 2014年11月1日
- * @version 1.0
  * 用于获取两个颜色的过渡色
  */
 public class ColorGradient {

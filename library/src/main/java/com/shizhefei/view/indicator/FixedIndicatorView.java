@@ -1,8 +1,5 @@
 package com.shizhefei.view.indicator;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +14,9 @@ import android.widget.Scroller;
 
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class FixedIndicatorView extends LinearLayout implements Indicator {
 

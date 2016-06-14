@@ -18,7 +18,7 @@ import android.widget.FrameLayout;
  * 《1》原先的Fragment的回调方法名字后面要加个Lazy，比如Fragment的onCreateView方法， 就写成onCreateViewLazy <br>
  * 《2》使用该LazyFragment会导致多一层布局深度
  * 
- * @author LuckyJayce
+ * LuckyJayce
  *
  */
 public class LazyFragment extends BaseFragment {

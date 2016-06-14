@@ -114,7 +114,7 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
 	 *            that this View is always of the right type (see
 	 *            {@link #getViewTypeCount()} and {@link #getItemViewType(int)}
 	 *            ).
-	 * @param parent
+	 * @param container
 	 *            The parent that this view will eventually be attached to
 	 * @return A View corresponding to the data at the specified position.
 	 */

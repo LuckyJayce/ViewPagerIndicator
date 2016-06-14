@@ -17,16 +17,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar.Gravity;
 
 /**
  * 
- * @author试着飞
- * @date 2014年11月1日
- * @version 1.0 主要用于多个tab可以进行滑动
+ * 主要用于多个tab可以进行滑动
  */
 public class ScrollIndicatorView extends HorizontalScrollView implements Indicator {
 	private SFixedIndicatorView fixedIndicatorView;

@@ -21,12 +21,11 @@ import android.graphics.Rect;
 import android.widget.TextView;
 
 import com.shizhefei.view.indicator.Indicator;
-import com.shizhefei.view.indicator.slidebar.ColorBar;
 
 /**
  * tab的文本多宽scrollbar就显示多宽，实现新浪个人首页的tab的scrollbar效果
  * 
- * @author LuckyJayce
+ * LuckyJayce
  *
  */
 public class TextWidthColorBar extends ColorBar {

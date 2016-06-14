@@ -33,9 +33,7 @@ import com.shizhefei.view.viewpager.SViewPager;
 
 /**
  * 
- * @author试着飞
- * @date 2014年11月1日
- * @version 1.0 将indicatorView，ViewPager联合使用
+ * 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
 	private Indicator indicatorView;
@@ -77,8 +75,6 @@ public class IndicatorViewPager {
 
 	/**
 	 * 设置页面切换监听
-	 * 
-	 * @return
 	 */
 	public void setOnIndicatorPageChangeListener(OnIndicatorPageChangeListener onIndicatorPageChangeListener) {
 		this.onIndicatorPageChangeListener = onIndicatorPageChangeListener;
@@ -142,7 +138,7 @@ public class IndicatorViewPager {
 	/**
 	 * 获取上一次选中的索引
 	 * 
-	 * @return
+	 * @return 上一次选中的索引
 	 */
 	public int getPreSelectItem() {
 		return indicatorView.getPreSelectItem();
@@ -151,7 +147,7 @@ public class IndicatorViewPager {
 	/**
 	 * 获取当前选中的索引
 	 * 
-	 * @return
+	 * @return 当前选中的索引
 	 */
 	public int getCurrentItem() {
 		return viewPager.getCurrentItem();
@@ -243,8 +239,6 @@ public class IndicatorViewPager {
 	/**
 	 * viewpage 的每个页面是view的形式
 	 * 
-	 * @author Administrator
-	 * 
 	 */
 	public static abstract class IndicatorViewPagerAdapter implements IndicatorPagerAdapter {
 
@@ -318,9 +312,6 @@ public class IndicatorViewPager {
 
 	/**
 	 * viewpage 的每个页面是Fragment的形式
-	 * 
-	 * @author Administrator
-	 * 
 	 */
 	public static abstract class IndicatorFragmentPagerAdapter implements IndicatorPagerAdapter {
 		private FragmentListPageAdapter pagerAdapter;
@@ -374,7 +365,7 @@ public class IndicatorViewPager {
 		 * 
 		 * @param position
 		 * 
-		 * @return
+		 * @return 返回已经创建的position的Fragment，如果position位置的fragment没有创建返回null
 		 */
 		public Fragment getExitFragment(int position) {
 			return pagerAdapter.getExitFragment(position);
@@ -383,7 +374,7 @@ public class IndicatorViewPager {
 		/**
 		 * 获取当前显示的Fragment
 		 * 
-		 * @return
+		 * @return 返回当前选中的fragment
 		 */
 		public Fragment getCurrentFragment() {
 			return pagerAdapter.getCurrentFragment();

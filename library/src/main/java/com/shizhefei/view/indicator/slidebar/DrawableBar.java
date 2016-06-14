@@ -8,9 +8,7 @@ import android.view.View;
 
 /**
  * 
- * @author试着飞
- * @date 2014年11月2日
- * @version 1.0 通过图片来设置滑动块
+ * 通过图片来设置滑动块
  */
 public class DrawableBar implements ScrollBar {
 	protected Gravity gravity;
