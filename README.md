@@ -104,8 +104,8 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 ## 2.Indicator ##  
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
   
-**Indicator  
-  setCurrentItem(int item, boolean anim) 设置当前项**      
+**Indicator**    
+  setCurrentItem(int item, boolean anim) 设置当前项      
   setOnTransitionListener(OnTransitionListener onTransitionListener)设置tab过渡动画  
   setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener)设置tab切换监听  
   setScrollBar(ScrollBar scrollBar)设置跟随tab滑动的滑动块  
