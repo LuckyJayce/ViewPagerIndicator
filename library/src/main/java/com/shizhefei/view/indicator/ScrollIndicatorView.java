@@ -61,8 +61,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 	@Override
 	public void setAdapter(IndicatorAdapter adapter) {
-		if (getAdapter() != null) {
-			getAdapter().unRegistDataSetObserver(dataSetObserver);
+		if (getIndicatorAdapter() != null) {
+			getIndicatorAdapter().unRegistDataSetObserver(dataSetObserver);
 		}
 		fixedIndicatorView.setAdapter(adapter);
 		adapter.registDataSetObserver(dataSetObserver);
@@ -75,8 +75,8 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	}
 
 	@Override
-	public IndicatorAdapter getAdapter() {
-		return fixedIndicatorView.getAdapter();
+	public IndicatorAdapter getIndicatorAdapter() {
+		return fixedIndicatorView.getIndicatorAdapter();
 	}
 
 	public void setPinnedTabView(boolean isPinnedTabView) {

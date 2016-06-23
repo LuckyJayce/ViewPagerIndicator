@@ -77,8 +77,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 		this.onItemSelectedListener = onItemSelectedListener;
 	}
 
-	@Override
-	public IndicatorAdapter getAdapter() {
+	public IndicatorAdapter getIndicatorAdapter() {
 		return mAdapter;
 	}
 

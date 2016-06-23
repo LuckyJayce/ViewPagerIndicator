@@ -3,15 +3,15 @@
     package="com.shizhefei.indicator.demo">
 
     <application
-        android:fullBackupContent="true"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.shizhefei.indicator.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,8 +32,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.shizhefei.indicator.spring.SpringActivity"
-            android:label="@string/title_activity_spring" >
-        </activity>
+            android:label="@string/title_activity_spring"></activity>
+        <activity
+            android:name="com.shizhefei.indicator.year.YearActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
     </application>
 
 </manifest>

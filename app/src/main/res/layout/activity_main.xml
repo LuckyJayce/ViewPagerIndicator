@@ -1,6 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -8,7 +8,7 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="8dp" >
+        android:padding="8dp">
 
         <Button
             android:id="@+id/button1"
@@ -40,6 +40,13 @@
             android:layout_margin="4dp"
             android:onClick="onClickSpringTab"
             android:text="springtab界面" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="onClickYear"
+            android:text="无数tab的界面" />
     </LinearLayout>
 
 </merge>

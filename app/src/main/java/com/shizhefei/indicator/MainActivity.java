@@ -11,6 +11,7 @@ import com.shizhefei.indicator.setting.SettingActivity;
 import com.shizhefei.indicator.spring.SpringActivity;
 import com.shizhefei.indicator.tabmain.TabMainActivity;
 import com.shizhefei.indicator.demo.R;
+import com.shizhefei.indicator.year.YearActivity;
 
 public class MainActivity extends FragmentActivity {
 
@@ -59,13 +60,13 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    /**
+    /**X
      * 可滑动tab界面
      *
      * @param view
      */
-    public void onClickSlideBar(View view) {
-        startActivity(new Intent(getApplicationContext(), SettingActivity.class));
+    public void onClickYear(View view) {
+        startActivity(new Intent(getApplicationContext(), YearActivity.class));
     }
 
 }

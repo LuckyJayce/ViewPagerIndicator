@@ -47,7 +47,7 @@ public class TextWidthColorBar extends ColorBar {
 	@Override
 	public int getWidth(int tabWidth) {
 		if (realWidth == 0) {
-			if (indicator.getAdapter() != null) {
+			if (indicator.getIndicatorAdapter() != null) {
 				TextView textView = getTextView(indicator.getCurrentItem());
 				if (textView != null) {
 					realWidth = getTextWidth(textView);

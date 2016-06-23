@@ -70,7 +70,7 @@ public interface Indicator {
 	 */
 	public void setScrollBar(ScrollBar scrollBar);
 
-	public IndicatorAdapter getAdapter();
+	public IndicatorAdapter getIndicatorAdapter();
 
 	/**
 	 * 设置当前项.<br>

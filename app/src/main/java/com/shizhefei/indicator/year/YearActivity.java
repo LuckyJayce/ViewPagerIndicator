@@ -1,11 +1,10 @@
-package com.shizhefei.indicator.spring;
+package com.shizhefei.indicator.year;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -14,52 +13,56 @@ import android.widget.TextView;
 import com.shizhefei.indicator.demo.R;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorPagerAdapter;
-import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorViewPagerAdapter;
-import com.shizhefei.view.indicator.ScrollIndicatorView;
-import com.shizhefei.view.indicator.slidebar.ColorBar;
+import com.shizhefei.view.indicator.RecyclerIndicatorView;
 import com.shizhefei.view.indicator.slidebar.SpringBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-public class SpringActivity extends Activity {
+/**
+ * Created by LuckyJayce on 2016/6/23.
+ */
+public class YearActivity extends FragmentActivity {
     private IndicatorViewPager indicatorViewPager;
-    private LayoutInflater inflate;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spring);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.spring_viewPager);
-        Indicator indicator = (ScrollIndicatorView) findViewById(R.id.spring_indicator);
+        setContentView(R.layout.activity_year);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.year_viewPager);
+        Indicator indicator = (RecyclerIndicatorView) findViewById(R.id.year_indicator);
         int selectColorId = Color.parseColor("#f8f8f8");
         int unSelectColorId = Color.parseColor("#010101");
         indicator.setOnTransitionListener(new OnTransitionTextListener().setColor(selectColorId, unSelectColorId));
         indicator.setScrollBar(new SpringBar(getApplicationContext(), Color.GRAY));
-//        indicator.setScrollBar(new ColorBar(getApplicationContext(), Color.RED, 5));
         viewPager.setOffscreenPageLimit(4);
         indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
-        inflate = LayoutInflater.from(getApplicationContext());
-        indicatorViewPager.setAdapter(adapter);
-        indicatorViewPager.setCurrentItem(1, false);
+        indicatorViewPager.setAdapter(new YearAdapter(1800, 2100));
+        indicatorViewPager.setCurrentItem(2016 - 1800, false);
     }
 
-    private IndicatorPagerAdapter adapter = new IndicatorViewPagerAdapter() {
+    private class YearAdapter extends IndicatorViewPager.IndicatorViewPagerAdapter {
+        private int startYear;
+        private int endYear;
+
+        public YearAdapter(int startYear, int endYear) {
+            this.startYear = startYear;
+            this.endYear = endYear;
+        }
 
         @Override
         public View getViewForTab(int position, View convertView, ViewGroup container) {
             if (convertView == null) {
-                convertView = inflate.inflate(R.layout.tab_top2, container, false);
+                convertView = getLayoutInflater().inflate(R.layout.tab_top2, container, false);
             }
             TextView textView = (TextView) convertView;
-            textView.setPadding(60,0,60,0);
-            textView.setText(String.valueOf(position));
+            textView.setPadding(60, 0, 60, 0);
+            textView.setText(String.valueOf(startYear + position));
             return convertView;
         }
 
         @Override
         public View getViewForPage(int position, View convertView, ViewGroup container) {
             if (convertView == null) {
-                convertView = inflate.inflate(R.layout.fragment_tabmain_item, container, false);
+                convertView = getLayoutInflater().inflate(R.layout.fragment_tabmain_item, container, false);
             }
             final TextView textView = (TextView) convertView.findViewById(R.id.fragment_mainTab_item_textView);
             textView.setText(" " + position + " 界面加载完毕");
@@ -75,8 +78,7 @@ public class SpringActivity extends Activity {
 
         @Override
         public int getCount() {
-            return 100;
+            return endYear - startYear;
         }
-    };
-
+    }
 }
