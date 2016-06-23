@@ -101,12 +101,26 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 
 2.使用LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
 
-## 2.Indicator ##
+## 2.Indicator ##  
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
-
-**子类FixedIndicatorView 主要用于固定大小来平均分配tab的情况。
-子类ScrollIndicatorView 主要用于多个tab可以进行滑动。**
-
+  
+**Indicator  
+  setCurrentItem(int item, boolean anim) 设置当前项  
+  setOnTransitionListener(OnTransitionListener onTransitionListener)设置tab过渡动画  
+  setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener)设置tab切换监听  
+  setScrollBar(ScrollBar scrollBar)设置跟随tab滑动的滑动块  
+     
+**1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。  
+  setSplitMethod(int splitMethod) 设置tab分割方式，平均分割，wrap分割，比重分割  
+    
+**2.ScrollIndicatorView 主要用于多个tab可以进行滑动。**   
+  setSplitAuto(boolean splitAuto) 设置是否自动分割，当总tab宽度小于Indicator宽度就平均分割tab，或者比重分割。大于Indicator宽度就wrap分割  
+  setPinnedTabView(boolean isPinnedTabView) 设置是否固定第一个tab  
+  setPinnedShadow(Drawable shadowDrawable, int shadowWidth)设置固定tab的阴影  
+    
+**3.RecyclerIndicatorView 主要用于无数个tab可以进行滑动。**  
+  优点适用于tab很多的情况，缺点tab少的时候没有ScrollIndicatorVie的自动分割功能。  
+    
 ## 3.indicatorViewPager  ##
 用于将ViewPager和Indicator 联合使用。  
 
