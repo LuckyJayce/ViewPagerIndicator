@@ -75,7 +75,7 @@ public class SpringActivity extends Activity {
 
         @Override
         public int getCount() {
-            return 100;
+            return 16;
         }
     };
 
