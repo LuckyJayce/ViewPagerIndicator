@@ -88,7 +88,7 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
     }
 
 # 效果图 #
-有了该类库你可以实现以下布局
+有了该类库你可以实现以下布局  
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/1.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/2.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
@@ -105,12 +105,12 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
   
 **Indicator  
-  setCurrentItem(int item, boolean anim) 设置当前项  
+  setCurrentItem(int item, boolean anim) 设置当前项**      
   setOnTransitionListener(OnTransitionListener onTransitionListener)设置tab过渡动画  
   setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener)设置tab切换监听  
   setScrollBar(ScrollBar scrollBar)设置跟随tab滑动的滑动块  
      
-**1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。  
+**1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。**     
   setSplitMethod(int splitMethod) 设置tab分割方式，平均分割，wrap分割，比重分割  
     
 **2.ScrollIndicatorView 主要用于多个tab可以进行滑动。**   
