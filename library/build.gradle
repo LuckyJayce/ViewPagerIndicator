@@ -8,7 +8,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.6"
+        versionName "1.0.7"
     }
     buildTypes {
         release {
@@ -17,7 +17,6 @@ android {
         }
     }
     lintOptions {
-        disable 'TypographyFractions','TypographyQuotes'
         abortOnError false
     }
 }
@@ -29,12 +28,15 @@ dependencies {
     provided 'com.android.support:support-v4:23.4.0'
 }
 
+//上传到jcenter 执行
+//gradlew clean build bintrayUpload -PbintrayUser=用户名 -PbintrayKey=apiKey -PdryRun=false
+//添加
 //添加
 publish {
     userOrg = 'luckyjayce'//bintray.com用户名
     groupId = 'com.shizhefei'//jcenter上的路径
     artifactId = 'ViewPagerIndicator'//项目名称
-    publishVersion = '1.0.6'//版本号
+    publishVersion = '1.0.7'//版本号
     desc = '实现滑动tab，引导页等效果'//描述，不重要
     website = 'https://github.com/LuckyJayce/ViewPagerIndicator'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }
