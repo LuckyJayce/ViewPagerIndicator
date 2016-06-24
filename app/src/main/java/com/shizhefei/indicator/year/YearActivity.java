@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.shizhefei.indicator.DisplayUtil;
 import com.shizhefei.indicator.demo.R;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
@@ -51,10 +52,11 @@ public class YearActivity extends FragmentActivity {
         @Override
         public View getViewForTab(int position, View convertView, ViewGroup container) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.tab_top2, container, false);
+                convertView = getLayoutInflater().inflate(R.layout.tab_top, container, false);
             }
             TextView textView = (TextView) convertView;
-            textView.setPadding(60, 0, 60, 0);
+            int padding = DisplayUtil.dipToPix(getApplicationContext(), 12);
+            textView.setPadding(padding, 0, padding, 0);
             textView.setText(String.valueOf(startYear + position));
             return convertView;
         }

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:onClick="onClickGuide"
-            android:text="引导界面" />
+            android:text="引导界面(FixedIndicatorView)" />
 
         <Button
             android:id="@+id/button2"
@@ -24,29 +24,42 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:onClick="onClickTabMain"
-            android:text="tab主界面" />
+            android:text="tab主界面(FixedIndicatorView)" />
 
         <Button
-            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:onClick="onClickSlideTab"
-            android:text="可滑动tab界面" />
+            android:text="可滑动tab界面(ScrollIndicatorView)" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="onClickSlideTab2"
+            android:text="可滑动tab界面(ScrollIndicatorView详细配置)" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:onClick="onClickSpringTab"
-            android:text="springtab界面" />
+            android:text="springtab界面(ScrollIndicatorView)" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:onClick="onClickYear"
-            android:text="无数tab的界面" />
+            android:text="无数tab的界面(RecyclerIndicatorView)" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:onClick="onClickTabs"
+            android:text="不集成ViewPager的Indicator使用方式" />
     </LinearLayout>
 
 </merge>

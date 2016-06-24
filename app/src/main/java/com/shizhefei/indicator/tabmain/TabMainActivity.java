@@ -1,5 +1,6 @@
 package com.shizhefei.indicator.tabmain;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,7 @@ import com.shizhefei.indicator.demo.R;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
+import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 import com.shizhefei.view.viewpager.SViewPager;
 
 public class TabMainActivity extends FragmentActivity {
@@ -24,6 +26,7 @@ public class TabMainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_tabmain);
 		SViewPager viewPager = (SViewPager) findViewById(R.id.tabmain_viewPager);
 		Indicator indicator = (Indicator) findViewById(R.id.tabmain_indicator);
+		indicator.setOnTransitionListener(new OnTransitionTextListener().setColor(Color.RED, Color.GRAY));
 		indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
 		indicatorViewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 		// 禁止viewpager的滑动事件

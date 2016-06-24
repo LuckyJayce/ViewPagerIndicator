@@ -2,11 +2,12 @@ package com.shizhefei.view.indicator;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
     private LinearLayoutManager linearLayoutManager;
     private float positionOffset;
     private int positionOffsetPixels;
+    private int unScrollPosition = -1;
 
     public RecyclerIndicatorView(Context context) {
         super(context);
@@ -65,9 +67,8 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
     @Override
     public void setOnTransitionListener(OnTransitionListener onTransitionListener) {
         this.onTransitionListener = onTransitionListener;
-        if (proxyAdapter != null) {
-            proxyAdapter.notifyDataSetChanged();
-        }
+        updateSelectTab(selectItem);
+        updateTabTransition(selectItem);
     }
 
     @Override
@@ -99,14 +100,60 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         this.preSelectItem = this.selectItem;
         this.selectItem = item;
         if (pageScrollState == ViewPager.SCROLL_STATE_IDLE) {
+//            if (getItemView(selectItem) != null && Math.abs(preSelectItem - selectItem) > 3) {
+//                anim = false;
+//            }
+//            if (anim && getWidth() != 0) {
+//                smoothScrollToPosition(2,50);
+//            } else {
+//                scrollToTab(item, 0);
+//                updateSelectTab(item);
+//            }
             scrollToTab(item, 0);
             updateSelectTab(item);
+            unScrollPosition = item;
         } else {
-
+            if (onItemSelectedListener == null) {
+                updateSelectTab(item);
+            }
         }
         if (onItemSelectedListener != null) {
             onItemSelectedListener.onItemSelected(getItemView(item), selectItem, preSelectItem);
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (adapter != null && adapter.getCount() > 0) {
+            scrollToTab(selectItem, 0);
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (unScrollPosition != -1) {
+            final View tabView = linearLayoutManager.findViewByPosition(unScrollPosition);
+            scrollToTab(unScrollPosition, 0);
+            unScrollPosition = -1;
+        }
+    }
+
+
+    private void smoothScrollToPosition(int position, final int offeset) {
+        LinearSmoothScroller linearSmoothScroller =
+                new LinearSmoothScroller(getContext()) {
+                    @Override
+                    public PointF computeScrollVectorForPosition(int targetPosition) {
+                        PointF pointF = linearLayoutManager
+                                .computeScrollVectorForPosition(targetPosition);
+                        pointF.x += offeset;
+                        return pointF;
+                    }
+                };
+        linearSmoothScroller.setTargetPosition(position);
+        linearLayoutManager.startSmoothScroll(linearSmoothScroller);
     }
 
 
@@ -118,6 +165,20 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         View selectView = getItemView(selectItem);
         if (selectView != null) {
             selectView.setSelected(true);
+        }
+    }
+
+    private void updateTabTransition(int position) {
+        if (onTransitionListener == null) {
+            return;
+        }
+        View preview = getItemView(preSelectItem);
+        if (preview != null) {
+            onTransitionListener.onTransition(preview, preSelectItem, 0);
+        }
+        View currentView = getItemView(position);
+        if (currentView != null) {
+            onTransitionListener.onTransition(currentView, position, 1);
         }
     }
 
@@ -139,27 +200,34 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
                 scrollOffset = (int) scroll1;
             }
         }
-        linearLayoutManager.scrollToPositionWithOffset(position, scrollOffset);
 
         if (onTransitionListener != null) {
             for (int i : prePositions) {
+                View view = getItemView(i);
                 if (i != position && i != position + 1) {
-                    View view = getItemView(i);
                     if (view != null) {
                         onTransitionListener.onTransition(view, i, 0);
                     }
                 }
             }
-            prePositions[0] = position;
-            prePositions[1] = position + 1;
 
-            View view = getItemView(position);
+            View view = getItemView(preSelectItem);
+            if (view != null) {
+                onTransitionListener.onTransition(view, preSelectItem, 0);
+            }
+
+            linearLayoutManager.scrollToPositionWithOffset(position, scrollOffset);
+
+            view = getItemView(position);
             if (view != null) {
                 onTransitionListener.onTransition(view, position, 1 - positionOffset);
+                prePositions[0] = position;
             }
+
             view = getItemView(position + 1);
             if (view != null) {
                 onTransitionListener.onTransition(view, position + 1, positionOffset);
+                prePositions[1] = position + 1;
             }
         }
     }
@@ -212,6 +280,11 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         }
 
         @Override
+        public int getItemViewType(int position) {
+            return 1;
+        }
+
+        @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LinearLayout linearLayout = new LinearLayout(parent.getContext());
             linearLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
@@ -225,14 +298,31 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
             View itemView = linearLayout.getChildAt(0);
             linearLayout.removeAllViews();
             itemView = adapter.getView(position, itemView, linearLayout);
-            itemView.setSelected(selectItem == position);
-            if (onTransitionListener != null) {
-                onTransitionListener.onTransition(itemView, position, selectItem == position ? 1 : 0);
-            }
             linearLayout.addView(itemView);
             linearLayout.setTag(position);
             linearLayout.setOnClickListener(onClickListener);
         }
+
+        @Override
+        public void onViewAttachedToWindow(ViewHolder holder) {
+            super.onViewAttachedToWindow(holder);
+            //之所以在onViewAttachedToWindow方法设置select和onTransition而不在onBindViewHolder设置
+            //是因为ViewHolder 从RecyclerView中Detached并不是被Recycler回收掉，有可能还存在（linearLayoutManager.findViewByPosition找不到对应的view无法设置onTransition），
+            // 滑动回来holder又直接添加到了RecyclerView（onTransition没被设置),不会调用onBindViewHolder方法(所以没办法在onBindViewHolder设置onTransition)
+            //导致了Transition没有被设置
+            int position = holder.getLayoutPosition();
+            LinearLayout l = (LinearLayout) holder.itemView;
+            View itemView = l.getChildAt(0);
+            itemView.setSelected(selectItem == position);
+            if (onTransitionListener != null) {
+                if (selectItem == position) {
+                    onTransitionListener.onTransition(itemView, position, 1);
+                } else {
+                    onTransitionListener.onTransition(itemView, position, 0);
+                }
+            }
+        }
+
 
         @Override
         public int getItemCount() {
@@ -326,15 +416,12 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         if (view.isLayoutRequested() || needChange) {
             View selectV = linearLayoutManager.findViewByPosition(position);
             View unSelectV = linearLayoutManager.findViewByPosition(position + 1);
-            Log.d("cccc", "position:" + position + "selectPercent:" + selectPercent);
             if (selectV != null) {
                 int tabWidth = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
                 int width = scrollBar.getWidth(tabWidth);
                 int height = scrollBar.getHeight(getHeight());
                 view.measure(width, height);
                 view.layout(0, 0, width, height);
-
-                Log.d("cccc", "width:" + width + " selectV:" + (selectV != null) + " unSelectV:" + (unSelectV != null));
                 return tabWidth;
             }
         }

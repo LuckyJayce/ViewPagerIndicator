@@ -28,6 +28,9 @@
             android:name="com.shizhefei.indicator.moretab.MoreTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
+            android:name="com.shizhefei.indicator.moretab.MoreTab2Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name="com.shizhefei.indicator.setting.SettingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
@@ -35,6 +38,9 @@
             android:label="@string/title_activity_spring"></activity>
         <activity
             android:name="com.shizhefei.indicator.year.YearActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity
+            android:name="com.shizhefei.indicator.SingleTabActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
     </application>
 

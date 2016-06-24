@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.shizhefei.indicator.demo.R;
 import com.shizhefei.indicator.guide.GuideActivity;
+import com.shizhefei.indicator.moretab.MoreTab2Activity;
 import com.shizhefei.indicator.moretab.MoreTabActivity;
-import com.shizhefei.indicator.setting.SettingActivity;
 import com.shizhefei.indicator.spring.SpringActivity;
 import com.shizhefei.indicator.tabmain.TabMainActivity;
-import com.shizhefei.indicator.demo.R;
 import com.shizhefei.indicator.year.YearActivity;
 
 public class MainActivity extends FragmentActivity {
@@ -23,7 +23,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * 引导界面
+     * 引导界面(FixedIndicatorView)
      *
      * @param view
      */
@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * tab主界面
+     * tab主界面(FixedIndicatorView)
      *
      * @param view
      */
@@ -41,17 +41,26 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * 可滑动tab界面
+     * 可滑动tab界面(ScrollIndicatorView)
      *
      * @param view
      */
     public void onClickSlideTab(View view) {
+        startActivity(new Intent(getApplicationContext(), MoreTab2Activity.class));
+    }
+
+    /**
+     * 可滑动tab界面(ScrollIndicatorView详细配置)
+     *
+     * @param view
+     */
+    public void onClickSlideTab2(View view) {
         startActivity(new Intent(getApplicationContext(), MoreTabActivity.class));
     }
 
 
     /**
-     * 可滑动tab界面
+     * springtab界面(ScrollIndicatorView)
      *
      * @param view
      */
@@ -60,13 +69,22 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    /**X
-     * 可滑动tab界面
+    /**
+     * 无数tab的界面(RecyclerIndicatorView)
      *
      * @param view
      */
     public void onClickYear(View view) {
         startActivity(new Intent(getApplicationContext(), YearActivity.class));
     }
+
+    /**
+     * 不集成ViewPager的Indicator使用方式
+     * @param view
+     */
+    public void onClickTabs(View view) {
+        startActivity(new Intent(getApplicationContext(), SingleTabActivity.class));
+    }
+
 
 }
