@@ -10,6 +10,11 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 ###5. 支持设置界面是否可滑动  
 ###6. android:minSdkVersion="8" android:targetSdkVersion="21" 
 
+###7.gradle导入  
+compile 'com.shizhefei:ViewPagerIndicator:1.0.7'  
+由于用到了v4和recyclerview所以也要导入他们  
+compile 'com.android.support:support-v4:23.4.0'  
+compile 'com.android.support:recyclerview-v7:23.2.1'  
 
 # 使用方法 #  
     package com.shizhefei.indicator.guide;
