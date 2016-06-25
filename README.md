@@ -98,6 +98,7 @@ compile 'com.android.support:recyclerview-v7:23.2.1'
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/2.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
+![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/demo.gif)
 # 主要的类 #
 ## 1.ViewPager ##  
 这个版本以后 android-support-v4 可以用原生的了 没有重写ViewPager。  
