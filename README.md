@@ -1,7 +1,5 @@
 ViewPagerIndicator
 ==================  
-Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewpagerIndicator_1.0.7.jar?raw=true)
-Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
 
 ###1. 支持自定义tab样式  
 ###2. 支持自定义滑动块样式和位置  
@@ -10,11 +8,20 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
 ###5. 支持设置界面是否可滑动  
 ###6. android:minSdkVersion="8" android:targetSdkVersion="21" 
 
-###7.gradle导入  
-compile 'com.shizhefei:ViewPagerIndicator:1.0.7'  
-由于用到了v4和recyclerview所以也要导入他们  
-compile 'com.android.support:support-v4:23.4.0'  
-compile 'com.android.support:recyclerview-v7:23.2.1'  
+###7.导入方式
+<1>gradle导入      
+
+    compile 'com.shizhefei:ViewPagerIndicator:1.0.7'  
+    由于用到了v4和recyclerview所以也要导入他们  
+    compile 'com.android.support:support-v4:23.4.0'  
+    compile 'com.android.support:recyclerview-v7:23.2.1'  
+<2>jar包方式导入  
+Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewpagerIndicator_1.0.7.jar?raw=true)  
+
+Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
+
+
+
 
 # 使用方法 #  
     package com.shizhefei.indicator.guide;
