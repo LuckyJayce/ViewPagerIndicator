@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -130,28 +129,15 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     }
 
     private void updateTabSelectState(int selectItem) {
-        View preview = getItemView(mPreSelectedTabIndex);
-        if (preview != null) {
-            preview.setSelected(false);
-        }
-        View selectView = getItemView(selectItem);
-        if (selectView != null) {
-            selectView.setSelected(true);
-        }
-    }
-
-
-    private void updateTabTransition(int position) {
-        if (onTransitionListener == null) {
+        if (mAdapter == null) {
             return;
         }
-        View preview = getItemView(mPreSelectedTabIndex);
-        if (preview != null) {
-            onTransitionListener.onTransition(preview, mPreSelectedTabIndex, 0);
-        }
-        View currentView = getItemView(position);
-        if (currentView != null) {
-            onTransitionListener.onTransition(currentView, position, 1);
+        int count = mAdapter.getCount();
+        for (int i = 0; i < count; i++) {
+            View selectView = getItemViewUnCheck(i);
+            if (selectView != null) {
+                selectView.setSelected(selectItem == i);
+            }
         }
     }
 
@@ -531,6 +517,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     @Override
     public void onPageScrollStateChanged(int state) {
         this.state = state;
+        if (state == ViewPager.SCROLL_STATE_IDLE) {
+            updateTabSelectState(mSelectedTabIndex);
+        }
     }
 
     private float mPositionOffset;
@@ -556,9 +545,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         if (position < 0 || position > mAdapter.getCount() - 1) {
             return null;
         }
+        return getItemViewUnCheck(position);
+    }
+
+    private View getItemViewUnCheck(int position) {
         final ViewGroup group = (ViewGroup) getChildAt(position);
         return group.getChildAt(0);
     }
+
 
     @Override
     public OnItemSelectedListener getOnItemSelectListener() {
