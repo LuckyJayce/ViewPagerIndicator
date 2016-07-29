@@ -413,7 +413,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
             float unDraw = offsetX + tabWidth - indicatorWidth;
             cacheCanvas.save();
-            cacheCanvas.clipRect(0, 0, tabWidth, tabHeight);
+            cacheCanvas.clipRect(0, 0, width, tabHeight);
             cacheCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             scrollBar.getSlideView().draw(cacheCanvas);
             cacheCanvas.restore();
