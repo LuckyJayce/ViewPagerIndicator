@@ -22,6 +22,20 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    /**
+     * BannerComponent(FixedIndicatorView)
+     *
+     * @param view
+     */
+    public void onClickBanner(View view) {
+        startActivity(new Intent(getApplicationContext(), BannerActivity.class));
+    }
+
     /**
      * 引导界面(FixedIndicatorView)
      *
@@ -80,6 +94,7 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * 不集成ViewPager的Indicator使用方式
+     *
      * @param view
      */
     public void onClickTabs(View view) {

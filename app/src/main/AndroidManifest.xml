@@ -32,13 +32,16 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.shizhefei.indicator.spring.SpringActivity"
-            android:label="@string/title_activity_spring"></activity>
+            android:label="@string/title_activity_spring"/>
         <activity
             android:name="com.shizhefei.indicator.year.YearActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name="com.shizhefei.indicator.SingleTabActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name="com.shizhefei.indicator.BannerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 
 </manifest>
