@@ -324,7 +324,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
     @Override
     public void setItemClickable(boolean clickable) {
-        fixedIndicatorView.setItemClickable(false);
+        fixedIndicatorView.setItemClickable(clickable);
     }
 
     @Override
