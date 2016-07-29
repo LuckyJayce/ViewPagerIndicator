@@ -269,6 +269,18 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         pageScrollState = state;
     }
 
+    private boolean itemClickable = true;
+
+    @Override
+    public void setItemClickable(boolean clickable) {
+        this.itemClickable = clickable;
+    }
+
+    @Override
+    public boolean isItemClickable() {
+        return itemClickable;
+    }
+
     private int pageScrollState;
     private int pageScrollPosition;
 
@@ -332,8 +344,10 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
         private OnClickListener onClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = (Integer) v.getTag();
-                setCurrentItem(position, true);
+                if (itemClickable) {
+                    int position = (Integer) v.getTag();
+                    setCurrentItem(position, true);
+                }
             }
         };
     }

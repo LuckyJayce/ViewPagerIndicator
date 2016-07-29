@@ -2,7 +2,11 @@ package com.shizhefei.view.indicator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -86,6 +90,17 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     @Override
     public void setCurrentItem(int item) {
         setCurrentItem(item, true);
+    }
+
+    private boolean itemClickable = true;
+
+    public void setItemClickable(boolean clickable) {
+        this.itemClickable = clickable;
+    }
+
+    @Override
+    public boolean isItemClickable() {
+        return itemClickable;
     }
 
     private int mPreSelectedTabIndex = -1;
@@ -199,11 +214,13 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
         @Override
         public void onClick(View v) {
-            int i = (Integer) v.getTag();
-            ViewGroup parent = (ViewGroup) v;
-            setCurrentItem(i);
-            if (onItemSelectedListener != null) {
-                onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
+            if (itemClickable) {
+                int i = (Integer) v.getTag();
+                ViewGroup parent = (ViewGroup) v;
+                setCurrentItem(i);
+                if (onItemSelectedListener != null) {
+                    onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
+                }
             }
         }
     };
@@ -379,16 +396,53 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         if (inRun.isFinished()) {
             inRun.stop();
         }
+        int tabHeight = scrollBar.getSlideView().getHeight();
         int width = scrollBar.getSlideView().getWidth();
         offsetX += (tabWidth - width) / 2;
+
         int saveCount = canvas.save();
         canvas.translate(offsetX, offsetY);
-        canvas.clipRect(0, 0, width, scrollBar.getSlideView().getHeight()); // needed
-        scrollBar.getSlideView().draw(canvas);
-        canvas.restoreToCount(saveCount);
+        canvas.clipRect(0, 0, width, tabHeight); // needed
 
+        int indicatorWidth = getMeasuredWidth();
+        int indicatorHeight = getMeasuredHeight();
+
+        //如果绘制的scrollbar超出了IndicatorView，那么就把超出的部分绘制在最前面，相当于loop的展示，末尾的部分又重新回到最开始的位置
+        //为了实现这一点，首先要把scrollbar先绘制到cacheBitmap上，然后就可以把分两部分通过canvas绘制到view上
+        if (offsetX + tabWidth > indicatorWidth) {
+
+            //创建一个和IndicatorView一样大小的Bitmap用于绘制
+            if (cacheBitmap == null || cacheBitmap.getWidth() != getMeasuredWidth() || cacheBitmap.getHeight() != indicatorHeight) {
+                cacheBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                cacheCanvas.setBitmap(cacheBitmap);
+            }
+
+            float unDraw = offsetX + tabWidth - indicatorWidth;
+            cacheCanvas.save();
+            cacheCanvas.clipRect(0, 0, width - unDraw, tabHeight);
+            cacheCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            scrollBar.getSlideView().draw(cacheCanvas);
+            cacheCanvas.restore();
+
+            //绘制前面一部分
+            canvas.drawBitmap(cacheBitmap, 0, 0, null);
+
+            //绘制后面超出的一部分
+            canvas.restoreToCount(saveCount);
+            canvas.clipRect(0, 0, unDraw, tabHeight); // needed
+            cacheMatrix.setTranslate(unDraw - tabWidth, 0);
+            canvas.drawBitmap(cacheBitmap, cacheMatrix, null);
+        } else {
+            //直接绘制
+            scrollBar.getSlideView().draw(canvas);
+        }
+        canvas.restoreToCount(saveCount);
         inRun.stop();
     }
+
+    private Bitmap cacheBitmap;
+    private Matrix cacheMatrix = new Matrix();
+    private Canvas cacheCanvas = new Canvas();
 
     private int[] prePositions = {-1, -1};
 
@@ -435,7 +489,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         View view = scrollBar.getSlideView();
         if (view.isLayoutRequested() || needChange) {
             View selectV = getChildAt(position);
-            View unSelectV = getChildAt(position + 1);
+            View unSelectV;
+            if (position + 1 < mAdapter.getCount()) {
+                unSelectV = getChildAt(position + 1);
+            } else {
+                unSelectV = getChildAt(0);
+            }
             if (selectV != null) {
                 int tabWidth = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
                 int width = scrollBar.getWidth(tabWidth);

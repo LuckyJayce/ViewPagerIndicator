@@ -323,6 +323,16 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
     }
 
     @Override
+    public void setItemClickable(boolean clickable) {
+        fixedIndicatorView.setItemClickable(false);
+    }
+
+    @Override
+    public boolean isItemClickable() {
+        return fixedIndicatorView.isItemClickable();
+    }
+
+    @Override
     public int getPreSelectItem() {
         return fixedIndicatorView.getPreSelectItem();
     }
