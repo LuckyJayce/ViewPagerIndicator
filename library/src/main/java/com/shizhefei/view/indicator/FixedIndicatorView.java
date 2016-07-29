@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -357,7 +356,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         }
         int tabWidth;
         View currentView = null;
-        Log.d("pppp", "state:" + state);
         if (!inRun.isFinished() && inRun.computeScrollOffset()) {
             offsetX = inRun.getCurrentX();
             int position = 0;
@@ -374,7 +372,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             notifyPageScrolled(position, positionOffset, positionOffsetPixels);
             tabWidth = measureScrollBar(position, positionOffset, true);
 
-            Log.d("pppp", "1:" + " mPosition:" + position + " offsetX:" + offsetX);
         } else if (state != ViewPager.SCROLL_STATE_IDLE) {
             currentView = getChildAt(mPosition);
             int width = currentView.getWidth();
@@ -382,7 +379,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
             tabWidth = measureScrollBar(mPosition, mPositionOffset, true);
 
-            Log.d("pppp", "2:" + " mPosition:" + mPosition + " offsetX:" + offsetX);
         } else {
             tabWidth = measureScrollBar(mSelectedTabIndex, 0, true);
             currentView = getChildAt(mSelectedTabIndex);
@@ -390,8 +386,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
                 return;
             }
             offsetX = currentView.getLeft();
-
-            Log.d("pppp", "3:" + " mSelectedTabIndex:" + mSelectedTabIndex + " offsetX:" + offsetX);
         }
         if (inRun.isFinished()) {
             inRun.stop();
@@ -401,8 +395,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         offsetX += (tabWidth - width) / 2;
 
         int saveCount = canvas.save();
-        canvas.translate(offsetX, offsetY);
-        canvas.clipRect(0, 0, width, tabHeight); // needed
+
+
 
         int indicatorWidth = getMeasuredWidth();
         int indicatorHeight = getMeasuredHeight();
@@ -419,20 +413,25 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
             float unDraw = offsetX + tabWidth - indicatorWidth;
             cacheCanvas.save();
-            cacheCanvas.clipRect(0, 0, width - unDraw, tabHeight);
+            cacheCanvas.clipRect(0, 0, tabWidth, tabHeight);
             cacheCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             scrollBar.getSlideView().draw(cacheCanvas);
             cacheCanvas.restore();
 
+            int saveCount2 = canvas.save();
+            canvas.translate(offsetX, offsetY);
+            canvas.clipRect(0, 0, tabWidth, tabHeight); // needed
             //绘制前面一部分
             canvas.drawBitmap(cacheBitmap, 0, 0, null);
+            canvas.restoreToCount(saveCount2);
 
             //绘制后面超出的一部分
-            canvas.restoreToCount(saveCount);
             canvas.clipRect(0, 0, unDraw, tabHeight); // needed
             cacheMatrix.setTranslate(unDraw - tabWidth, 0);
             canvas.drawBitmap(cacheBitmap, cacheMatrix, null);
         } else {
+            canvas.translate(offsetX, offsetY);
+            canvas.clipRect(0, 0, tabWidth, tabHeight); // needed
             //直接绘制
             scrollBar.getSlideView().draw(canvas);
         }
