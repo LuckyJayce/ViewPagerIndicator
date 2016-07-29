@@ -420,7 +420,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
             int saveCount2 = canvas.save();
             canvas.translate(offsetX, offsetY);
-            canvas.clipRect(0, 0, tabWidth, tabHeight); // needed
+            canvas.clipRect(0, 0, width, tabHeight); // needed
             //绘制前面一部分
             canvas.drawBitmap(cacheBitmap, 0, 0, null);
             canvas.restoreToCount(saveCount2);
@@ -431,7 +431,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             canvas.drawBitmap(cacheBitmap, cacheMatrix, null);
         } else {
             canvas.translate(offsetX, offsetY);
-            canvas.clipRect(0, 0, tabWidth, tabHeight); // needed
+            canvas.clipRect(0, 0, width, tabHeight); // needed
             //直接绘制
             scrollBar.getSlideView().draw(canvas);
         }
