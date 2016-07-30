@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -73,6 +74,16 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        int count = getChildCount();
+        if (count == 1) {
+            centerView = getChildAt(0);
+            centerViewLayoutParams = (LayoutParams) centerView.getLayoutParams();
+        }
+    }
+
     public ScrollBar getScrollBar() {
         return scrollBar;
     }
@@ -124,10 +135,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             }
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 updateTabSelectState(item);
-                if (anim && getWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getChildCount()) {
-                    int sx = getChildAt(mPreSelectedTabIndex).getLeft();
-                    int ex = getChildAt(item).getLeft();
-                    final float pageDelta = (float) Math.abs(ex - sx) / (getChildAt(item).getWidth());
+                if (anim && getWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getRealChildCount()) {
+                    int sx = getItemOutView(mPreSelectedTabIndex).getLeft();
+                    int ex = getItemOutView(item).getLeft();
+                    final float pageDelta = (float) Math.abs(ex - sx) / (getItemOutView(item).getWidth());
                     int duration = (int) ((pageDelta + 1) * 100);
                     duration = Math.min(duration, 600);
                     inRun.startScroll(sx, ex, duration);
@@ -168,11 +179,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             if (!inRun.isFinished()) {
                 inRun.stop();
             }
-            int count = getChildCount();
+            int count = getRealChildCount();
             int newCount = mAdapter.getCount();
             views.clear();
             for (int i = 0; i < count && i < newCount; i++) {
-                views.add((ViewGroup) getChildAt(i));
+                views.add((ViewGroup) getItemOutView(i));
             }
             removeAllViews();
             int size = views.size();
@@ -193,6 +204,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
                 result.setOnClickListener(onClickListener);
                 result.setTag(i);
                 addView(result, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            }
+            if (centerView != null) {
+                setCenterView(centerView, centerViewLayoutParams);
             }
             mPreSelectedTabIndex = -1;
             setCurrentItem(mSelectedTabIndex, false);
@@ -360,7 +374,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             offsetX = inRun.getCurrentX();
             int position = 0;
             for (int i = 0; i < count; i++) {
-                currentView = getChildAt(i);
+                currentView = getItemOutView(i);
                 if (currentView.getLeft() <= offsetX && offsetX < currentView.getRight()) {
                     position = i;
                     break;
@@ -373,7 +387,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             tabWidth = measureScrollBar(position, positionOffset, true);
 
         } else if (state != ViewPager.SCROLL_STATE_IDLE) {
-            currentView = getChildAt(mPosition);
+            currentView = getItemOutView(mPosition);
             int width = currentView.getWidth();
             offsetX = currentView.getLeft() + width * mPositionOffset;
             notifyPageScrolled(mPosition, mPositionOffset, mPositionOffsetPixels);
@@ -381,7 +395,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
         } else {
             tabWidth = measureScrollBar(mSelectedTabIndex, 0, true);
-            currentView = getChildAt(mSelectedTabIndex);
+            currentView = getItemOutView(mSelectedTabIndex);
             if (currentView == null) {
                 return;
             }
@@ -486,12 +500,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             return 0;
         View view = scrollBar.getSlideView();
         if (view.isLayoutRequested() || needChange) {
-            View selectV = getChildAt(position);
+            View selectV = getItemOutView(position);
             View unSelectV;
             if (position + 1 < mAdapter.getCount()) {
-                unSelectV = getChildAt(position + 1);
+                unSelectV = getItemOutView(position + 1);
             } else {
-                unSelectV = getChildAt(0);
+                unSelectV = getItemOutView(0);
             }
             if (selectV != null) {
                 int tabWidth = (int) (selectV.getWidth() * (1 - selectPercent) + (unSelectV == null ? 0 : unSelectV.getWidth() * selectPercent));
@@ -506,11 +520,11 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     }
 
     private void measureTabs() {
-        int count = getChildCount();
+        int count = getRealChildCount();
         switch (splitMethod) {
             case SPLITMETHOD_EQUALS:
                 for (int i = 0; i < count; i++) {
-                    View view = getChildAt(i);
+                    View view = getItemOutView(i);
                     LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
                     layoutParams.width = 0;
                     layoutParams.weight = 1;
@@ -519,7 +533,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
                 break;
             case SPLITMETHOD_WRAP:
                 for (int i = 0; i < count; i++) {
-                    View view = getChildAt(i);
+                    View view = getItemOutView(i);
                     LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
                     layoutParams.width = LayoutParams.WRAP_CONTENT;
                     layoutParams.weight = 0;
@@ -528,7 +542,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
                 break;
             case SPLITMETHOD_WEIGHT:
                 for (int i = 0; i < count; i++) {
-                    View view = getChildAt(i);
+                    View view = getItemOutView(i);
                     LayoutParams layoutParams = (LayoutParams) view.getLayoutParams();
                     layoutParams.width = LayoutParams.WRAP_CONTENT;
                     layoutParams.weight = 1;
@@ -606,10 +620,67 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     }
 
     private View getItemViewUnCheck(int position) {
-        final ViewGroup group = (ViewGroup) getChildAt(position);
+        final ViewGroup group = (ViewGroup) getItemOutView(position);
         return group.getChildAt(0);
     }
 
+    private View getItemOutView(int position) {
+        int count = getChildCount();
+        Log.d("pppp", "position:" + position + " count:" + count);
+        if (centerView != null && position >= (count / 2)) {
+            position++;
+            Log.d("pppp", "in  ..  position:" + position + " count:" + count + " count / 2:" + (count / 2));
+        }
+        return getChildAt(position);
+    }
+
+
+    private View centerView;
+    private LayoutParams centerViewLayoutParams;
+
+    public void setCenterView(View centerView, int width, int height) {
+        this.centerView = centerView;
+        LayoutParams layoutParams = new LayoutParams(width, height);
+        layoutParams.gravity = android.view.Gravity.CENTER_VERTICAL;
+        setCenterView(centerView, layoutParams);
+    }
+
+    public void setCenterView(View centerTabView) {
+        setCenterView(centerTabView, centerTabView.getLayoutParams());
+    }
+
+    public void setCenterView(View centerView, ViewGroup.LayoutParams layoutParams) {
+        removeCenterView();
+        LayoutParams params;
+        if (layoutParams == null) {
+            params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        } else {
+            params = generateLayoutParams(layoutParams);
+        }
+        centerViewLayoutParams = params;
+        this.centerView = centerView;
+        int index = getChildCount() / 2;
+        addView(centerView, index, params);
+    }
+
+    public View getCenterView() {
+        return centerView;
+    }
+
+    private int getRealChildCount() {
+        if (centerView != null) {
+            return getChildCount() - 1;
+        }
+        return getChildCount();
+    }
+
+    public void removeCenterView() {
+        if (centerView != null) {
+            removeView(centerView);
+            centerView = null;
+        }
+        centerViewLayoutParams = null;
+    }
 
     @Override
     public OnItemSelectedListener getOnItemSelectListener() {
