@@ -397,7 +397,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         int saveCount = canvas.save();
 
 
-
         int indicatorWidth = getMeasuredWidth();
         int indicatorHeight = getMeasuredHeight();
 
@@ -406,8 +405,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         if (offsetX + tabWidth > indicatorWidth) {
 
             //创建一个和IndicatorView一样大小的Bitmap用于绘制
-            if (cacheBitmap == null || cacheBitmap.getWidth() != getMeasuredWidth() || cacheBitmap.getHeight() != indicatorHeight) {
-                cacheBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+            if (cacheBitmap == null || cacheBitmap.getWidth() < width || cacheBitmap.getWidth() < tabHeight) {
+                cacheBitmap = Bitmap.createBitmap(indicatorWidth, indicatorHeight, Bitmap.Config.ARGB_8888);
                 cacheCanvas.setBitmap(cacheBitmap);
             }
 
