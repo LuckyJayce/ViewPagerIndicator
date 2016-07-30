@@ -46,7 +46,7 @@ public class BannerComponent extends IndicatorViewPager {
             public void onPageSelected(int position) {
                 indicatorView.setCurrentItem(mAdapter.getRealPosition(position), true);
                 if (onIndicatorPageChangeListener != null) {
-                    onIndicatorPageChangeListener.onIndicatorPageChange(indicatorView.getPreSelectItem(), position);
+                    onIndicatorPageChangeListener.onIndicatorPageChange(indicatorView.getPreSelectItem(), mAdapter.getRealPosition(position));
                 }
             }
 
