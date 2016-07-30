@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,7 +19,6 @@ import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
 public class BannerActivity extends Activity {
 
     private BannerComponent bannerComponent;
-    private LayoutInflater inflate;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -33,7 +31,6 @@ public class BannerActivity extends Activity {
         viewPager.setOffscreenPageLimit(2);
 
         bannerComponent = new BannerComponent(indicator, viewPager, false);
-        inflate = LayoutInflater.from(getApplicationContext());
         bannerComponent.setAdapter(adapter);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
