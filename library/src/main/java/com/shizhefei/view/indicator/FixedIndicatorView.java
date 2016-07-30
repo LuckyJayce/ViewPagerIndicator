@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -135,7 +134,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             }
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 updateTabSelectState(item);
-                if (anim && getWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getRealChildCount()) {
+                if (anim && getWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getTabCountInLayout()) {
                     int sx = getItemOutView(mPreSelectedTabIndex).getLeft();
                     int ex = getItemOutView(item).getLeft();
                     final float pageDelta = (float) Math.abs(ex - sx) / (getItemOutView(item).getWidth());
@@ -179,7 +178,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             if (!inRun.isFinished()) {
                 inRun.stop();
             }
-            int count = getRealChildCount();
+            int count = getTabCountInLayout();
             int newCount = mAdapter.getCount();
             views.clear();
             for (int i = 0; i < count && i < newCount; i++) {
@@ -520,7 +519,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     }
 
     private void measureTabs() {
-        int count = getRealChildCount();
+        int count = getTabCountInLayout();
         switch (splitMethod) {
             case SPLITMETHOD_EQUALS:
                 for (int i = 0; i < count; i++) {
@@ -625,11 +624,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     }
 
     private View getItemOutView(int position) {
-        int count = getChildCount();
-        Log.d("pppp", "position:" + position + " count:" + count);
-        if (centerView != null && position >= (count / 2)) {
+        //(getChildCount() - 1) / 2就是centerView的位置
+        //(getChildCount() - 1) 总数减去centerView的1
+        if (centerView != null && position >= (getChildCount() - 1) / 2) {
             position++;
-            Log.d("pppp", "in  ..  position:" + position + " count:" + count + " count / 2:" + (count / 2));
         }
         return getChildAt(position);
     }
@@ -667,7 +665,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         return centerView;
     }
 
-    private int getRealChildCount() {
+    private int getTabCountInLayout() {
         if (centerView != null) {
             return getChildCount() - 1;
         }

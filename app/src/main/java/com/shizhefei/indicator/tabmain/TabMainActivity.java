@@ -74,7 +74,7 @@ public class TabMainActivity extends FragmentActivity {
         @Override
         public View getViewForTab(int position, View convertView, ViewGroup container) {
             if (convertView == null) {
-                convertView = (TextView) inflater.inflate(R.layout.tab_main, container, false);
+                convertView = inflater.inflate(R.layout.tab_main, container, false);
             }
             TextView textView = (TextView) convertView;
             textView.setText(tabNames[position]);
