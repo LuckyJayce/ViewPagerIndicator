@@ -350,8 +350,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             inRun.stop();
             return;
         }
-        float offsetX = 0;
-        int offsetY = 0;
+        float offsetX ;
+        float offsetY;
         switch (this.scrollBar.getGravity()) {
             case CENTENT_BACKGROUND:
             case CENTENT:
@@ -403,47 +403,46 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
         if (inRun.isFinished()) {
             inRun.stop();
         }
-        int tabHeight = scrollBar.getSlideView().getHeight();
-        int width = scrollBar.getSlideView().getWidth();
-        offsetX += (tabWidth - width) / 2;
+        int scrollBarHeight = scrollBar.getSlideView().getHeight();
+        int scrollBarWidth = scrollBar.getSlideView().getWidth();
+        offsetX += (tabWidth - scrollBarWidth) / 2;
 
         int saveCount = canvas.save();
-
 
         int indicatorWidth = getMeasuredWidth();
         int indicatorHeight = getMeasuredHeight();
 
         //如果绘制的scrollbar超出了IndicatorView，那么就把超出的部分绘制在最前面，相当于loop的展示，末尾的部分又重新回到最开始的位置
         //为了实现这一点，首先要把scrollbar先绘制到cacheBitmap上，然后就可以把分两部分通过canvas绘制到view上
-        if (offsetX + tabWidth > indicatorWidth) {
+        if (offsetX + scrollBarWidth > indicatorWidth) {
 
             //创建一个和IndicatorView一样大小的Bitmap用于绘制
-            if (cacheBitmap == null || cacheBitmap.getWidth() < width || cacheBitmap.getWidth() < tabHeight) {
+            if (cacheBitmap == null || cacheBitmap.getWidth() < scrollBarWidth || cacheBitmap.getWidth() < scrollBarHeight) {
                 cacheBitmap = Bitmap.createBitmap(indicatorWidth, indicatorHeight, Bitmap.Config.ARGB_8888);
                 cacheCanvas.setBitmap(cacheBitmap);
             }
 
-            float unDraw = offsetX + tabWidth - indicatorWidth;
+            float unDraw = offsetX + scrollBarWidth - indicatorWidth;
             cacheCanvas.save();
-            cacheCanvas.clipRect(0, 0, width, tabHeight);
+            cacheCanvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight);
             cacheCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             scrollBar.getSlideView().draw(cacheCanvas);
             cacheCanvas.restore();
 
             int saveCount2 = canvas.save();
             canvas.translate(offsetX, offsetY);
-            canvas.clipRect(0, 0, width, tabHeight); // needed
+            canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
             //绘制前面一部分
             canvas.drawBitmap(cacheBitmap, 0, 0, null);
             canvas.restoreToCount(saveCount2);
 
             //绘制后面超出的一部分
-            canvas.clipRect(0, 0, unDraw, tabHeight); // needed
+            canvas.clipRect(0, 0, unDraw, scrollBarHeight); // needed
             cacheMatrix.setTranslate(unDraw - tabWidth, 0);
             canvas.drawBitmap(cacheBitmap, cacheMatrix, null);
         } else {
             canvas.translate(offsetX, offsetY);
-            canvas.clipRect(0, 0, width, tabHeight); // needed
+            canvas.clipRect(0, 0, scrollBarWidth, scrollBarHeight); // needed
             //直接绘制
             scrollBar.getSlideView().draw(canvas);
         }
