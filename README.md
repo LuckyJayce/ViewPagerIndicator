@@ -125,6 +125,8 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
      
 **1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。**     
   setSplitMethod(int splitMethod) 设置tab分割方式，平均分割，wrap分割，比重分割  
+  setCenterView(View centerView, ViewGroup.LayoutParams layoutParams)设置显示在tab中心的View，用于实现新浪微博底部+号    
+  getCenterView();
     
 **2.ScrollIndicatorView 主要用于多个tab可以进行滑动。**   
   setSplitAuto(boolean splitAuto) 设置是否自动分割，当总tab宽度小于Indicator宽度就平均分割tab，或者比重分割。大于Indicator宽度就wrap分割  
@@ -161,7 +163,13 @@ Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/mast
     		// 设置page间的图片  
     		indicatorViewPager.setPageMarginDrawable(d);  
 
-## 4.IndicatorPagerAdapter  ##
+## 4.BannerComponent （无限轮播Banner） ##
+继承于IndicatorViewPager，所以使用方法和IndicatorViewPager一样  
+setAutoPlayTime(long time) 设置自动播放的间隔时间  
+startAutoPlay(); 开始播放  
+stopAutoPlay(); 停止播放  
+
+## 5.IndicatorPagerAdapter  ##
 子类IndicatorFragmentPagerAdapter 用于 界面是fragment的形式。
 子类IndicatorViewPagerAdapter 用于 界面是View的形式.
 
@@ -169,7 +177,7 @@ indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListene
 
 Indicator 既可以单独使用。也可以通过indicatorViewPager的形式联合viewpager一起使用。
 
-## 5.ScrollBar  ##
+## 6.ScrollBar  ##
 tab的滑动块通过indicatorViewPager.setIndicatorScrollBar(scrollBar);进行设置
 子类有  
 ColorBar 颜色的滑动块   
@@ -178,11 +186,11 @@ LayoutBar 布局滑动块
 TextWidthColorBar 大小同tab里的text一样宽的颜色的滑动块  
 SpringBar 实现拖拽效果的圆形滑动块  该类修改于https://github.com/chenupt/SpringIndicator  
 
-## 5.OnTransitionListener  ##
+## 7.OnTransitionListener  ##
 子类有  
 OnTransitionTextListener tab的字体颜色变化，和字体大小变化效果    
 
-## 6.LazyFragment 懒加载Fragment    
+## 8.LazyFragment 懒加载Fragment    
 Fragment继承该类实现 显示Framgment的时候才会去创建你自己的界面布局，否则不创建。  
   
 1.实现原理：  
