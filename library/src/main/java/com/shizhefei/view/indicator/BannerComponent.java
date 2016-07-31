@@ -129,7 +129,9 @@ public class BannerComponent extends IndicatorViewPager {
             super.handleMessage(msg);
             int current = viewPager.getCurrentItem();
             viewPager.setCurrentItem(current + 1, true);
-            handler.sendEmptyMessageDelayed(1, time);
+            if (isRunning) {
+                handler.sendEmptyMessageDelayed(1, time);
+            }
         }
     }
 
