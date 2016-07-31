@@ -11,12 +11,12 @@ ViewPagerIndicator
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.0.7'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.0.8'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
 <2>jar包方式导入  
-Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewpagerIndicator_1.0.7.jar?raw=true)  
+Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewpagerIndicator_1.0.8.jar?raw=true)  
 
 Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
 
@@ -216,6 +216,12 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 项目 ViewPagerIndicator_Library 是类库
 
 有什么建议可以发到我的邮箱  794629068@qq.com  
+
+## 版本更新 ##
+1.0.8  
+
+	添加轮播BannerComponent
+    FixedIndicatorView添加setCenterView(View centerView, ViewGroup.LayoutParams layoutParams) 实现新浪微博底部 + 号
 
 # 联系方式和问题建议
 
