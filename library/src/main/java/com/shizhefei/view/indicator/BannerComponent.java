@@ -7,7 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.shizhefei.view.viewpager.DurationScroller;
 import com.shizhefei.view.viewpager.SViewPager;
+
+import java.lang.reflect.Field;
 
 /**
  * 轮播Banner
@@ -17,11 +20,36 @@ public class BannerComponent extends IndicatorViewPager {
 
     private final Handler handler;
     private long time = 3000;
+    private DurationScroller scroller;
 
     public BannerComponent(Indicator indicator, ViewPager viewPager, boolean indicatorClickable) {
         super(indicator, viewPager, indicatorClickable);
         handler = new AutoPlayHandler(Looper.getMainLooper());
         viewPager.setOnTouchListener(onTouchListener);
+        initViewPagerScroll();
+    }
+
+
+    private void initViewPagerScroll() {
+        try {
+            Field mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            scroller = new DurationScroller(
+                    viewPager.getContext());
+            mScroller.set(viewPager, scroller);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setScrollDuration(int scrollDuration) {
+        if (scroller != null) {
+            scroller.setScrollDuration(scrollDuration);
+        }
     }
 
     @Override

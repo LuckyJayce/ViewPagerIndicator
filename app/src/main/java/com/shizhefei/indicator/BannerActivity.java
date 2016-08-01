@@ -14,7 +14,6 @@ import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.slidebar.ScrollBar;
-import com.shizhefei.view.viewpager.RecyclingPagerAdapter;
 
 public class BannerActivity extends Activity {
 
@@ -47,6 +46,8 @@ public class BannerActivity extends Activity {
                 adapter.notifyDataSetChanged();
             }
         });
+        //默认就是800毫秒，设置单页滑动效果的时间
+//        bannerComponent.setScrollDuration(800);
         //设置播放间隔时间，默认情况是3000毫秒
         bannerComponent.setAutoPlayTime(2500);
     }
@@ -87,10 +88,10 @@ public class BannerActivity extends Activity {
             return convertView;
         }
 
-        @Override
-        public int getItemPosition(Object object) {
-            return RecyclingPagerAdapter.POSITION_NONE;
-        }
+//        @Override
+//        public int getItemPosition(Object object) {
+//            return RecyclingPagerAdapter.POSITION_NONE;
+//        }
 
         @Override
         public int getCount() {
