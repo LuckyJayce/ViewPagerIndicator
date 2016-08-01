@@ -11,7 +11,7 @@ ViewPagerIndicator
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.0.8'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.0.9'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
@@ -218,6 +218,9 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 有什么建议可以发到我的邮箱  794629068@qq.com  
 
 ## 版本更新 ##
+1.0.9  
+
+       BannerComponent 添加setScrollDuration(int scrollDuration)设置单页切换效果的时间
 1.0.8  
 
 	添加轮播BannerComponent
