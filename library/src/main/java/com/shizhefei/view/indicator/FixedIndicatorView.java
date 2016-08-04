@@ -134,10 +134,10 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             }
             if (state == ViewPager.SCROLL_STATE_IDLE) {
                 updateTabSelectState(item);
-                if (anim && getWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getTabCountInLayout()) {
+                if (anim && getMeasuredWidth() != 0 && getItemOutView(item).getMeasuredWidth() != 0 && mPreSelectedTabIndex >= 0 && mPreSelectedTabIndex < getTabCountInLayout()) {
                     int sx = getItemOutView(mPreSelectedTabIndex).getLeft();
                     int ex = getItemOutView(item).getLeft();
-                    final float pageDelta = (float) Math.abs(ex - sx) / (getItemOutView(item).getWidth());
+                    final float pageDelta = (float) Math.abs(ex - sx) / (getItemOutView(item).getMeasuredWidth());
                     int duration = (int) ((pageDelta + 1) * 100);
                     duration = Math.min(duration, 600);
                     inRun.startScroll(sx, ex, duration);
@@ -350,7 +350,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             inRun.stop();
             return;
         }
-        float offsetX ;
+        float offsetX;
         float offsetY;
         switch (this.scrollBar.getGravity()) {
             case CENTENT_BACKGROUND:
@@ -400,9 +400,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             }
             offsetX = currentView.getLeft();
         }
-        if (inRun.isFinished()) {
-            inRun.stop();
-        }
         int scrollBarHeight = scrollBar.getSlideView().getHeight();
         int scrollBarWidth = scrollBar.getSlideView().getWidth();
         offsetX += (tabWidth - scrollBarWidth) / 2;
@@ -447,7 +444,6 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             scrollBar.getSlideView().draw(canvas);
         }
         canvas.restoreToCount(saveCount);
-        inRun.stop();
     }
 
     private Bitmap cacheBitmap;
