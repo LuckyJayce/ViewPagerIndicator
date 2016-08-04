@@ -11,7 +11,7 @@ ViewPagerIndicator
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.0.9'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.0'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
@@ -218,6 +218,10 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 有什么建议可以发到我的邮箱  794629068@qq.com  
 
 ## 版本更新 ##
+1.1.0  
+
+       修复FixedIndicatorView.notifyDataChange， setCurrentItem的字体选中的位置不对  
+       LazyFragment 添加getPreviewLayout（），继承重写可以在未显示真正布局时显示一个预加载的布局.  
 1.0.9  
 
        BannerComponent 添加setScrollDuration(int scrollDuration)设置单页切换效果的时间
