@@ -16,9 +16,12 @@ ViewPagerIndicator
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
 <2>jar包方式导入  
-Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewpagerIndicator_1.0.9.jar?raw=true)  
+Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases)  
 
 Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
+
+###8.历史版本和更新信息  
+https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 
 
