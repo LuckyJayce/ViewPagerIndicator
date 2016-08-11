@@ -32,13 +32,22 @@ public class BannerActivity extends Activity {
         bannerComponent = new BannerComponent(indicator, viewPager, false);
         bannerComponent.setAdapter(adapter);
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                images = new int[]{R.drawable.p2, R.drawable.p3, R.drawable.p4};
+                images = new int[]{};
                 adapter.notifyDataSetChanged();
             }
         });
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                images = new int[]{R.drawable.p2};
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

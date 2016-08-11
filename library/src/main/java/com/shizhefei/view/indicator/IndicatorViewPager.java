@@ -274,6 +274,9 @@ public class IndicatorViewPager {
 
             @Override
             public int getCount() {
+                if (IndicatorViewPagerAdapter.this.getCount() == 0) {
+                    return 0;
+                }
                 if (loop) {
                     return Integer.MAX_VALUE - 100;
                 }
@@ -384,6 +387,9 @@ public class IndicatorViewPager {
 
                 @Override
                 public int getCount() {
+                    if (IndicatorFragmentPagerAdapter.this.getCount() == 0) {
+                        return 0;
+                    }
                     if (loop) {
                         return Integer.MAX_VALUE - 100;
                     }

@@ -29,13 +29,22 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="变为0个" />
+
+        <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="变为3个" />
+            android:text="变为1个" />
 
         <Button
             android:id="@+id/button2"

@@ -2,12 +2,11 @@ package com.shizhefei.indicator.year;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.shizhefei.indicator.DisplayUtil;
@@ -36,15 +35,16 @@ public class YearActivity extends FragmentActivity {
         indicator.setScrollBar(new SpringBar(getApplicationContext(), Color.GRAY));
         viewPager.setOffscreenPageLimit(4);
         indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
-        indicatorViewPager.setAdapter(new YearAdapter(1800, 2100));
-        indicatorViewPager.setCurrentItem(2016 - 1800, false);
+        indicatorViewPager.setAdapter(new YearAdapter(1800, 10000000));
+        indicatorViewPager.setCurrentItem(2016-1800, false);
     }
 
-    private class YearAdapter extends IndicatorViewPager.IndicatorViewPagerAdapter {
+    private class YearAdapter extends IndicatorViewPager.IndicatorFragmentPagerAdapter {
         private int startYear;
         private int endYear;
 
         public YearAdapter(int startYear, int endYear) {
+            super(getSupportFragmentManager());
             this.startYear = startYear;
             this.endYear = endYear;
         }
@@ -62,20 +62,12 @@ public class YearActivity extends FragmentActivity {
         }
 
         @Override
-        public View getViewForPage(int position, View convertView, ViewGroup container) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.fragment_tabmain_item, container, false);
-            }
-            final TextView textView = (TextView) convertView.findViewById(R.id.fragment_mainTab_item_textView);
-            textView.setText(" " + position + " 界面加载完毕");
-            final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.fragment_mainTab_item_progressBar);
-            new Handler() {
-                public void handleMessage(android.os.Message msg) {
-                    textView.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                }
-            }.sendEmptyMessageDelayed(1, 3000);
-            return convertView;
+        public Fragment getFragmentForPage(int position) {
+            YearFragment yearFragment = new YearFragment();
+            Bundle a = new Bundle();
+            a.putInt(YearFragment.INTENT_INT_POSITION, position);
+            yearFragment.setArguments(a);
+            return yearFragment;
         }
 
         @Override
