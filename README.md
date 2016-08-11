@@ -6,12 +6,12 @@ ViewPagerIndicator
 ###3. 支持自定义切换tab的过渡效果  
 ###4. 支持子界面的预加载和界面缓存  
 ###5. 支持设置界面是否可滑动  
-###6. android:minSdkVersion="8" android:targetSdkVersion="21" 
+###6. android:minSdkVersion="8" android:targetSdkVersion="24" 
 
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.0'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.1'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
@@ -221,6 +221,10 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 有什么建议可以发到我的邮箱  794629068@qq.com  
 
 ## 版本更新 ##
+1.1.1  
+
+       修复BannerComponent 的adapter的count为0 的bug  
+       优化FragmentListPageAdapter count为很大的数情况，SparseArray代替ArrayList  
 1.1.0  
 
        修复FixedIndicatorView.notifyDataChange， setCurrentItem的字体选中的位置不对  
