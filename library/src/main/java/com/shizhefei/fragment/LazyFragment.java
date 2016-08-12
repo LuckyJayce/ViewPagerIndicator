@@ -32,6 +32,7 @@ public class LazyFragment extends BaseFragment {
     @Deprecated
     protected final void onCreateView(Bundle savedInstanceState) {
         super.onCreateView(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         Bundle bundle = getArguments();
         if (bundle != null) {
             isLazyLoad = bundle.getBoolean(INTENT_BOOLEAN_LAZYLOAD, isLazyLoad);
@@ -39,7 +40,6 @@ public class LazyFragment extends BaseFragment {
         if (isLazyLoad) {
             if (getUserVisibleHint() && !isInit) {
                 isInit = true;
-                this.savedInstanceState = savedInstanceState;
                 onCreateViewLazy(savedInstanceState);
             } else {
                 LayoutInflater layoutInflater = inflater;
