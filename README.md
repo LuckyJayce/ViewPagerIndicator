@@ -231,6 +231,9 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 **5.https://github.com/LuckyJayce/LargeImage**  
 大图加载，可供学习
 
+**6.https://github.com/LuckyJayce/GuideHelper  
+新手引导页，轻松的实现对应的view上面的显示提示信息和展示功能给用户  
+
 有了这些类库，让你6的飞起
 
 ## 说明 ##
