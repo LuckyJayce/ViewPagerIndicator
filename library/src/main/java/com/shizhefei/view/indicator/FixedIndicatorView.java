@@ -411,7 +411,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
         //如果绘制的scrollbar超出了IndicatorView，那么就把超出的部分绘制在最前面，相当于loop的展示，末尾的部分又重新回到最开始的位置
         //为了实现这一点，首先要把scrollbar先绘制到cacheBitmap上，然后就可以把分两部分通过canvas绘制到view上
-        if (offsetX + scrollBarWidth > indicatorWidth) {
+        if (mAdapter.isLoop() && offsetX + scrollBarWidth > indicatorWidth) {
 
             //创建一个和IndicatorView一样大小的Bitmap用于绘制
             if (cacheBitmap == null || cacheBitmap.getWidth() < scrollBarWidth || cacheBitmap.getWidth() < scrollBarHeight) {

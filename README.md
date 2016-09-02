@@ -11,7 +11,7 @@ ViewPagerIndicator
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.2'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.3'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.2.1'  
@@ -221,6 +221,10 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 有什么建议可以发到我的邮箱  794629068@qq.com  
 
 ## 版本更新 ##
+1.1.3  
+
+       修复SpringBar点击最后一个tab，第一个tab显示的问题  
+       IndicatorViewPager添加setClickIndicatorAnim(boolean anim)，用于配置点击tab的是否执行viewPager的切换动画
 1.1.2  
 
        修复LazyFragment 的 onCreateViewLazy(Bundle savedInstanceState) 避免获取不到savedInstanceState

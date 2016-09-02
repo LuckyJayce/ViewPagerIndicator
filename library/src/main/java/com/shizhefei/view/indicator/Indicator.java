@@ -116,6 +116,16 @@ public interface Indicator {
      * 适配器
      */
     public static abstract class IndicatorAdapter {
+        private boolean isLoop;
+
+        boolean isLoop() {
+            return isLoop;
+        }
+
+        void setIsLoop(boolean isLoop) {
+            this.isLoop = isLoop;
+        }
+
         private Set<DataSetObserver> observers = new LinkedHashSet<DataSetObserver>(2);
 
         public abstract int getCount();

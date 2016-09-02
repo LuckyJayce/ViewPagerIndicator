@@ -33,11 +33,11 @@ import com.shizhefei.view.viewpager.SViewPager;
  * 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
-    private final boolean indicatorClickable;
     protected Indicator indicatorView;
     protected ViewPager viewPager;
     private IndicatorPagerAdapter adapter;
     protected OnIndicatorPageChangeListener onIndicatorPageChangeListener;
+    private boolean anim = true;
 
     public IndicatorViewPager(Indicator indicator, ViewPager viewPager) {
         this(indicator, viewPager, true);
@@ -45,12 +45,15 @@ public class IndicatorViewPager {
 
     public IndicatorViewPager(Indicator indicator, ViewPager viewPager, boolean indicatorClickable) {
         super();
-        this.indicatorClickable = indicatorClickable;
         this.indicatorView = indicator;
         this.viewPager = viewPager;
         indicator.setItemClickable(indicatorClickable);
         iniOnItemSelectedListener();
         iniOnPageChangeListener();
+    }
+
+    public void setClickIndicatorAnim(boolean anim) {
+        this.anim = anim;
     }
 
     protected void iniOnItemSelectedListener() {
@@ -61,7 +64,7 @@ public class IndicatorViewPager {
                 if (viewPager instanceof SViewPager) {
                     viewPager.setCurrentItem(select, ((SViewPager) viewPager).isCanScroll());
                 } else {
-                    viewPager.setCurrentItem(select, true);
+                    viewPager.setCurrentItem(select, anim);
                 }
             }
         });
@@ -267,6 +270,7 @@ public class IndicatorViewPager {
         @Override
         void setLoop(boolean loop) {
             this.loop = loop;
+            indicatorAdapter.setIsLoop(loop);
         }
 
 
@@ -379,6 +383,7 @@ public class IndicatorViewPager {
         @Override
         void setLoop(boolean loop) {
             this.loop = loop;
+            indicatorAdapter.setIsLoop(loop);
         }
 
         public IndicatorFragmentPagerAdapter(FragmentManager fragmentManager) {
