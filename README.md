@@ -214,6 +214,28 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
 放心在onCreateViewLazy 的时候创建布局，初始化数据。调用该方法的时候，界面已经要显示啦
   在onDestroyViewLazy的方法里面做释放操作  
 
+##主力类库##
+
+**1.https://github.com/LuckyJayce/ViewPagerIndicator**  
+Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab，引导页，无限轮播banner等效果，高度自定义tab和特效
+
+**2.https://github.com/LuckyJayce/MVCHelper**  
+实现下拉刷新，滚动底部自动加载更多，分页加载，自动切换显示网络失败布局，暂无数据布局，支持任意view，支持切换主流下拉刷新框架。
+
+**3.https://github.com/LuckyJayce/MultiTypeView**  
+简化RecyclerView的多种type的adapter，Fragment可以动态添加到RecyclerView上，实现复杂的界面分多个模块开发
+
+**4.https://github.com/LuckyJayce/EventBus**  
+事件总线，通过动态代理接口的形式发布,接收事件。定义一个接口把事件发给注册并实现接口的类
+
+**5.https://github.com/LuckyJayce/LargeImage**  
+大图加载，可供学习
+
+**6.https://github.com/LuckyJayce/GuideHelper  
+新手引导页，轻松的实现对应的view上面的显示提示信息和展示功能给用户  
+
+有了这些类库，让你6的飞起
+
 ## 说明 ##
 项目 ViewPagerIndicator_Demo 是示例代码。 看了这个例子你会惊奇的发现里面居然都是通过viewpager实现，没有使用tabhost，而所有形式的tab都是用Indicator实现。
 项目 ViewPagerIndicator_Library 是类库
