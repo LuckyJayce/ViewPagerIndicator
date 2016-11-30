@@ -231,8 +231,11 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 **5.https://github.com/LuckyJayce/LargeImage**  
 大图加载，可供学习
 
-**6.https://github.com/LuckyJayce/GuideHelper  
+**6.https://github.com/LuckyJayce/GuideHelper**  
 新手引导页，轻松的实现对应的view上面的显示提示信息和展示功能给用户  
+
+**7.https://github.com/LuckyJayce/HVScrollView**  
+可以双向滚动的ScrollView，支持嵌套ScrollView联级滑动，支持设置支持的滚动方向
 
 有了这些类库，让你6的飞起
 
@@ -241,30 +244,6 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 项目 ViewPagerIndicator_Library 是类库
 
 有什么建议可以发到我的邮箱  794629068@qq.com  
-
-## 版本更新 ##
-1.1.3  
-
-       修复SpringBar点击最后一个tab，第一个tab显示的问题  
-       IndicatorViewPager添加setClickIndicatorAnim(boolean anim)，用于配置点击tab的是否执行viewPager的切换动画
-1.1.2  
-
-       修复LazyFragment 的 onCreateViewLazy(Bundle savedInstanceState) 避免获取不到savedInstanceState
-1.1.1  
-
-       修复BannerComponent 的adapter的count为0 的bug  
-       优化FragmentListPageAdapter count为很大的数情况，SparseArray代替ArrayList  
-1.1.0  
-
-       修复FixedIndicatorView.notifyDataChange， setCurrentItem的字体选中的位置不对  
-       LazyFragment 添加getPreviewLayout（），继承重写可以在未显示真正布局时显示一个预加载的布局.  
-1.0.9  
-
-       BannerComponent 添加setScrollDuration(int scrollDuration)设置单页切换效果的时间
-1.0.8  
-
-	添加轮播BannerComponent
-    FixedIndicatorView添加setCenterView(View centerView, ViewGroup.LayoutParams layoutParams) 实现新浪微博底部 + 号
 
 # 联系方式和问题建议
 
