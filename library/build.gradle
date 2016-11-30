@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 14
-        versionName "1.1.3"
+        versionCode 15
+        versionName "1.1.4"
     }
     buildTypes {
         release {
@@ -27,7 +27,7 @@ task buildJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
 
     appendix = "demo"
     baseName = "androidJar"
-    version = "1.1.3"
+    version = "1.1.4"
     classifier = "release"
     //后缀名
     extension = "jar"
@@ -64,7 +64,7 @@ publish {
     userOrg = 'luckyjayce'//bintray.com用户名
     groupId = 'com.shizhefei'//jcenter上的路径
     artifactId = 'ViewPagerIndicator'//项目名称
-    publishVersion = '1.1.3'//版本号
+    publishVersion = '1.1.4'//版本号
     desc = '实现滑动tab，引导页等效果'//描述，不重要
     website = 'https://github.com/LuckyJayce/ViewPagerIndicator'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }

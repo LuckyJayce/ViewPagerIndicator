@@ -6,15 +6,15 @@ ViewPagerIndicator
 ###3. 支持自定义切换tab的过渡效果  
 ###4. 支持子界面的预加载和界面缓存  
 ###5. 支持设置界面是否可滑动  
-###6. android:minSdkVersion="8" android:targetSdkVersion="24" 
+###6. android:minSdkVersion="8" android:targetSdkVersion="25" 
 
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.3'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.4'  
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
-    compile 'com.android.support:recyclerview-v7:23.2.1'  
+    compile 'com.android.support:recyclerview-v7:23.4.0'  
 <2>jar包方式导入  
 Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases)  
 
