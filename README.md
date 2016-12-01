@@ -237,6 +237,11 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 **7.https://github.com/LuckyJayce/HVScrollView**  
 可以双向滚动的ScrollView，支持嵌套ScrollView联级滑动，支持设置支持的滚动方向
 
+**8.https://github.com/LuckyJayce/CoolRefreshView**  
+  下拉刷新RefreshView，支持任意View的刷新 ，支持自定义Header，支持NestedScrollingParent,NestedScrollingChild的事件分发，嵌套ViewPager不会有事件冲突 
+
+有了这些类库，让你6的飞起
+
 有了这些类库，让你6的飞起
 
 ## 说明 ##
