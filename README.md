@@ -11,7 +11,7 @@ ViewPagerIndicator
 ###7.导入方式
 <1>gradle导入      
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.4'  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.5'
     由于用到了v4和recyclerview所以也要导入他们  
     compile 'com.android.support:support-v4:23.4.0'  
     compile 'com.android.support:recyclerview-v7:23.4.0'  

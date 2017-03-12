@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 15
-        versionName "1.1.4"
+        versionCode 16
+        versionName "1.1.5"
     }
     buildTypes {
         release {
@@ -20,35 +20,6 @@ android {
         abortOnError false
     }
 }
-
-//打包生成jar包，执行gradle buildJar
-//dependsOn 可根据实际需要增加或更改
-task buildJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
-
-    appendix = "demo"
-    baseName = "androidJar"
-    version = "1.1.4"
-    classifier = "release"
-    //后缀名
-    extension = "jar"
-    //最终的 Jar 包名，如果没设置，默认为 [baseName]-[appendix]-[version]-[classifier].[extension]
-    archiveName = "d.jar"
-
-    //需打包的资源所在的路径集
-    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
-    //初始化资源路径集
-    from srcClassDir
-
-    //过滤不需要的class
-    exclude "**/**/BuildConfig.class"
-    exclude "**/**/BuildConfig\$*.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-//
-//    //指定打包的class
-//    include "com/test/**/*.class"
-}
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -64,7 +35,7 @@ publish {
     userOrg = 'luckyjayce'//bintray.com用户名
     groupId = 'com.shizhefei'//jcenter上的路径
     artifactId = 'ViewPagerIndicator'//项目名称
-    publishVersion = '1.1.4'//版本号
+    publishVersion = '1.1.5'//版本号
     desc = '实现滑动tab，引导页等效果'//描述，不重要
     website = 'https://github.com/LuckyJayce/ViewPagerIndicator'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }
