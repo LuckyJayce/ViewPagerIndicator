@@ -338,7 +338,7 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
 
         @Override
         public int getItemCount() {
-            return adapter.getCount();
+            return adapter == null ? 0 : adapter.getCount();
         }
 
         private OnClickListener onClickListener = new OnClickListener() {

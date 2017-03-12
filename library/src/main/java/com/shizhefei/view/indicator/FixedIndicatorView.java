@@ -490,7 +490,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 
     private int measureScrollBar(int position, float selectPercent, boolean needChange) {
-        if (scrollBar == null)
+        if (scrollBar == null || mAdapter == null)
             return 0;
         View view = scrollBar.getSlideView();
         if (view.isLayoutRequested() || needChange) {
@@ -607,6 +607,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
     @Override
     public View getItemView(int position) {
+        if(mAdapter == null){
+            return  null;
+        }
         if (position < 0 || position > mAdapter.getCount() - 1) {
             return null;
         }
