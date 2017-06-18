@@ -28,6 +28,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
     private OnItemSelectedListener onItemSelectedListener;
 
+    private OnIndicatorItemClickListener onIndicatorItemClickListener;
+
     private int mSelectedTabIndex = -1;
 
     public static final int SPLITMETHOD_EQUALS = 0;
@@ -229,9 +231,12 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
             if (itemClickable) {
                 int i = (Integer) v.getTag();
                 ViewGroup parent = (ViewGroup) v;
-                setCurrentItem(i);
-                if (onItemSelectedListener != null) {
-                    onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
+                View itemView = parent.getChildAt(0);
+                if (onIndicatorItemClickListener == null || !onIndicatorItemClickListener.onItemClick(itemView, i)) {
+                    setCurrentItem(i);
+                    if (onItemSelectedListener != null) {
+                        onItemSelectedListener.onItemSelected(parent.getChildAt(0), i, mPreSelectedTabIndex);
+                    }
                 }
             }
         }
@@ -607,8 +612,8 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
     @Override
     public View getItemView(int position) {
-        if(mAdapter == null){
-            return  null;
+        if (mAdapter == null) {
+            return null;
         }
         if (position < 0 || position > mAdapter.getCount() - 1) {
             return null;
@@ -681,6 +686,14 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
     @Override
     public OnItemSelectedListener getOnItemSelectListener() {
         return onItemSelectedListener;
+    }
+
+    public void setOnIndicatorItemClickListener(OnIndicatorItemClickListener onIndicatorItemClickListener) {
+        this.onIndicatorItemClickListener = onIndicatorItemClickListener;
+    }
+
+    public OnIndicatorItemClickListener getOnIndicatorItemClickListener() {
+        return onIndicatorItemClickListener;
     }
 
     @Override

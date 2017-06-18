@@ -25,6 +25,7 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
     private float positionOffset;
     private int positionOffsetPixels;
     private int unScrollPosition = -1;
+    private OnIndicatorItemClickListener onIndicatorItemClickListener;
 
     public RecyclerIndicatorView(Context context) {
         super(context);
@@ -346,7 +347,9 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
             public void onClick(View v) {
                 if (itemClickable) {
                     int position = (Integer) v.getTag();
-                    setCurrentItem(position, true);
+                    if (onIndicatorItemClickListener == null || !onIndicatorItemClickListener.onItemClick(getItemView(position), position)) {
+                        setCurrentItem(position, true);
+                    }
                 }
             }
         };
@@ -440,6 +443,14 @@ public class RecyclerIndicatorView extends RecyclerView implements Indicator {
             }
         }
         return scrollBar.getSlideView().getWidth();
+    }
+
+    public void setOnIndicatorItemClickListener(OnIndicatorItemClickListener onIndicatorItemClickListener) {
+        this.onIndicatorItemClickListener = onIndicatorItemClickListener;
+    }
+
+    public OnIndicatorItemClickListener getOnIndicatorItemClickListener() {
+        return onIndicatorItemClickListener;
     }
 
     private int selectItem;

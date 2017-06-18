@@ -141,6 +141,22 @@ public class IndicatorViewPager {
     }
 
     /**
+     * 设置Indicator tab项的点击事件，在Indicator 的 onItemSelectListener前触发和拦截处理
+     *
+     * @param onIndicatorItemClickListener
+     */
+    public void setOnIndicatorItemClickListener(Indicator.OnIndicatorItemClickListener onIndicatorItemClickListener) {
+        indicatorView.setOnIndicatorItemClickListener(onIndicatorItemClickListener);
+    }
+
+    /**
+     * @return
+     */
+    public Indicator.OnIndicatorItemClickListener getOnIndicatorItemClickListener() {
+        return indicatorView.getOnIndicatorItemClickListener();
+    }
+
+    /**
      * 设置缓存界面的个数，左右两边缓存界面的个数，不会被重新创建。<br>
      * 默认是1，表示左右两边 相连的1个界面和当前界面都会被缓存住，比如切换到左边的一个界面，那个界面是不会重新创建的。
      *

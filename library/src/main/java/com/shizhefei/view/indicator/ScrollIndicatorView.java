@@ -282,6 +282,14 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
         return proxyOnItemSelectListener.getOnItemSelectedListener();
     }
 
+    public void setOnIndicatorItemClickListener(OnIndicatorItemClickListener onIndicatorItemClickListener) {
+        fixedIndicatorView.setOnIndicatorItemClickListener(onIndicatorItemClickListener);
+    }
+
+    public OnIndicatorItemClickListener getOnIndicatorItemClickListener() {
+        return fixedIndicatorView.getOnIndicatorItemClickListener();
+    }
+
     @Override
     public void setOnTransitionListener(OnTransitionListener onPageScrollListener) {
         fixedIndicatorView.setOnTransitionListener(onPageScrollListener);

@@ -30,21 +30,29 @@ public interface Indicator {
     /**
      * 设置适配器
      */
-    public void setAdapter(IndicatorAdapter adapter);
+    void setAdapter(IndicatorAdapter adapter);
 
     /**
      * 设置选中监听
      *
      * @param onItemSelectedListener
      */
-    public void setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener);
+    void setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener);
 
     /**
      * 获取选中监听
      *
      * @return OnItemSelectedListener
      */
-    public OnItemSelectedListener getOnItemSelectListener();
+    OnItemSelectedListener getOnItemSelectListener();
+
+    /**
+     * 设置Indicator tab项的点击事件，在Indicator 的 onItemSelectListener前触发和拦截处理
+     * @param onIndicatorItemClickListener
+     */
+    void setOnIndicatorItemClickListener(OnIndicatorItemClickListener onIndicatorItemClickListener);
+
+    OnIndicatorItemClickListener getOnIndicatorItemClickListener();
 
     /**
      * 设置滑动变化的转换监听，tab在切换过程中会调用此监听。<br>
@@ -54,9 +62,9 @@ public interface Indicator {
      *
      * @param onTransitionListener
      */
-    public void setOnTransitionListener(OnTransitionListener onTransitionListener);
+    void setOnTransitionListener(OnTransitionListener onTransitionListener);
 
-    public OnTransitionListener getOnTransitionListener();
+    OnTransitionListener getOnTransitionListener();
 
     /**
      * 设置滑动块<br>
@@ -67,9 +75,9 @@ public interface Indicator {
      *
      * @param scrollBar
      */
-    public void setScrollBar(ScrollBar scrollBar);
+    void setScrollBar(ScrollBar scrollBar);
 
-    public IndicatorAdapter getIndicatorAdapter();
+    IndicatorAdapter getIndicatorAdapter();
 
     /**
      * 设置当前项.<br>
@@ -77,9 +85,9 @@ public interface Indicator {
      *
      * @param item
      */
-    public void setCurrentItem(int item);
+    void setCurrentItem(int item);
 
-    public void setCurrentItem(int item, boolean anim);
+    void setCurrentItem(int item, boolean anim);
 
     /**
      * 获取每一项的tab
@@ -87,21 +95,21 @@ public interface Indicator {
      * @param item 索引
      * @return ItemView
      */
-    public View getItemView(int item);
+    View getItemView(int item);
 
     /**
      * 获取当前选中项
      *
      * @return current
      */
-    public int getCurrentItem();
+    int getCurrentItem();
 
     /**
      * 获取之前选中的项,可能返回-1，表示之前没有选中
      *
      * @return PreSelectItem
      */
-    public int getPreSelectItem();
+    int getPreSelectItem();
 
     /**
      * ViewPager切换变化的函数
@@ -110,12 +118,12 @@ public interface Indicator {
      * @param positionOffset
      * @param positionOffsetPixels
      */
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
+    void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
 
     /**
      * 适配器
      */
-    public static abstract class IndicatorAdapter {
+    abstract class IndicatorAdapter {
         private boolean isLoop;
 
         boolean isLoop() {
@@ -151,14 +159,14 @@ public interface Indicator {
     /**
      * 数据源观察者
      */
-    static interface DataSetObserver {
-        public void onChange();
+    interface DataSetObserver {
+        void onChange();
     }
 
     /**
      * tab项选中监听
      */
-    public static interface OnItemSelectedListener {
+    interface OnItemSelectedListener {
         /**
          * 注意 preItem 可能为 -1。表示之前没有选中过,每次adapter.notifyDataSetChanged也会将preItem
          * 设置为-1；
@@ -167,7 +175,20 @@ public interface Indicator {
          * @param select         当前选中项的索引
          * @param preSelect      之前选中项的索引
          */
-        public void onItemSelected(View selectItemView, int select, int preSelect);
+        void onItemSelected(View selectItemView, int select, int preSelect);
+    }
+
+    /**
+     * tab项点击监听和拦截
+     */
+    interface OnIndicatorItemClickListener {
+        /**
+         * @param clickItemView
+         * @param position 点击的tab的position
+         * @return 返回true表示 拦截点击事件，不会继续触发Indicator的setCurrent和调用OnItemSelectedListener
+         *  返回false 按照Indicator原有的处理方式
+         */
+        boolean onItemClick(View clickItemView, int position);
     }
 
     /**
@@ -176,13 +197,13 @@ public interface Indicator {
      * 目前提供的子类
      * {@link com.shizhefei.view.indicator.transition.OnTransitionTextListener}
      */
-    public static interface OnTransitionListener {
-        public void onTransition(View view, int position, float selectPercent);
+    interface OnTransitionListener {
+        void onTransition(View view, int position, float selectPercent);
     }
 
-    public void onPageScrollStateChanged(int state);
+    void onPageScrollStateChanged(int state);
 
-    public void setItemClickable(boolean clickable);
+    void setItemClickable(boolean clickable);
 
-    public boolean isItemClickable();
+    boolean isItemClickable();
 }
