@@ -1,34 +1,34 @@
 ViewPagerIndicator
 ==================  
 
-###1. 支持自定义tab样式  
-###2. 支持自定义滑动块样式和位置  
-###3. 支持自定义切换tab的过渡效果  
-###4. 支持子界面的预加载和界面缓存  
-###5. 支持设置界面是否可滑动  
-###6. android:minSdkVersion="8" android:targetSdkVersion="25" 
+### 1. 支持自定义tab样式
+### 2. 支持自定义滑动块样式和位置
+### 3. 支持自定义切换tab的过渡效果
+### 4. 支持子界面的预加载和界面缓存
+### 5. 支持设置界面是否可滑动
+### 6. android:minSdkVersion="8" android:targetSdkVersion="25"
 
 ###7.导入方式
-<1>gradle导入      
+<1>gradle导入
 
-    compile 'com.shizhefei:ViewPagerIndicator:1.1.5'
-    由于用到了v4和recyclerview所以也要导入他们  
-    compile 'com.android.support:support-v4:23.4.0'  
-    compile 'com.android.support:recyclerview-v7:23.4.0'  
-<2>jar包方式导入  
-Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases)  
+    compile 'com.shizhefei:ViewPagerIndicator:1.1.6'
+    由于用到了v4和recyclerview所以也要导入他们
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+<2>jar包方式导入
+Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases)
 
-Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)   
+Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)
 
-###8.历史版本和更新信息  
+###8.历史版本和更新信息
 https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 
 
 
-# 使用方法 #  
+# 使用方法 #
     package com.shizhefei.indicator.guide;
-    
+
     import android.os.Bundle;
     import android.support.v4.app.FragmentActivity;
     import android.support.v4.view.ViewPager;
@@ -36,17 +36,17 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     import android.view.View;
     import android.view.ViewGroup;
     import android.view.ViewGroup.LayoutParams;
-    
+
     import com.shizhefei.indicator.R;
     import com.shizhefei.view.indicator.Indicator;
     import com.shizhefei.view.indicator.IndicatorViewPager;
     import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorPagerAdapter;
     import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorViewPagerAdapter;
-    
+
     public class GuideActivity extends FragmentActivity {
     	private IndicatorViewPager indicatorViewPager;
     	private LayoutInflater inflate;
-    
+
     	@Override
     	protected void onCreate(Bundle arg0) {
     		super.onCreate(arg0);
@@ -59,11 +59,11 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     		// 设置indicatorViewPager的适配器
     		indicatorViewPager.setAdapter(adapter);
     	}
-    
+
     	private IndicatorPagerAdapter adapter = new IndicatorViewPagerAdapter() {
     		private int[] images = { R.drawable.p1, R.drawable.p2, R.drawable.p3,
     				R.drawable.p4 };
-    
+
     		/**
     		 * 获取tab
     		 */
@@ -76,7 +76,7 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     			}
     			return convertView;
     		}
-    
+
     		/**
     		 * 获取每一个界面
     		 */
@@ -91,7 +91,7 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     			convertView.setBackgroundResource(images[position]);
     			return convertView;
     		}
-    
+
     		/**
     		 * 获取界面数量
     		 */
@@ -103,42 +103,56 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     }
 
 # 效果图 #
-有了该类库你可以实现以下布局  
+有了该类库你可以实现以下布局
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/1.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/2.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/demo.gif)
 # 主要的类 #
-## 1.ViewPager ##  
-这个版本以后 android-support-v4 可以用原生的了 没有重写ViewPager。  
-原先重写的ViewPager的setPrepareNumber 用 Fragment继承于LazyFragment代替实现懒加载  
-原先setCanScroll 转移到了 ViewPager的子类SViewPager上  
+## 1.ViewPager ##
+这个版本以后 android-support-v4 可以用原生的了 没有重写ViewPager。
+原先重写的ViewPager的setPrepareNumber 用 Fragment继承于LazyFragment代替实现懒加载
+原先setCanScroll 转移到了 ViewPager的子类SViewPager上
 
 2.使用LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
 
-## 2.Indicator ##  
+## 2.Indicator ##
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
-  
-**Indicator**    
-  setCurrentItem(int item, boolean anim) 设置当前项      
-  setOnTransitionListener(OnTransitionListener onTransitionListener)设置tab过渡动画  
-  setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener)设置tab切换监听  
-  setScrollBar(ScrollBar scrollBar)设置跟随tab滑动的滑动块  
-     
-**1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。**     
-  setSplitMethod(int splitMethod) 设置tab分割方式，平均分割，wrap分割，比重分割  
-  setCenterView(View centerView, ViewGroup.LayoutParams layoutParams)设置显示在tab中心的View，用于实现新浪微博底部+号    
+
+**Indicator**
+  setCurrentItem(int item, boolean anim) 设置当前项
+  setOnTransitionListener(OnTransitionListener onTransitionListener)设置tab过渡动画
+  setOnItemSelectListener(OnItemSelectedListener onItemSelectedListener)设置tab切换监听
+  setScrollBar(ScrollBar scrollBar)设置跟随tab滑动的滑动块
+
+**1.FixedIndicatorView 主要用于固定大小来平均分配tab的情况。**
+  setSplitMethod(int splitMethod) 设置tab分割方式，平均分割，wrap分割，比重分割
+  setCenterView(View centerView, ViewGroup.LayoutParams layoutParams)设置显示在tab中心的View，用于实现新浪微博底部+号
   getCenterView();
-    
-**2.ScrollIndicatorView 主要用于多个tab可以进行滑动。**   
-  setSplitAuto(boolean splitAuto) 设置是否自动分割，当总tab宽度小于Indicator宽度就平均分割tab，或者比重分割。大于Indicator宽度就wrap分割  
-  setPinnedTabView(boolean isPinnedTabView) 设置是否固定第一个tab  
-  setPinnedShadow(Drawable shadowDrawable, int shadowWidth)设置固定tab的阴影  
-    
-**3.RecyclerIndicatorView 主要用于无数个tab可以进行滑动。**  
-  优点适用于tab很多的情况，缺点tab少的时候没有ScrollIndicatorVie的自动分割功能。  
-    
+
+**2.ScrollIndicatorView 主要用于多个tab可以进行滑动。**
+  setSplitAuto(boolean splitAuto) 设置是否自动分割，当总tab宽度小于Indicator宽度就平均分割tab，或者比重分割。大于Indicator宽度就wrap分割
+  setPinnedTabView(boolean isPinnedTabView) 设置是否固定第一个tab
+  setPinnedShadow(Drawable shadowDrawable, int shadowWidth)设置固定tab的阴影
+
+**3.RecyclerIndicatorView 主要用于无数个tab可以进行滑动。**
+  优点适用于tab很多的情况，缺点tab少的时候没有ScrollIndicatorVie的自动分割功能。
+
+方法：
+>**<1>setAdapter(IndicatorAdapter adapter)**
+  设置适配器
+注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
+**<2> setOnItemSelectListener(OnItemSelectListener listener)**
+设置选中监听
+注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
+**<3> setOnIndicatorItemClickListener(OnIndicatorItemClickListener listener)**
+设置Indicator tab项的点击事件，在Indicator 的 onItemSelectListener前触发和拦截处理
+**<4> setOnTransitionListener(OnTransitionListener listener)**
+ 设置滑动变化的转换监听，tab在切换过程中会调用此监听
+设置它可以自定义实现在滑动过程中，tab项的字体变化，颜色变化等等效果
+**<5> setScrollBar(ScrollBar scrollBar)**
+ 设置滑动块,设置它可以自定义滑动块的样式
 ## 3.indicatorViewPager  ##
 用于将ViewPager和Indicator 联合使用。  
 
