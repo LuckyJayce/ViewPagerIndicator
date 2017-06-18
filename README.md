@@ -8,7 +8,7 @@ ViewPagerIndicator
 ### 5. 支持设置界面是否可滑动
 ### 6. android:minSdkVersion="8" android:targetSdkVersion="25"
 
-###7.导入方式
+### 7.导入方式
 <1>gradle导入
 
     compile 'com.shizhefei:ViewPagerIndicator:1.1.6'
@@ -20,7 +20,7 @@ Download Library [JAR](https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 Download sample [Apk](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/ViewPagerIndicator_Demo.apk?raw=true)
 
-###8.历史版本和更新信息
+### 8.历史版本和更新信息
 https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 
