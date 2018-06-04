@@ -623,6 +623,9 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
     private View getItemViewUnCheck(int position) {
         final ViewGroup group = (ViewGroup) getItemOutView(position);
+        if (group == null) {
+            return null;
+        }
         return group.getChildAt(0);
     }
 
