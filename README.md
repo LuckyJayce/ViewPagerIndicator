@@ -6,7 +6,7 @@ ViewPagerIndicator
 ### 3. 支持自定义切换tab的过渡效果
 ### 4. 支持子界面的预加载和界面缓存
 ### 5. 支持设置界面是否可滑动
-### 6. android:minSdkVersion="14" android:targetSdkVersion="25"
+### 6. android:minSdkVersion="14"
 
 ### 7.导入方式
 <1>gradle导入
