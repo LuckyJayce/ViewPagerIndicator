@@ -260,12 +260,7 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 项目 ViewPagerIndicator_Demo 是示例代码。 看了这个例子你会惊奇的发现里面居然都是通过viewpager实现，没有使用tabhost，而所有形式的tab都是用Indicator实现。
 项目 ViewPagerIndicator_Library 是类库
 
-有什么建议可以发到我的邮箱  794629068@qq.com  
-
-# 联系方式和问题建议
-
-* 微博:http://weibo.com/u/3181073384
-* QQ 群: 开源项目使用交流，问题解答: 549284336（开源盛世） 
+有什么建议可以发到我的邮箱  794629068@qq.com 
 
 License
 =======
