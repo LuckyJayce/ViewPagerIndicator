@@ -239,7 +239,7 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 **3.https://github.com/LuckyJayce/MultiTypeView**  
 简化RecyclerView的多种type的adapter，Fragment可以动态添加到RecyclerView上，实现复杂的界面分多个模块开发
 
-**4.https://github.com/LuckyJayce/EventBus**  
+**4.https://github.com/LuckyJayce/EventBus-Apt**  
 事件总线，通过动态代理接口的形式发布,接收事件。定义一个接口把事件发给注册并实现接口的类
 
 **5.https://github.com/LuckyJayce/LargeImage**  
