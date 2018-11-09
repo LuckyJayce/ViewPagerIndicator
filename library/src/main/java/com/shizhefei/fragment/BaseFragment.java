@@ -1,15 +1,14 @@
 package com.shizhefei.fragment;
 
-import java.lang.reflect.Field;
-
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BaseFragment extends Fragment {
+abstract class BaseFragment extends Fragment {
 	protected LayoutInflater inflater;
 	private View contentView;
 	private Context context;
@@ -59,26 +58,9 @@ public class BaseFragment extends Fragment {
 		return contentView;
 	}
 
-	public View findViewById(int id) {
+	public <T extends View> T findViewById(@IdRes int id) {
 		if (contentView != null)
 			return contentView.findViewById(id);
 		return null;
 	}
-
-	// http://stackoverflow.com/questions/15207305/getting-the-error-java-lang-illegalstateexception-activity-has-been-destroyed
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		try {
-			Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-			childFragmentManager.setAccessible(true);
-			childFragmentManager.set(this, null);
-
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 }
