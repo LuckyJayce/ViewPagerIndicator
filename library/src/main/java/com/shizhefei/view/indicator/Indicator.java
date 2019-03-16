@@ -15,7 +15,7 @@ limitations under the License.
  */
 package com.shizhefei.view.indicator;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
