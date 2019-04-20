@@ -1,10 +1,11 @@
 package com.shizhefei.indicator.proxyfragment;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.shizhefei.indicator.demo.R;
+
+import androidx.fragment.app.FragmentActivity;
 
 public class TestExceptionActivity extends FragmentActivity {
 
