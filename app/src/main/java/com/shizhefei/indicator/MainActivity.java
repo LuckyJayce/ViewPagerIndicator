@@ -9,6 +9,7 @@ import com.shizhefei.indicator.demo.R;
 import com.shizhefei.indicator.guide.GuideActivity;
 import com.shizhefei.indicator.moretab.MoreTab2Activity;
 import com.shizhefei.indicator.moretab.MoreTabActivity;
+import com.shizhefei.indicator.proxyfragment.TestProxyFragmentActivity;
 import com.shizhefei.indicator.spring.SpringActivity;
 import com.shizhefei.indicator.tabmain.TabMainActivity;
 import com.shizhefei.indicator.year.YearActivity;
@@ -99,6 +100,14 @@ public class MainActivity extends FragmentActivity {
      */
     public void onClickTabs(View view) {
         startActivity(new Intent(getApplicationContext(), SingleTabActivity.class));
+    }
+    /**
+     * 不集成ViewPager的Indicator使用方式
+     *
+     * @param view
+     */
+    public void onClickTestProxyLazyFragment(View view) {
+        startActivity(new Intent(getApplicationContext(), TestProxyFragmentActivity.class));
     }
 
 

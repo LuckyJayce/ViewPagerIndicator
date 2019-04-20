@@ -9,6 +9,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.shizhefei.indicator.proxyfragment.TestExceptionActivity"></activity>
+        <activity android:name="com.shizhefei.indicator.proxyfragment.TestProxyFragmentActivity" />
         <activity
             android:name="com.shizhefei.indicator.MainActivity"
             android:label="@string/app_name">
@@ -32,16 +34,16 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.shizhefei.indicator.spring.SpringActivity"
-            android:label="@string/title_activity_spring"/>
+            android:label="@string/title_activity_spring" />
         <activity
             android:name="com.shizhefei.indicator.year.YearActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.shizhefei.indicator.SingleTabActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="com.shizhefei.indicator.BannerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
