@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'//添加
+apply plugin: 'com.novoda.bintray-release'//添加
 // 这个version是区分library版本的，因此当我们需要更新library时记得修改这个version
 android {
     compileSdkVersion 28
@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 18
-        versionName "1.1.7"
+        versionCode 20
+        versionName "1.1.9"
     }
     buildTypes {
         release {
@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'com.android.support:recyclerview-v7:28.0.0'
     compileOnly 'com.android.support:support-v4:28.0.0'
 }
@@ -51,11 +51,11 @@ artifacts {
 ////gradlew clean build bintrayUpload -PbintrayUser=用户名 -PbintrayKey=apiKey -PdryRun=false
 ////添加
 ////添加
-//publish {
-//    userOrg = 'luckyjayce'//bintray.com用户名
-//    groupId = 'com.shizhefei'//jcenter上的路径
-//    artifactId = 'ViewPagerIndicator'//项目名称
-//    publishVersion = '1.1.7'//版本号
-//    desc = '实现滑动tab，引导页等效果'//描述，不重要
-//    website = 'https://github.com/LuckyJayce/ViewPagerIndicator'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-//}
+publish {
+    userOrg = 'luckyjayce'//bintray.com用户名
+    groupId = 'com.shizhefei'//jcenter上的路径
+    artifactId = 'ViewPagerIndicator'//项目名称
+    publishVersion = '1.1.9'//版本号
+    desc = '实现滑动tab，引导页等效果'//描述，不重要
+    website = 'https://github.com/LuckyJayce/ViewPagerIndicator'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+}
