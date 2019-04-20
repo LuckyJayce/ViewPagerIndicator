@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.shizhefei.fragment.ProxyLazyFragment;
 import com.shizhefei.indicator.demo.R;
+import com.shizhefei.view.indicator.FragmentListPageAdapter;
 
 public class TestProxyFragmentActivity extends FragmentActivity {
 
@@ -34,7 +33,7 @@ public class TestProxyFragmentActivity extends FragmentActivity {
         });
     }
 
-    private class AA extends FragmentStatePagerAdapter {
+    private class AA extends FragmentListPageAdapter {
         public AA(FragmentManager fm) {
             super(fm);
         }
@@ -42,9 +41,9 @@ public class TestProxyFragmentActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             Log.d("tttt", "getItem position:" + position);
-            Bundle bundle = new Bundle();
-            bundle.putInt(BookFragment.EXTRA_INT_POSITION, position);
-            return ProxyLazyFragment.lazy(BookFragment.class, bundle);
+            Bundle arguments = new Bundle();
+            arguments.putInt(BookFragment.EXTRA_INT_POSITION, position);
+            return ProxyLazyFragment.lazy(BookFragment.class, arguments);
         }
 
         @Override

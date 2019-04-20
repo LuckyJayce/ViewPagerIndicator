@@ -87,7 +87,7 @@ public final class ProxyLazyFragment extends Fragment {
         }
     }
 
-    public static ProxyLazyFragment lazy(Class<? extends Fragment> fragmentClass, Bundle arguments) {
+    public static ProxyLazyFragment lazy(@Nullable Class<? extends Fragment> fragmentClass, @Nullable Bundle arguments) {
         ProxyLazyFragment fragment = new ProxyLazyFragment();
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_CLASS_NAME, fragmentClass.getName());
@@ -96,11 +96,7 @@ public final class ProxyLazyFragment extends Fragment {
         return fragment;
     }
 
-    public static ProxyLazyFragment lazy(Class<? extends Fragment> fragmentClass) {
-        ProxyLazyFragment fragment = new ProxyLazyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_CLASS_NAME, fragmentClass.getName());
-        fragment.setArguments(bundle);
-        return fragment;
+    public static ProxyLazyFragment lazy(@Nullable Class<? extends Fragment> fragmentClass) {
+        return lazy(fragmentClass, null);
     }
 }

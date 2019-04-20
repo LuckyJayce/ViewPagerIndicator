@@ -32,9 +32,9 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 
 
-# 使用方法 #
+# 使用方法
     package com.shizhefei.indicator.guide;
-
+    
     import android.os.Bundle;
     import android.support.v4.app.FragmentActivity;
     import android.support.v4.view.ViewPager;
@@ -42,17 +42,17 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     import android.view.View;
     import android.view.ViewGroup;
     import android.view.ViewGroup.LayoutParams;
-
+    
     import com.shizhefei.indicator.R;
     import com.shizhefei.view.indicator.Indicator;
     import com.shizhefei.view.indicator.IndicatorViewPager;
     import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorPagerAdapter;
     import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorViewPagerAdapter;
-
+    
     public class GuideActivity extends FragmentActivity {
     	private IndicatorViewPager indicatorViewPager;
     	private LayoutInflater inflate;
-
+    
     	@Override
     	protected void onCreate(Bundle arg0) {
     		super.onCreate(arg0);
@@ -65,11 +65,11 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     		// 设置indicatorViewPager的适配器
     		indicatorViewPager.setAdapter(adapter);
     	}
-
+    
     	private IndicatorPagerAdapter adapter = new IndicatorViewPagerAdapter() {
     		private int[] images = { R.drawable.p1, R.drawable.p2, R.drawable.p3,
     				R.drawable.p4 };
-
+    
     		/**
     		 * 获取tab
     		 */
@@ -82,7 +82,7 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     			}
     			return convertView;
     		}
-
+    
     		/**
     		 * 获取每一个界面
     		 */
@@ -97,7 +97,7 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     			convertView.setBackgroundResource(images[position]);
     			return convertView;
     		}
-
+    
     		/**
     		 * 获取界面数量
     		 */
@@ -108,22 +108,22 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
     	};
     }
 
-# 效果图 #
+# 效果图
 有了该类库你可以实现以下布局
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/1.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/2.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/3.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/4.png)
 ![image](https://github.com/LuckyJayce/ViewPagerIndicator/blob/master/raw/demo.gif)
-# 主要的类 #
-## 1.ViewPager ##
+# 主要的类
+## 1.ViewPager
 这个版本以后 android-support-v4 可以用原生的了 没有重写ViewPager。
 原先重写的ViewPager的setPrepareNumber 用 Fragment继承于LazyFragment代替实现懒加载
 原先setCanScroll 转移到了 ViewPager的子类SViewPager上
 
-2.使用LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面**
+2.使用ProxyLazyFragment或者继承LazyFragment来配合ViewPager的setOffscreenPageLimit进行懒加载界面和防止重新创建界面
 
-## 2.Indicator ##
+## 2.Indicator
 顾名思义是指示器的意思。有点像水平方向的listview 可以自定义item。
 
 **Indicator**
@@ -147,52 +147,53 @@ https://github.com/LuckyJayce/ViewPagerIndicator/releases
 
 方法：
 >**<1>setAdapter(IndicatorAdapter adapter)**
-  设置适配器
-注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
-**<2> setOnItemSelectListener(OnItemSelectListener listener)**
-设置选中监听
-注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
-**<3> setOnIndicatorItemClickListener(OnIndicatorItemClickListener listener)**
-设置Indicator tab项的点击事件，在Indicator 的 onItemSelectListener前触发和拦截处理
-**<4> setOnTransitionListener(OnTransitionListener listener)**
- 设置滑动变化的转换监听，tab在切换过程中会调用此监听
-设置它可以自定义实现在滑动过程中，tab项的字体变化，颜色变化等等效果
-**<5> setScrollBar(ScrollBar scrollBar)**
- 设置滑动块,设置它可以自定义滑动块的样式
-## 3.indicatorViewPager  ##
+>  设置适配器
+>注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
+>**<2> setOnItemSelectListener(OnItemSelectListener listener)**
+>设置选中监听
+>注意：在使用indicatorViewPager后这个方法会被indicatorViewPager使用
+>**<3> setOnIndicatorItemClickListener(OnIndicatorItemClickListener listener)**
+>设置Indicator tab项的点击事件，在Indicator 的 onItemSelectListener前触发和拦截处理
+>**<4> setOnTransitionListener(OnTransitionListener listener)**
+> 设置滑动变化的转换监听，tab在切换过程中会调用此监听
+>设置它可以自定义实现在滑动过程中，tab项的字体变化，颜色变化等等效果
+>**<5> setScrollBar(ScrollBar scrollBar)**
+> 设置滑动块,设置它可以自定义滑动块的样式  
+>
+## 3.indicatorViewPager
 用于将ViewPager和Indicator 联合使用。  
 
 
 			indicatorViewPager.setAdapter(IndicatorPagerAdapter adapter)  
 	        // 设置它可以自定义实现在滑动过程中，tab项的字体变化，颜色变化等等过渡效果  
-    		indicatorViewPager.setIndicatorOnTransitionListener(onTransitionListener);  
-    		// 设置它可以自定义滑动块的样式  
-    		indicatorViewPager.setIndicatorScrollBar(scrollBar);  
-    		// 设置page是否可滑动切换  
-    		indicatorViewPager.setPageCanScroll(false);  
-    		/*
-    		 * 设置缓存界面的个数，左右两边缓存界面的个数，不会被重新创建。 默认是1，表示左右两边  
-    		 * 相连的1个界面和当前界面都会被缓存住，比如切换到左边的一个界面，那个界面是不会重新创建的。  
-    		 */  
-    		indicatorViewPager.setPageOffscreenLimit(1);  
-    		/*
-    		 * 设置预加载界面的个数。左右两边加载界面的个数 默认是1，表示左右两边 相连的1个界面会和当前界面同时加载  
-    		 */  
-    		indicatorViewPager.setPagePrepareNumber(1);  
-    		// 设置页面切换监听  
-    		indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListener);  
-    		// 设置page间的图片的宽度  
-    		indicatorViewPager.setPageMargin(1);  
-    		// 设置page间的图片  
-    		indicatorViewPager.setPageMarginDrawable(d);  
+			indicatorViewPager.setIndicatorOnTransitionListener(onTransitionListener);  
+			// 设置它可以自定义滑动块的样式  
+			indicatorViewPager.setIndicatorScrollBar(scrollBar);  
+			// 设置page是否可滑动切换  
+			indicatorViewPager.setPageCanScroll(false);  
+			/*
+			 * 设置缓存界面的个数，左右两边缓存界面的个数，不会被重新创建。 默认是1，表示左右两边  
+			 * 相连的1个界面和当前界面都会被缓存住，比如切换到左边的一个界面，那个界面是不会重新创建的。  
+			 */  
+			indicatorViewPager.setPageOffscreenLimit(1);  
+			/*
+			 * 设置预加载界面的个数。左右两边加载界面的个数 默认是1，表示左右两边 相连的1个界面会和当前界面同时加载  
+			 */  
+			indicatorViewPager.setPagePrepareNumber(1);  
+			// 设置页面切换监听  
+			indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListener);  
+			// 设置page间的图片的宽度  
+			indicatorViewPager.setPageMargin(1);  
+			// 设置page间的图片  
+			indicatorViewPager.setPageMarginDrawable(d);  
 
-## 4.BannerComponent （无限轮播Banner） ##
+## 4.BannerComponent （无限轮播Banner）
 继承于IndicatorViewPager，所以使用方法和IndicatorViewPager一样  
 setAutoPlayTime(long time) 设置自动播放的间隔时间  
 startAutoPlay(); 开始播放  
 stopAutoPlay(); 停止播放  
 
-## 5.IndicatorPagerAdapter  ##
+## 5.IndicatorPagerAdapter  
 子类IndicatorFragmentPagerAdapter 用于 界面是fragment的形式。
 子类IndicatorViewPagerAdapter 用于 界面是View的形式.
 
@@ -200,7 +201,7 @@ indicatorViewPager.setOnIndicatorPageChangeListener(onIndicatorPageChangeListene
 
 Indicator 既可以单独使用。也可以通过indicatorViewPager的形式联合viewpager一起使用。
 
-## 6.ScrollBar  ##
+## 6.ScrollBar  
 tab的滑动块通过indicatorViewPager.setIndicatorScrollBar(scrollBar);进行设置
 子类有  
 ColorBar 颜色的滑动块   
@@ -209,18 +210,23 @@ LayoutBar 布局滑动块
 TextWidthColorBar 大小同tab里的text一样宽的颜色的滑动块  
 SpringBar 实现拖拽效果的圆形滑动块  该类修改于https://github.com/chenupt/SpringIndicator  
 
-## 7.OnTransitionListener  ##
+## 7.OnTransitionListener  
 子类有  
 OnTransitionTextListener tab的字体颜色变化，和字体大小变化效果    
 
-## 8.LazyFragment 懒加载Fragment    
-Fragment继承该类实现 显示Framgment的时候才会去创建你自己的界面布局，否则不创建。  
-  
-1.实现原理：  
+## 8.LazyFragment or ProxyLazyFragment 懒加载Fragment    
+#### 懒加载原理
+
 一开始onCreateView的时候只是加载一个空的FrameLayout  
-当通过结合onCreateView和setUserVisibleHint两个方法进行判断是否需要加载真正的布局界面，需要的时候把真正的布局界面添加到之前的空的FrameLayout上面  
-  
-2.回调方法：  
+当通过结合onCreateView和setUserVisibleHint两个方法进行判断是否需要加载真正的布局界面，需要的时候再把实际的布局加载上去
+
+#### 继承 LazyFragment实现懒加载
+
+Fragment继承该类实现 显示Framgment的时候才会去创建你自己的界面布局，否则不创建。  
+
+1. 继承于LazyFragment
+
+2.  回调方法：  
             onCreateViewLazy  对应 onCreateView  
             onDestroyViewLazy 对应 onDestroyView  
             onResumeLazy      对应 onResume  
@@ -229,12 +235,24 @@ Fragment继承该类实现 显示Framgment的时候才会去创建你自己的�
             另外添加了onFragmentStartLazy fragment显示的时候调用，在ViewPager界面切换的时候你就可以通过这个判断是否显示  
             onFragmentStopLazy fragment不显示的时候调用  
             上面所有有lazy结尾的方法都意味着 真正的布局正在显示  
-              
-3.使用方法  
-放心在onCreateViewLazy 的时候创建布局，初始化数据。调用该方法的时候，界面已经要显示啦
-  在onDestroyViewLazy的方法里面做释放操作  
+    
+3. 使用方法  
+   放心在onCreateViewLazy 的时候创建布局，初始化数据。调用该方法的时候，界面已经要显示啦
+     在onDestroyViewLazy的方法里面做释放操作  
 
-##主力类库##
+#### 通过ProxyLazyFragment 代理 实际的Fragment实现懒加载
+
+   该代理LazyFragment的思想源于 https://github.com/shenguojun/LazyFragmentTest ，不过里面有些实现细节有点不一样
+
+1.  调用 ProxyLazyFragment.lazy(BookFragment.class, arguments)，其中BookFragment不限制继承可以直接继承Fragment
+
+   ```
+   Bundle arguments = new Bundle();
+   arguments.putInt(BookFragment.EXTRA_INT_POSITION, position);
+   ProxyLazyFragment fragment = ProxyLazyFragment.lazy(BookFragment.class, arguments);
+   ```
+
+## 主力类库
 
 **1.https://github.com/LuckyJayce/ViewPagerIndicator**  
 Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab，引导页，无限轮播banner等效果，高度自定义tab和特效
@@ -242,27 +260,24 @@ Indicator 取代 tabhost，实现网易顶部tab，新浪微博主页底部tab�
 **2.https://github.com/LuckyJayce/MVCHelper**  
 实现下拉刷新，滚动底部自动加载更多，分页加载，自动切换显示网络失败布局，暂无数据布局，支持任意view，支持切换主流下拉刷新框架。
 
-**3.https://github.com/LuckyJayce/MultiTypeView**  
-简化RecyclerView的多种type的adapter，Fragment可以动态添加到RecyclerView上，实现复杂的界面分多个模块开发
-
-**4.https://github.com/LuckyJayce/EventBus-Apt**  
+**3.https://github.com/LuckyJayce/EventBus-Apt**  
 事件总线，通过动态代理接口的形式发布,接收事件。定义一个接口把事件发给注册并实现接口的类
 
-**5.https://github.com/LuckyJayce/LargeImage**  
+**4.https://github.com/LuckyJayce/LargeImage**  
 大图加载，可供学习
 
-**6.https://github.com/LuckyJayce/GuideHelper**  
+**5.https://github.com/LuckyJayce/GuideHelper**  
 新手引导页，轻松的实现对应的view上面的显示提示信息和展示功能给用户  
 
-**7.https://github.com/LuckyJayce/HVScrollView**  
+**6.https://github.com/LuckyJayce/HVScrollView**  
 可以双向滚动的ScrollView，支持嵌套ScrollView联级滑动，支持设置支持的滚动方向
 
-**8.https://github.com/LuckyJayce/CoolRefreshView**  
+**7.https://github.com/LuckyJayce/CoolRefreshView**  
   下拉刷新RefreshView，支持任意View的刷新 ，支持自定义Header，支持NestedScrollingParent,NestedScrollingChild的事件分发，嵌套ViewPager不会有事件冲突 
 
 有了这些类库，让你6的飞起
 
-## 说明 ##
+## 说明 
 项目 ViewPagerIndicator_Demo 是示例代码。 看了这个例子你会惊奇的发现里面居然都是通过viewpager实现，没有使用tabhost，而所有形式的tab都是用Indicator实现。
 项目 ViewPagerIndicator_Library 是类库
 
@@ -272,13 +287,13 @@ License
 =======
 
     Copyright 2014 shizhefei（LuckyJayce）
-
+    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
+    
        http://www.apache.org/licenses/LICENSE-2.0
-
+    
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
