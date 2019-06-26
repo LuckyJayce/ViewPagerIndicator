@@ -17,7 +17,7 @@ ViewPagerIndicator
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 <1>androidx gradle导入  
     
-    implementation 'com.shizhefei:ViewPagerIndicator:1.1.9-androidx'
+    implementation 'com.shizhefei:ViewPagerIndicator:1.1.9.androidx'
     由于用到了v4和recyclerview所以也要导入他们
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
