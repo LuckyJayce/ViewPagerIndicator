@@ -21,9 +21,12 @@ public class BannerComponent extends IndicatorViewPager {
     private final Handler handler;
     private long time = 3000;
     private DurationScroller scroller;
+    private ViewPager sViewPager;
+    private boolean loop;
 
     public BannerComponent(Indicator indicator, ViewPager viewPager, boolean indicatorClickable) {
         super(indicator, viewPager, indicatorClickable);
+        this.sViewPager = viewPager;
         handler = new AutoPlayHandler(Looper.getMainLooper());
         viewPager.setOnTouchListener(onTouchListener);
         initViewPagerScroll();
@@ -44,6 +47,11 @@ public class BannerComponent extends IndicatorViewPager {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+        mAdapter.setLoop(loop);
     }
 
     public void setScrollDuration(int scrollDuration) {
@@ -93,6 +101,9 @@ public class BannerComponent extends IndicatorViewPager {
     @Override
     public void setCurrentItem(int item, boolean anim) {
         int count = mAdapter.getCount();
+        if (count > 1) {
+
+        }
         if (count > 0) {
             int current = viewPager.getCurrentItem();
             int pp = mAdapter.getRealPosition(current);
@@ -121,11 +132,11 @@ public class BannerComponent extends IndicatorViewPager {
         mAdapter.setLoop(true);
         super.setAdapter(adapter);
         int count = mAdapter.getCount();
-        int center = Integer.MAX_VALUE / 2;
-        if (count > 0) {
+        if (count > 1) {
+            int center = Integer.MAX_VALUE / 2;
             center = center - center % count;
+            viewPager.setCurrentItem(center, false);
         }
-        viewPager.setCurrentItem(center, false);
     }
 
 
@@ -155,8 +166,10 @@ public class BannerComponent extends IndicatorViewPager {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int current = viewPager.getCurrentItem();
-            viewPager.setCurrentItem(current + 1, true);
+            if (viewPager.getAdapter() != null && viewPager.getAdapter().getCount() > 1) {
+                int current = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(current + 1, true);
+            }
             if (isRunning) {
                 handler.sendEmptyMessageDelayed(1, time);
             }
